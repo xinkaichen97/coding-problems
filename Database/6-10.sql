@@ -27,3 +27,32 @@ WHERE Orders.Id IS NULL;
 
 -- Problem 09 (No. 184)
 -- https://leetcode.com/problems/department-highest-salary/
+
+SELECT Department, Employee, Salary
+FROM 
+(SELECT Department.Name AS Department, Employee.Name AS Employee, Salary, DENSE_RANK() OVER (PARTITION BY Department.Name ORDER BY Salary DESC) AS Rnk
+FROM Employee JOIN Department
+ON Employee.DepartmentId = Department.Id)
+WHERE Rnk = 1;
+
+-- Alternative solution (slower)
+SELECT Department.Name AS Department, Employee.Name AS Employee, Salary
+FROM 
+(Employee JOIN Department
+ON Employee.DepartmentId = Department.Id)
+WHERE (Employee.DepartmentId, Salary)
+IN
+(SELECT DepartmentId, MAX(Salary)
+FROM Employee
+GROUP BY DepartmentId);
+
+
+-- Problem 10 (No. 185)
+-- https://leetcode.com/problems/department-top-three-salaries/
+
+SELECT Department, Employee, Salary
+FROM 
+(SELECT Department.Name AS Department, Employee.Name AS Employee, Salary, DENSE_RANK() OVER (PARTITION BY Department.Name ORDER BY Salary DESC) AS Rnk
+FROM Employee JOIN Department
+ON Employee.DepartmentId = Department.Id)
+WHERE Rnk <= 3;
