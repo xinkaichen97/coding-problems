@@ -10,7 +10,7 @@ USING (PersonId);
 -- https://leetcode.com/problems/second-highest-salary/
 
 SELECT MAX(Salary) AS SecondHighestSalary FROM Employee
-WHERE Salary < (SELECT MAX(Salary) FROM Employee)
+WHERE Salary < (SELECT MAX(Salary) FROM Employee);
 
 
 -- Problem 03 (No. 177)
@@ -33,7 +33,7 @@ END;
 -- https://leetcode.com/problems/rank-scores/
 
 SELECT Score AS "score", DENSE_RANK() OVER (ORDER BY Score DESC) AS "Rank"
-FROM Scores
+FROM Scores;
 
 
 -- Problem 05 (No. 180)
@@ -44,4 +44,4 @@ Logs l1, Logs l2, Logs l3
 WHERE l1.Num = l2.Num
 AND l1.Num = l3.Num
 AND l1.Id = l2.Id - 1
-AND l1.Id = l3.Id - 2
+AND l1.Id = l3.Id - 2;
