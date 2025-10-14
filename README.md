@@ -1,6 +1,6 @@
 # Coding Problems
 
-My solutions and notes from coding problems
+Python implementation with comments and/or notes for some coding problems:
 
 - [Leetcode](https://leetcode.com/)
 - [Neetcode](https://neetcode.io/)
