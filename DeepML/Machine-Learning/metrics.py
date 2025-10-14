@@ -4,6 +4,50 @@ Implementation of Machine Learning problems
 import numpy as np
 
 
+def f_score(y_true, y_pred, beta):
+  """
+  61. Implement F-Score Calculation for Binary Classification
+  
+  :param y_true: Numpy array of true labels
+  :param y_pred: Numpy array of predicted labels
+  :param beta: The weight of precision in the harmonic mean
+  :return: F-Score rounded to three decimal places
+  """
+  y_true = np.asarray(y_true).flatten()
+  y_pred = np.asarray(y_pred).flatten()
+	tp = np.sum((y_true == 1) & (y_pred == 1))
+	fp = np.sum((y_true == 0) & (y_pred == 1))
+	fn = np.sum((y_true == 1) & (y_pred == 0))
+	precision = tp / (tp + fp) if (tp + fp) > 0 else 0.0
+  recall = tp / (tp + fn) if (tp + fn) > 0 else 0.0
+  f_score = (1 + beta ** 2) * precision * recall / (beta ** 2 * precision + recall)
+	return round(f_score, 3)
+  
+
+def calculate_f1_score(y_true, y_pred):
+  """
+  91. Calculate F1 Score from Predicted and True Labels
+  
+  Args:
+    y_true (list): True labels (ground truth).
+    y_pred (list): Predicted labels.
+  
+  Returns:
+    float: The F1 score rounded to three decimal places.
+  """
+  y_true = np.asarray(y_true).flatten()
+  y_pred = np.asarray(y_pred).flatten()
+  tp = np.sum((y_true == 1) & (y_pred == 1))
+  fp = np.sum((y_true == 0) & (y_pred == 1))
+  fn = np.sum((y_true == 1) & (y_pred == 0))
+  
+  precision = tp / (tp + fp) if (tp + fp) > 0 else 0.0
+  recall = tp / (tp + fn) if (tp + fn) > 0 else 0.0
+  
+  f1 = 2 * (precision * recall) / (precision + recall) if (precision + recall) > 0 else 0.0
+  return round(f1, 3)
+
+
 def rmse(y_true, y_pred):
   """
   71. Calculate Root Mean Square Error (RMSE)
@@ -63,33 +107,3 @@ def mae(y_true, y_pred):
   val = np.mean(np.abs(y_true - y_pred))
   return round(val,3)
 
-
-class StepLRScheduler:
-  """
-  153. StepLR Learning Rate Scheduler
-  """
-  def __init__(self, initial_lr, step_size, gamma):
-      # Initialize initial_lr, step_size, and gamma
-      self.initial_lr = initial_lr
-      self.step_size = step_size
-      self.gamma = gamma
-  
-  def get_lr(self, epoch):
-      # Calculate and return the learning rate for the given epoch
-      lr = self.initial_lr * (self.gamma ** (epoch // self.step_size))
-      return round(lr, 4)
-
-
-class ExponentialLRScheduler:
-  """
-  154. ExponentialLR Learning Rate Scheduler
-  """
-  def __init__(self, initial_lr, gamma):
-      # Initialize initial_lr and gamma
-      self.initial_lr = initial_lr
-      self.gamma = gamma
-  
-  def get_lr(self, epoch):
-      # Calculate and return the learning rate for the given epoch
-      lr = self.initial_lr * (self.gamma ** epoch)
-      return round(lr, 4)
