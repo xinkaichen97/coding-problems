@@ -9,6 +9,7 @@ class Solution:
     def isValid(self, s: str) -> bool:
       """
       https://neetcode.io/problems/validate-parentheses
+      Time: O(n), Space: O(n)
       """
       stack = []  
       mapping = {']': '[', '}': '{', ')': '('}
@@ -28,6 +29,7 @@ class Solution:
     def dailyTemperatures(self, temperatures: List[int]) -> List[int]:
         """
         https://neetcode.io/problems/daily-temperatures
+        Time: O(n), Space: O(n)
         """
         stack = []
         res = []
@@ -41,6 +43,28 @@ class Solution:
             # (t, i) as the key since we need the index to update res
             stack.append((t, i))
         return res
+
+
+    def evalRPN(self, tokens: List[str]) -> int:
+        """
+        https://neetcode.io/problems/evaluate-reverse-polish-notation
+        Time: O(n), Space: O(n)
+        """
+        stack = []
+        ops = {'+', '-', '*', '/'}
+        for token in tokens:
+            # convert numbers to integers and add to stack
+            if token not in ops:
+                stack.append(int(token))
+            else:
+                # the second number is popped first
+                num2 = stack.pop()
+                num1 = stack.pop()
+                # use eval to calculate
+                res = eval(f"{num1} {token} {num2}")
+                # add the result back to stack
+                stack.append(int(res))
+        return stack[0]
         
 
 class MinStack:
