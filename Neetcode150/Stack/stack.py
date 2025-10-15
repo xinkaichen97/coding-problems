@@ -7,13 +7,13 @@ from typing import List
 class Solution:
     
     def isValid(self, s: str) -> bool:
-      """
-      https://neetcode.io/problems/validate-parentheses
-      Time: O(n), Space: O(n)
-      """
-      stack = []  
-      mapping = {']': '[', '}': '{', ')': '('}
-      for ch in s:
+        """
+        https://neetcode.io/problems/validate-parentheses
+        Time: O(n), Space: O(n)
+        """
+        stack = []  
+        mapping = {']': '[', '}': '{', ')': '('}
+        for ch in s:
         # if the second half is found, look for the first half in the stack
         if ch in mapping.keys():
           if stack and mapping[ch] = stack[-1]:
@@ -23,7 +23,7 @@ class Solution:
             return False
         else:
           stack.append(ch)
-      return True if stack else False
+        return True if stack else False
 
 
     def dailyTemperatures(self, temperatures: List[int]) -> List[int]:
