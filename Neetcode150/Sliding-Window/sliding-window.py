@@ -73,18 +73,22 @@ class Solution:
         https://neetcode.io/problems/permutation-string
         Time: O(n), Space: O(1)
         """
-        def checkInclusion(self, s1: str, s2: str) -> bool:
-            if len(s1) > len(s2):
-                return False
-            count1, count2 = [0] * 26, [0] * 26
-            n = len(s1)
-            for i in range(n):
-                count1[ord(s1[i]) - ord('a')] += 1
-                count2[ord(s2[i]) - ord('a')] += 1  
-            for i in range(n, len(s2)):
-                if count1 == count2:
-                    return True
-                count2[ord(s2[i]) - ord('a')] += 1
-                count2[ord(s2[i - n]) - ord('a')] -= 1
-            return count1 == count2
+        # check equal lengths
+        if len(s1) > len(s2):
+            return False
+        # arrays as counts
+        count1, count2 = [0] * 26, [0] * 26
+        n = len(s1)
+        # update both counts until n
+        for i in range(n):
+            count1[ord(s1[i]) - ord('a')] += 1
+            count2[ord(s2[i]) - ord('a')] += 1  
+        # check a fixed window of length n
+        for i in range(n, len(s2)):
+            if count1 == count2:
+                return True
+            # decrease count for the previous left, and increase count for the new right
+            count2[ord(s2[i]) - ord('a')] += 1
+            count2[ord(s2[i - n]) - ord('a')] -= 1
+        return count1 == count2
           
