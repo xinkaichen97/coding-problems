@@ -59,6 +59,30 @@ def adamw_update(w, g, m, v, t, lr, beta1, beta2, epsilon, weight_decay):
     return w, m, v
 
 
+def nag_optimizer(parameter, grad_fn, velocity, learning_rate=0.01, momentum=0.9):
+    """
+    https://www.deep-ml.com/problems/134
+    Update parameters using the Nesterov Accelerated Gradient optimizer.
+    Uses a "look-ahead" approach to improve convergence by applying momentum before computing the gradient.
+    Args:
+        parameter: Current parameter value
+        grad_fn: Function that computes the gradient at a given position
+        velocity: Current velocity (momentum term)
+        learning_rate: Learning rate (default=0.01)
+        momentum: Momentum coefficient (default=0.9)
+    Returns:
+        tuple: (updated_parameter, updated_velocity)
+    """
+    # compute look-ahead param
+    para_ahead = parameter - momentum * velocity
+    # compute update velocity 
+    velocity = momentum * velocity + learning_rate * grad_fn(para_ahead)
+    # update param
+    parameter = parameter - velocity
+    
+    return np.round(parameter, 5), np.round(velocity, 5)
+
+
 def adagrad_optimizer(parameter, grad, G, learning_rate=0.01, epsilon=1e-8):
     """
     https://www.deep-ml.com/problems/145
@@ -183,6 +207,17 @@ def adadelta_optimizer(parameter, grad, u, v, rho=0.95, epsilon=1e-6):
     v = rho * v + (1 - rho) * delta ** 2
     
     return np.round(parameter, 5), np.round(u, 5), np.round(v, 5)
+
+
+def compute_cross_entropy_loss(predicted_probs: np.ndarray, true_labels: np.ndarray, epsilon = 1e-15) -> float:
+    """
+    https://www.deep-ml.com/problems/134
+    """
+    # clip to avoid log(0)
+    predicted_probs = np.clip(predicted_probs, epsilon, 1.0 - epsilon)
+    mean_loss = -np.mean(np.sum(true_labels * np.log(predicted_probs), axis=-1))
+    # make sure the return value is non-negative (e.g. -0.0)
+    return float(np.maximum(mean_loss, 0.0))
 
 
 def cross_entropy(predictions: NDArray[np.floating], targets: NDArray[np.floating]) -> float:
