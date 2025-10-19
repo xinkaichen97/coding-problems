@@ -78,3 +78,35 @@ class LSTM:
     
     def sigmoid(self, x):
         return 1 / (1 + np.exp(-x))
+
+
+def layer_norm(x, gamma, beta, eps=1e-5):
+    """
+    Layer Normalization Implementation in NumPy
+    Parameters:
+    -----------
+    x : np.ndarray
+        Input array of shape (..., features)
+        Normalizes over the last dimension
+    gamma : np.ndarray
+        Scale parameter of shape (features,)
+    beta : np.ndarray
+        Shift parameter of shape (features,)
+    eps : float
+        Small constant for numerical stability
+    Returns:
+    --------
+    np.ndarray
+        Normalized output with same shape as input
+    """
+    # Calculate mean and variance over the last axis (features)
+    mean = np.mean(x, axis=-1, keepdims=True)
+    variance = np.var(x, axis=-1, keepdims=True)
+    
+    # Normalize
+    x_normalized = (x - mean) / np.sqrt(variance + eps)
+    
+    # Scale and shift
+    output = gamma * x_normalized + beta
+    
+    return output
