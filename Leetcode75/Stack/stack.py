@@ -44,6 +44,27 @@ class Solution:
         return stack
 
 
+    def decodeString(self, s: str) -> str:
+        """
+        https://leetcode.com/problems/decode-string/
+        Time: O(N), Space: O(N)
+        """
+        stack = []
+        for ch in s:
+            if ch == "]":
+                word = ""
+                while stack and stack[-1] != "[":
+                    word = stack.pop() + word
+                stack.pop()
+                count = ""
+                while stack and stack[-1].isdigit():
+                    count = stack.pop() + count
+                stack.append(word * int(count))
+            else:
+                stack.append(ch)
+        return "".join(stack)
+
+    
     def dailyTemperatures(self, temperatures: List[int]) -> List[int]:
         """
         https://leetcode.com/problems/daily-temperatures/
@@ -59,4 +80,24 @@ class Solution:
             # use (t, i) as the key
             stack.append((t, i))
         return res
-      
+
+    
+    class StockSpanner:
+        """
+        https://leetcode.com/problems/online-stock-span/
+        Time: O(N), Space: O(N)
+        """
+        # Your StockSpanner object will be instantiated and called as such:
+        # obj = StockSpanner()
+        # param_1 = obj.next(price)
+
+        def __init__(self):
+            self.stack = []
+        
+        def next(self, price: int) -> int:
+            span = 1
+            while self.stack and self.stack[-1][0] <= price:
+                prev_price, prev_span = self.stack.pop()
+                span += prev_span
+            self.stack.append((price, span))
+            return span
