@@ -41,3 +41,45 @@ class Solution:
           
         return dfs(root1) == dfs(root2)
       
+
+    def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
+        """
+        https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/
+        Time: O(N), Space: O(H)
+        """
+        def dfs(root):
+            # base case: if root is None, return None
+            # if p or q is the root, return the root
+            if not root or root == p or root == q:
+                return root
+            # check left and right
+            left = dfs(root.left)
+            right = dfs(root.right)
+            # if both left and right are not None, current root is the LCA
+            if left and right:
+                return root
+            # if not, return left or right
+            return left or right
+            
+        return dfs(root)
+
+
+    def goodNodes(self, root: TreeNode) -> int:
+        """
+        https://leetcode.com/problems/count-good-nodes-in-binary-tree/
+        Time: O(N), Space: O(H)
+        """
+        def dfs(root, val):
+            # base case if root is None
+            if not root:
+                return 0
+            # if the current node value is greater
+            # add one to the count and update the max val
+            if root.val >= val:
+                return 1 + dfs(root.left, root.val) + dfs(root.right, root.val)
+            # if not, current node is not a good node, do not increment the count
+            # but still need to check its left and right, while keeping the max val
+            else:
+                return dfs(root.left, val) + dfs(root.right, val)
+        return dfs(root, root.val)
+        
