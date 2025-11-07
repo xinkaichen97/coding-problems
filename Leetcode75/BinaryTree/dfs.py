@@ -83,3 +83,35 @@ class Solution:
                 return dfs(root.left, val) + dfs(root.right, val)
         return dfs(root, root.val)
         
+
+    def pathSum(self, root: Optional[TreeNode], targetSum: int) -> int:
+        """
+        https://leetcode.com/problems/path-sum-iii/
+        Time: O(N), Space: O(H + N)
+        """
+        # prefix dict to store count of cumulative sums
+        # initiate prefix dict with 0
+        prefix = {0: 1}
+
+        def dfs(node, currSum):
+            if not node:
+                return 0
+
+            # update current sum
+            currSum += node.val
+            # see if any previous node satisfies target
+            count = prefix.get(currSum - targetSum, 0)
+            # update prefix with current sum
+            prefix[currSum] = prefix.get(currSum, 0) + 1
+            
+            # look into left and right
+            count += dfs(node.left, currSum)
+            count += dfs(node.right, currSum)
+
+            # backtrack: decrement current sum from prefix after recursion
+            prefix[currSum] -= 1
+            
+            return count
+
+        return dfs(root, 0)
+        
