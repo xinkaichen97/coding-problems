@@ -114,4 +114,36 @@ class Solution:
             return count
 
         return dfs(root, 0)
-        
+
+
+    def longestZigZag(self, root: Optional[TreeNode]) -> int:
+        """
+        https://leetcode.com/problems/longest-zigzag-path-in-a-binary-tree
+        Time: O(N), Space: O(H)
+        """
+        # global variable to be updated
+        self.ans = 0
+    
+        def dfs(node, goLeft, length):
+            # base case, stop when finding None
+            if not node:
+                return
+            
+            # update max length so far
+            self.ans = max(self.ans, length)
+    
+            # if go left, the next node must be right
+            if goLeft:
+                dfs(node.left, False, length + 1)
+                # also search right from the start
+                dfs(node.right, True, 1)
+            # if go right, it's the opposite
+            else:
+                dfs(node.right, True, length + 1)
+                dfs(node.left, False, 1)
+    
+        # go through both left and right
+        dfs(root, True, 0)
+        dfs(root, False, 0)
+    
+        return self.ans
