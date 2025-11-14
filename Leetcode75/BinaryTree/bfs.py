@@ -14,6 +14,10 @@ class TreeNode:
 class Solution:
   
     def rightSideView(self, root: Optional[TreeNode]) -> List[int]:
+        """
+        https://leetcode.com/problems/binary-tree-right-side-view
+        Time: O(N), Space: O(H)
+        """
         res = []
         q = collections.deque()
 
@@ -38,6 +42,10 @@ class Solution:
 
 
     def maxLevelSum(self, root: Optional[TreeNode]) -> int:
+        """
+        https://leetcode.com/problems/maximum-level-sum-of-a-binary-tree
+        Time: O(N), Space: O(H)
+        """
         # initialize 
         max_sum, res, level = float('-inf'), 0, 0
 
