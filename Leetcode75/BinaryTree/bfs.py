@@ -1,7 +1,7 @@
 """
 Problems for Binary Trees
 """
-from typing import Optional
+from typing import List, Optional
 
 
 class TreeNode:
