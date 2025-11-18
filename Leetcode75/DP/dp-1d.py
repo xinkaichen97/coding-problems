@@ -77,17 +77,21 @@ class Solution:
         https://leetcode.com/problems/house-robber
         Time: O(N), Space: O(N)
         """
+        # base case
         n = len(nums)
-        
         if n == 1:
             return nums[0]
-        
+
+        # initialize DP array
         dp = [0] * n
-        
+        # first two: choose the higher value
         dp[0] = nums[0]
         dp[1] = max(nums[0], nums[1])
-        
+
+        # the i-th item is the max value up to this point
+        # either rob the previous house or skip
         for i in range(2, n):
-            dp[i] = max(dp[i-1], nums[i] + dp[i-2])
+            dp[n] = max(dp[i - 1], nums[i] + dp[i - 2])
         
-        return dp[-1] 
+        # return the last value
+        return dp[-1]
