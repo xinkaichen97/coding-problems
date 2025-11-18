@@ -91,7 +91,7 @@ class Solution:
         # the i-th item is the max value up to this point
         # either rob the previous house or skip
         for i in range(2, n):
-            dp[n] = max(dp[i - 1], nums[i] + dp[i - 2])
+            dp[i] = max(dp[i - 1], nums[i] + dp[i - 2])
         
         # return the last value
         return dp[-1]
