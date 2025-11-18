@@ -70,3 +70,24 @@ class Solution:
           
         # return the last item 
         return dp[n]
+
+
+    def rob(self, nums: List[int]) -> int:
+        """
+        https://leetcode.com/problems/house-robber
+        Time: O(N), Space: O(N)
+        """
+        n = len(nums)
+        
+        if n == 1:
+            return nums[0]
+        
+        dp = [0] * n
+        
+        dp[0] = nums[0]
+        dp[1] = max(nums[0], nums[1])
+        
+        for i in range(2, n):
+            dp[i] = max(dp[i-1], nums[i] + dp[i-2])
+        
+        return dp[-1] 
