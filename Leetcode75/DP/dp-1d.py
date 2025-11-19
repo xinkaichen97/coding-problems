@@ -95,3 +95,20 @@ class Solution:
         
         # return the last value
         return dp[-1]
+
+
+    def numTilings(self, n: int) -> int:
+        """
+        https://leetcode.com/problems/domino-and-tromino-tiling
+        Time: O(N), Space: O(N)
+        """
+        # initialize DP array
+        dp = [0] * (max(4, n + 1))
+        dp[1], dp[2], dp[3] = 1, 2, 5
+
+        # use derived formula
+        for i in range(4, n + 1):
+            # 10^9+7 is used because it fits in an int data type and is a prime number
+            dp[i] = (2 * dp[i - 1] + dp[i - 3]) % (10 ** 9 + 7)
+
+        return dp[n]
