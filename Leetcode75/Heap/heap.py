@@ -57,4 +57,38 @@ Time: O(logn), Space: O(logn)
             # add to both the heap and the set
             heapq.heappush(self.heap, num)
             self.seen.add(num)
-      
+
+
+    def totalCost(self, costs: List[int], k: int, candidates: int) -> int:
+        """
+        https://leetcode.com/problems/total-cost-to-hire-k-workers
+        Time: O((k+m)⋅logm), Space: O(m), m = candidates
+        """
+        # keep two min heaps for first and last candidates
+        heap_left = costs[:candidates]
+        heap_right = costs[max(candidates, len(costs) - candidates):]
+        heapq.heapify(heap_left)
+        heapq.heapify(heap_right)
+
+        # keep the indices for the next candidate
+        next_left, next_right = candidates, len(costs) - candidates - 1
+        res = 0
+
+        # k rounds
+        for _ in range(k):
+            # if the right heap is null or the left min is smaller
+            if (not heap_right) or (heap_left and heap_left[0] <= heap_right[0]):
+                # pop from the left and add to the final cost
+                res += heapq.heappop(heap_left)
+                # only add to the heap if there's a valid candidate to add
+                if next_left <= next_right:
+                    heapq.heappush(heap_left, costs[next_left])
+                    next_left += 1
+            # otherwise operate on the right heap
+            else:
+                res += heapq.heappop(heap_right)
+                if next_left <= next_right:
+                    heapq.heappush(heap_right, costs[next_right])
+                    next_right -= 1
+                  
+        return res
