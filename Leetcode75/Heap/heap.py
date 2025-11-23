@@ -92,3 +92,33 @@ Time: O(logn), Space: O(logn)
                     next_right -= 1
                   
         return res
+
+
+    def maxScore(self, nums1: List[int], nums2: List[int], k: int) -> int:
+        """
+        https://leetcode.com/problems/maximum-subsequence-score
+        Time: O(nlogn), Space: O(k)
+        """
+        # use a prefix sum to keep track of k items in nums1
+        res, currsum = 0, 0
+        # use a minheap to get the smallest num in current calculation
+        heap = []
+      
+        # get nums1/nums2 combination and reverse sort by the nums2 values
+        nums = sorted(zip(nums1, nums2), key=lambda x: -x[1])
+      
+        # start from the largest value in nums2
+        for n1, n2 in nums:
+            # add n1 to current sum and push to heap
+            currsum += n1
+            heapq.heappush(heap, n1)
+          
+            # if there are k items
+            if len(heap) == k:
+                # calculate the current score and compare with res
+                res = max(res, currsum * n2)
+                # remove the smallest num in heap to achieve maximum
+                currsum -= heapq.heappop(heap)
+              
+        return res
+      
