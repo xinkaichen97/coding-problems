@@ -51,3 +51,33 @@ class Solution:
 
         # return either l or r because they are the same
         return l
+
+
+    def successfulPairs(self, spells: List[int], potions: List[int], success: int) -> List[int]:
+        """
+        https://leetcode.com/problems/successful-pairs-of-spells-and-potions
+        Time: O((n+m)logm), Space: O(1)
+        """
+        res = []
+        m = len(potions)
+        
+        # sort potions for binary search
+        potions.sort()
+
+        for spell in spells:
+            idx = -1
+            # binary search to find the index above which it's successful
+            l, r = 0, m - 1
+            while l <= r:
+                mid = (l + r) // 2
+                # if current product is successful, update index and right bound
+                if spell * potions[mid] >= success:
+                    idx = mid
+                    r = mid - 1
+                # otherwise update left bound
+                else:
+                    l = mid + 1
+            # the number is total length - index, or zero if index is not updated
+            res.append(m - idx if idx >= 0 else 0)
+
+        return res
