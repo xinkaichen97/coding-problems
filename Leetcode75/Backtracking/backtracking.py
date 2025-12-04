@@ -9,7 +9,7 @@ class Solution:
     def letterCombinations(self, digits: str) -> List[str]:
         """
         https://leetcode.com/problems/letter-combinations-of-a-phone-number
-        Time: O(4^n), Space: O(n), n - len(digits)
+        Time: O(n * 4^n), Space: O(n), n - len(digits)
         """
         if not digits:
             return []
@@ -35,7 +35,8 @@ class Solution:
                 return
 
             # call backtrack with index + 1 and updated letters
-            # for each letter in digits, the worst case is 4 possible next letters, so the total is 4^n
+            # for each letter in digits, the worst case is 4 possible next letters, so the total path is 4^n
+            # and since string concatenation is O(n), total time complexity is O(n * 4^n)
             for letter in mapping[digits[idx]]:
                 backtrack(idx + 1, comb + letter)
 
@@ -48,7 +49,7 @@ class Solution:
     def combinationSum3(self, k: int, n: int) -> List[List[int]]:
         """
         https://leetcode.com/problems/combination-sum-iii
-        Time: O(9^k), Space: O(k)
+        Time: O(k * C(9,k)), Space: O(k)
         """
         res = []
         ans = []
@@ -59,13 +60,14 @@ class Solution:
             if currsum > n:
                 return
             # return criterion 2: if the current list has length k and sum is n
+            # each operation is O(k)
             if len(ans) == k:
                 if currsum == n:
-                    res.append(ans[:])
+                    res.append(ans.copy())
                 return
               
             # index from 1 to 9, but we only need (k - len(ans)) more items
-            # for each number up to k numbers, there are 9 other possible numbers, so the total is 9^k
+            # we select k numbers from 1 to 9, so the upper bound of total paths is C(9,k)
             for i in range(idx, 9 - (k - len(ans)) + 2):
                 # update current sum and add to ans
                 currsum += i
