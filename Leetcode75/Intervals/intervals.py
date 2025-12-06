@@ -28,3 +28,27 @@ class Solution:
                 prev = intervals[i][1]
               
         return res
+
+
+    def findMinArrowShots(self, points: List[List[int]]) -> int:
+        """
+        https://leetcode.com/problems/minimum-number-of-arrows-to-burst-balloons
+        Time: O(nlogn), Space: O(n)
+        """
+        if not points:
+            return 0
+
+        # sort by end times
+        points.sort(key=lambda x:x[1])
+        res = 1
+        curr_end = points[0][1]
+      
+        for start, end in points:
+            # if the current end is lower than start, no overlap
+            # need an additional arrow
+            if curr_end < start:
+                res += 1
+                curr_end = end
+              
+        return res
+      
