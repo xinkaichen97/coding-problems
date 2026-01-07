@@ -1,6 +1,12 @@
 # Leetcode 75
 
-https://leetcode.com/studyplan/leetcode-75/
+A curated list of 75 LeetCode problems for coding interview preparation.
+
+**Source**: https://leetcode.com/studyplan/leetcode-75/
+
+---
+
+## 📚 Categories
 
 <details>
 <summary><h4>Array / String</h4></summary>
