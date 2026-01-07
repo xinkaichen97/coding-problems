@@ -2,16 +2,13 @@
 
 A LeetCode-style platform for Machine Learning and Deep Learning practice problems.
 
-## 🔗 Platform Info
+**Website**: https://www.deep-ml.com/problems
 
-- **Website**: [deep-ml.com/problems](https://www.deep-ml.com/problems)
-- **GitHub Repository**: [Open-Deep-ML/DML-OpenProblem](https://github.com/Open-Deep-ML/DML-OpenProblem)
-- **Focus**: Implementing ML/DL algorithms from scratch
-- **Community**: Open-source, community-maintained problems
+**GitHub Repository**: [Open-Deep-ML/DML-OpenProblem](https://github.com/Open-Deep-ML/DML-OpenProblem)
 
 ---
 
-## 📚 Problem Categories
+## 📚 Categories
 
 Based on the Deep-ML platform, problems are organized into the following main categories:
 
