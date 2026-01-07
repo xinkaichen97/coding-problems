@@ -2,195 +2,262 @@
 
 https://leetcode.com/studyplan/leetcode-75/
 
-### Array / String
+<details>
+<summary><h4>Array / String</h4></summary>
 
-- Merge Strings Alternately
+[Merge Strings Alternately](https://leetcode.com/problems/merge-strings-alternately/)
 
-- Greatest Common Divisor of Strings
+[Greatest Common Divisor of Strings](https://leetcode.com/problems/greatest-common-divisor-of-strings/)
 
-- Kids With the Greatest Number of Candies
+[Kids With the Greatest Number of Candies](https://leetcode.com/problems/kids-with-the-greatest-number-of-candies/)
 
-- Can Place Flowers
+[Can Place Flowers](https://leetcode.com/problems/can-place-flowers/)
 
-- Reverse Vowels of a String
+[Reverse Vowels of a String](https://leetcode.com/problems/reverse-vowels-of-a-string/)
 
-- Reverse Words in a String
+[Reverse Words in a String](https://leetcode.com/problems/reverse-words-in-a-string/)
 
-- Product of Array Except Self
+[Product of Array Except Self](https://leetcode.com/problems/product-of-array-except-self/)
 
-- Increasing Triplet Subsequence
+[Increasing Triplet Subsequence](https://leetcode.com/problems/increasing-triplet-subsequence/)
 
-- String Compression
+[String Compression](https://leetcode.com/problems/string-compression/)
 
-### Two Pointers
+</details>
 
-- Move Zeroes
+<details>
+<summary><h4>Two Pointers</h4></summary>
 
-- Is Subsequence
+[Move Zeroes](https://leetcode.com/problems/move-zeroes/)
 
-- Container With Most Water
+[Is Subsequence](https://leetcode.com/problems/is-subsequence/)
 
-- Max Number of K-Sum Pairs
+[Container With Most Water](https://leetcode.com/problems/container-with-most-water/)
 
-- Sliding Window
-Maximum Average Subarray I
+[Max Number of K-Sum Pairs](https://leetcode.com/problems/max-number-of-k-sum-pairs/)
 
-- Maximum Number of Vowels in a Substring of Given Length
+</details>
 
-- Max Consecutive Ones III
+<details>
+<summary><h4>Sliding Window</h4></summary>
 
-- Longest Subarray of 1's After Deleting One Element
+[Maximum Average Subarray I](https://leetcode.com/problems/maximum-average-subarray-i/)
 
-### Prefix Sum
+[Maximum Number of Vowels in a Substring of Given Length](https://leetcode.com/problems/maximum-number-of-vowels-in-a-substring-of-given-length/)
 
-- Find the Highest Altitude
+[Max Consecutive Ones III](https://leetcode.com/problems/max-consecutive-ones-iii/)
 
-- Find Pivot Index
+[Longest Subarray of 1's After Deleting One Element](https://leetcode.com/problems/longest-subarray-of-1s-after-deleting-one-element/)
 
-### Hash Map / Set
+</details>
 
-- Find the Difference of Two Arrays
+<details>
+<summary><h4>Prefix Sum</h4></summary>
 
-- Unique Number of Occurrences
+[Find the Highest Altitude](https://leetcode.com/problems/find-the-highest-altitude/)
 
-- Determine if Two Strings Are Close
+[Find Pivot Index](https://leetcode.com/problems/find-pivot-index/)
 
-- Equal Row and Column Pairs
+</details>
 
-### Stack
+<details>
+<summary><h4>Hash Map / Set</h4></summary>
 
-- Removing Stars From a String
+[Find the Difference of Two Arrays](https://leetcode.com/problems/find-the-difference-of-two-arrays/)
 
-- Asteroid Collision
+[Unique Number of Occurrences](https://leetcode.com/problems/unique-number-of-occurrences/)
 
-- Decode String
+[Determine if Two Strings Are Close](https://leetcode.com/problems/determine-if-two-strings-are-close/)
 
-### Queue
+[Equal Row and Column Pairs](https://leetcode.com/problems/equal-row-and-column-pairs/)
 
-- Number of Recent Calls
+</details>
 
-- Dota2 Senate
+<details>
+<summary><h4>Stack</h4></summary>
 
-### Linked List
+[Removing Stars From a String](https://leetcode.com/problems/removing-stars-from-a-string/)
 
-- Delete the Middle Node of a Linked List
+[Asteroid Collision](https://leetcode.com/problems/asteroid-collision/)
 
-- Odd Even Linked List
+[Decode String](https://leetcode.com/problems/decode-string/)
 
-- Reverse Linked List
+</details>
 
-- Maximum Twin Sum of a Linked List
+<details>
+<summary><h4>Queue</h4></summary>
 
-### Binary Tree - DFS
+[Number of Recent Calls](https://leetcode.com/problems/number-of-recent-calls/)
 
-- Maximum Depth of Binary Tree
+[Dota2 Senate](https://leetcode.com/problems/dota2-senate/)
 
-- Leaf-Similar Trees
+</details>
 
-- Count Good Nodes in Binary Tree
+<details>
+<summary><h4>Linked List</h4></summary>
 
-- Path Sum III
+[Delete the Middle Node of a Linked List](https://leetcode.com/problems/delete-the-middle-node-of-a-linked-list/)
 
-- Longest ZigZag Path in a Binary Tree
+[Odd Even Linked List](https://leetcode.com/problems/odd-even-linked-list/)
 
-- Lowest Common Ancestor of a Binary Tree
+[Reverse Linked List](https://leetcode.com/problems/reverse-linked-list/)
 
-### Binary Tree - BFS
+[Maximum Twin Sum of a Linked List](https://leetcode.com/problems/maximum-twin-sum-of-a-linked-list/)
 
-- Binary Tree Right Side View
+</details>
 
-- Maximum Level Sum of a Binary Tree
+<details>
+<summary><h4>Binary Tree - DFS</h4></summary>
 
-### Binary Search Tree
+[Maximum Depth of Binary Tree](https://leetcode.com/problems/maximum-depth-of-binary-tree/)
 
-- Search in a Binary Search Tree
+[Leaf-Similar Trees](https://leetcode.com/problems/leaf-similar-trees/)
 
-- Delete Node in a BST
+[Count Good Nodes in Binary Tree](https://leetcode.com/problems/count-good-nodes-in-binary-tree/)
 
-### Graphs - DFS
+[Path Sum III](https://leetcode.com/problems/path-sum-iii/)
 
-- Keys and Rooms
+[Longest ZigZag Path in a Binary Tree](https://leetcode.com/problems/longest-zigzag-path-in-a-binary-tree/)
 
-- Number of Provinces
+[Lowest Common Ancestor of a Binary Tree](https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/)
 
-- Reorder Routes to Make All Paths Lead to the City Zero
+</details>
 
-- Evaluate Division
+<details>
+<summary><h4>Binary Tree - BFS</h4></summary>
 
-### Graphs - BFS
+[Binary Tree Right Side View](https://leetcode.com/problems/binary-tree-right-side-view/)
 
-- Nearest Exit from Entrance in Maze
+[Maximum Level Sum of a Binary Tree](https://leetcode.com/problems/maximum-level-sum-of-a-binary-tree/)
 
-- Rotting Oranges
+</details>
 
-### Heap / Priority Queue
+<details>
+<summary><h4>Binary Search Tree</h4></summary>
 
-- Kth Largest Element in an Array
+[Search in a Binary Search Tree](https://leetcode.com/problems/search-in-a-binary-search-tree/)
 
-- Smallest Number in Infinite Set
+[Delete Node in a BST](https://leetcode.com/problems/delete-node-in-a-bst/)
 
-- Maximum Subsequence Score
+</details>
 
-- Total Cost to Hire K Workers
+<details>
+<summary><h4>Graphs - DFS</h4></summary>
 
-### Binary Search
+[Keys and Rooms](https://leetcode.com/problems/keys-and-rooms/)
 
-- Guess Number Higher or Lower
+[Number of Provinces](https://leetcode.com/problems/number-of-provinces/)
 
-- Successful Pairs of Spells and Potions
+[Reorder Routes to Make All Paths Lead to the City Zero](https://leetcode.com/problems/reorder-routes-to-make-all-paths-lead-to-the-city-zero/)
 
-- Find Peak Element
+[Evaluate Division](https://leetcode.com/problems/evaluate-division/)
 
-- Koko Eating Bananas
+</details>
 
-### Backtracking
+<details>
+<summary><h4>Graphs - BFS</h4></summary>
 
-- Letter Combinations of a Phone Number
+[Nearest Exit from Entrance in Maze](https://leetcode.com/problems/nearest-exit-from-entrance-in-maze/)
 
-- Combination Sum III
+[Rotting Oranges](https://leetcode.com/problems/rotting-oranges/)
 
-### DP - 1D
+</details>
 
-- N-th Tribonacci Number
+<details>
+<summary><h4>Heap / Priority Queue</h4></summary>
 
-- Min Cost Climbing Stairs
+[Kth Largest Element in an Array](https://leetcode.com/problems/kth-largest-element-in-an-array/)
 
-- House Robber
+[Smallest Number in Infinite Set](https://leetcode.com/problems/smallest-number-in-infinite-set/)
 
-- Domino and Tromino Tiling
+[Maximum Subsequence Score](https://leetcode.com/problems/maximum-subsequence-score/)
 
-### DP - Multidimensional
+[Total Cost to Hire K Workers](https://leetcode.com/problems/total-cost-to-hire-k-workers/)
 
-- Unique Paths
+</details>
 
-- Longest Common Subsequence
+<details>
+<summary><h4>Binary Search</h4></summary>
 
-- Best Time to Buy and Sell Stock with Transaction Fee
+[Guess Number Higher or Lower](https://leetcode.com/problems/guess-number-higher-or-lower/)
 
-- Edit Distance
+[Successful Pairs of Spells and Potions](https://leetcode.com/problems/successful-pairs-of-spells-and-potions/)
 
-### Bit Manipulation
+[Find Peak Element](https://leetcode.com/problems/find-peak-element/)
 
-- Counting Bits
+[Koko Eating Bananas](https://leetcode.com/problems/koko-eating-bananas/)
 
-- Single Number
+</details>
 
-- Minimum Flips to Make a OR b Equal to c
+<details>
+<summary><h4>Backtracking</h4></summary>
 
-### Trie
+[Letter Combinations of a Phone Number](https://leetcode.com/problems/letter-combinations-of-a-phone-number/)
 
-- Implement Trie (Prefix Tree)
+[Combination Sum III](https://leetcode.com/problems/combination-sum-iii/)
 
-- Search Suggestions System
+</details>
 
-### Intervals
+<details>
+<summary><h4>Dynamic Programming - 1D</h4></summary>
 
-- Non-overlapping Intervals
+[N-th Tribonacci Number](https://leetcode.com/problems/n-th-tribonacci-number/)
 
-- Minimum Number of Arrows to Burst Balloons
+[Min Cost Climbing Stairs](https://leetcode.com/problems/min-cost-climbing-stairs/)
 
-### Monotonic Stack
+[House Robber](https://leetcode.com/problems/house-robber/)
 
-- Daily Temperatures
+[Domino and Tromino Tiling](https://leetcode.com/problems/domino-and-tromino-tiling/)
 
-- Online Stock Span
+</details>
+
+<details>
+<summary><h4>Dynamic Programming - Multidimensional</h4></summary>
+
+[Unique Paths](https://leetcode.com/problems/unique-paths/)
+
+[Longest Common Subsequence](https://leetcode.com/problems/longest-common-subsequence/)
+
+[Best Time to Buy and Sell Stock with Transaction Fee](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-transaction-fee/)
+
+[Edit Distance](https://leetcode.com/problems/edit-distance/)
+
+</details>
+
+<details>
+<summary><h4>Bit Manipulation</h4></summary>
+
+[Counting Bits](https://leetcode.com/problems/counting-bits/)
+
+[Single Number](https://leetcode.com/problems/single-number/)
+
+[Minimum Flips to Make a OR b Equal to c](https://leetcode.com/problems/minimum-flips-to-make-a-or-b-equal-to-c/)
+
+</details>
+
+<details>
+<summary><h4>Trie</h4></summary>
+
+[Implement Trie (Prefix Tree)](https://leetcode.com/problems/implement-trie-prefix-tree/)
+
+[Search Suggestions System](https://leetcode.com/problems/search-suggestions-system/)
+
+</details>
+
+<details>
+<summary><h4>Intervals</h4></summary>
+
+[Non-overlapping Intervals](https://leetcode.com/problems/non-overlapping-intervals/)
+
+[Minimum Number of Arrows to Burst Balloons](https://leetcode.com/problems/minimum-number-of-arrows-to-burst-balloons/)
+
+</details>
+
+<details>
+<summary><h4>Monotonic Stack</h4></summary>
+
+[Daily Temperatures](https://leetcode.com/problems/daily-temperatures/)
+
+[Online Stock Span](https://leetcode.com/problems/online-stock-span/)
+
+</details>
