@@ -68,4 +68,17 @@ class Solution:
         # for num in nums:
         #     rob1, rob2 = rob2, max(num + rob1, rob2)
         # return rob2
-      
+
+
+    def rob2(self, nums: List[int]) -> int:
+        """
+        https://neetcode.io/problems/house-robber-ii
+        Time: O(n), Space: O(n)
+        """
+        # base case
+        if len(nums) == 1:
+            return nums[0]
+
+        # just the max results of nums[:-1] and nums[1:]
+        return max(self.rob(nums[:-1]), self.rob(nums[1:]))
+        
