@@ -82,3 +82,51 @@ class Solution:
         # just the max results of nums[:-1] and nums[1:]
         return max(self.rob(nums[:-1]), self.rob(nums[1:]))
         
+
+    def longestPalindrome(self, s: str) -> str:
+        """
+        https://neetcode.io/problems/longest-palindromic-substring
+        Time: O(n^2), Space: O(n^2)
+        """
+        resIdx, resLen = 0, 0
+        n = len(s)
+
+        # ## could use two pointers to reduce space complexity to O(1)
+        # for i in range(n):
+        #     # odd length
+        #     l, r = i, i
+        #     while l >= 0 and r < len(s) and s[l] == s[r]:
+        #         if (r - l + 1) > resLen:
+        #             resIdx = l
+        #             resLen = r - l + 1
+        #         l -= 1
+        #         r += 1
+        #     # even length
+        #     l, r = i, i + 1
+        #     while l >= 0 and r < len(s) and s[l] == s[r]:
+        #         if (r - l + 1) > resLen:
+        #             resIdx = l
+        #             resLen = r - l + 1
+        #         l -= 1
+        #         r += 1
+        # return s[resIdx : resIdx + resLen]
+      
+        # initialize the 2-d dp array with False
+        # dp[i][j] = True means s[i:j+1] is a palindrome
+        dp = [[False] * n for _ in range(n)]
+
+        # start from the bottom
+        for i in range(n - 1, -1, -1):
+            for j in range(i, n):
+                # check if s[i] is equal to s[j], AND
+                # if the substring is shorter than 3, OR s[i+1:j] is a palindrome
+                if s[i] == s[j] and (j - i <= 2 or dp[i + 1][j - 1]):
+                    dp[i][j] = True
+                    # update res
+                    if resLen < (j - i + 1):
+                        resLen = (j - i + 1)
+                        resIdx = i
+        
+        return s[resIdx : resIdx + resLen]
+
+      
