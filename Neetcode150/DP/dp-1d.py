@@ -129,4 +129,28 @@ class Solution:
         
         return s[resIdx : resIdx + resLen]
 
-      
+
+    def countSubstrings(self, s: str) -> int:
+        """
+        https://neetcode.io/problems/palindromic-substrings
+        Time: O(n^2), Space: O(n^2)
+        """
+        # similar to the question above
+        # could also use two pointers to reduce space complexity to O(1)
+        res = 0
+        n = len(s)
+        
+        # initialize the 2-d dp array with False
+        # dp[i][j] = True means s[i:j+1] is a palindrome
+        dp = [[False] * n for _ in range(n)]
+
+        # start from the bottom
+        for i in range(n - 1, -1, -1):
+            for j in range(i, n):
+                # check if s[i] is equal to s[j], AND
+                # if the substring is shorter than 3, OR s[i+1:j] is a palindrome
+                if s[i] == s[j] and (j - i <= 2 or dp[i + 1][j - 1]):
+                    dp[i][j] = True
+                    res += 1
+    
+        return res
