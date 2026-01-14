@@ -1,6 +1,7 @@
 """
 Problems for Dynamic Programming
 """
+from typing import List
 
 
 class Solution:
@@ -34,7 +35,26 @@ class Solution:
         #     one, two = one + two, one
         # return one
 
+    ## top-down approach (recursion) with cache, same time/space complexity
+    def climbStairsTopDown(self, n: int) -> int:
+        # create an array to save results, -1 means not updated
+        cache = [-1] * n
+      
+        # recursion
+        def dfs(i):
+            # base case: check if i == n, which means we can reach the last stair
+            if i >= n:
+                return i == n
+            # return the cached value if already computed
+            if cache[i] != -1:
+                return cache[i]
+            # find the answer recursively
+            cache[i] = dfs(i + 1) + dfs(i + 2)
+            return cache[i]
 
+        return dfs(0)
+
+  
     def rob(self, nums: List[int]) -> int:
         """
         https://neetcode.io/problems/house-robber
@@ -178,4 +198,26 @@ class Solution:
                 dp[i] += dp[i + 2]
         
         return dp[0]
+      
+
+    def coinChange(self, coins: List[int], amount: int) -> int:
+        """
+        https://neetcode.io/problems/coin-change
+        Time: O(n * a), Space: O(a)
+        """
+        # initialize the dp array as a big number
+        # dp[i] -> minimum coins needed to make amount i
+        dp = [amount + 1] * (amount + 1)
+        dp[0] = 0
+
+        # loop through all the values between 1 and amount
+        for val in range(1, amount + 1):
+            # check every coin that is smaller than the current value
+            for coin in coins:
+                if val >= coin:
+                    # need just 1 coin to make val from (val - coin)
+                    dp[val] = min(dp[val], 1 + dp[val - coin])
+
+        # return the last item if the result was updated
+        return dp[amount] if dp[amount] != amount + 1 else -1
       
