@@ -81,3 +81,31 @@ def vector_sum(a: list[int|float], b: list[int|float]) -> list[int|float]:
     
     return (a + b).tolist()
 
+
+def compute_norm(arr: np.ndarray, norm_type: str) -> float:
+    """
+    328. Compute the specified norm of the input array.
+    https://www.deep-ml.com/problems/328
+    Args:
+        arr: Input numpy array (1D or 2D)
+        norm_type: Type of norm ('l1', 'l2', or 'frobenius')
+    Returns:
+        The computed norm as a float
+    """
+    if norm_type == 'l1':
+        # L1 norm: sum of absolute values
+        return float(np.linalg.norm(arr, ord=1))
+    
+    elif norm_type == 'l2':
+        # L2 norm: 
+        # - For vectors: sqrt of sum of squares (Euclidean norm)
+        # - For matrices: largest singular value (spectral norm) CANNOT use sqrt of sum of squares
+        return float(np.linalg.norm(arr, ord=2))
+    
+    elif norm_type == 'frobenius':
+        # Frobenius norm: sqrt of sum of squares of all elements (same as L2 for vectors ONLY)
+        # np.sqrt(np.sum(arr.flatten() ** 2))
+        return float(np.linalg.norm(arr, ord='fro'))
+    
+    else:
+        raise ValueError(f"Unknown norm type: {norm_type}. Use 'l1', 'l2', or 'frobenius'")
