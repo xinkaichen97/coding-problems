@@ -67,3 +67,19 @@ def phi_corr(x: list[int], y: list[int]) -> float:
     val = (x_00 * x_11 - x_01 * x_10) / np.sqrt((x_00 + x_01) * (x_10 + x_11) * (x_00 + x_10) * (x_01 + x_11))
   	return round(val, 4)
 
+
+def bhattacharyya_distance(p: list[float], q: list[float]) -> float:
+    """
+    120. Bhattacharyya Distance Between Two Distributions
+    https://www.deep-ml.com/problems/120
+    """
+    if not p or not q or len(p) != len(q):
+        return 0.0
+        
+    p = np.array(p)
+    q = np.array(q)
+    bc = np.sum(np.sqrt(p * q))
+    bd = -np.log(bc)
+    
+    return round(bd, 4)
+    
