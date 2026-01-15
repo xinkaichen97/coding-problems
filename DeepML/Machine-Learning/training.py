@@ -2,11 +2,39 @@
 Implementation of Machine Learning problems
 """
 import numpy as np
+from typing import Tuple
+
+
+def early_stopping(val_losses: list[float], patience: int, min_delta: float) -> Tuple[int, int]:
+    """
+    135. Implement Early Stopping Based on Validation Loss
+    https://www.deep-ml.com/problems/135
+    """
+    best_epoch, count = 0, 0
+    prev = val_losses[0]
+    n = len(val_losses)
+  
+    for i in range(1, n):
+        # if the loss doesn't increase more than min_delta
+        # update count and return if already reaches patience
+        if prev - val_losses[i] < min_delta:
+            count += 1
+            if count == patience:
+                return (i, best_epoch)
+        else:
+            # if the loss decreases, reset the count and update the best epoch
+            # also update the prev
+            count = 0
+            best_epoch = i
+            prev = val_losses[i]
+          
+    return (n - 1, n - 1)
 
 
 class StepLRScheduler:
   """
   153. StepLR Learning Rate Scheduler
+  https://www.deep-ml.com/problems/153
   """
   def __init__(self, initial_lr, step_size, gamma):
       # Initialize initial_lr, step_size, and gamma
@@ -23,6 +51,7 @@ class StepLRScheduler:
 class ExponentialLRScheduler:
   """
   154. ExponentialLR Learning Rate Scheduler
+  https://www.deep-ml.com/problems/154
   """
   def __init__(self, initial_lr, gamma):
       # Initialize initial_lr and gamma
