@@ -16,3 +16,17 @@ def unigram_probability(corpus: str, word: str) -> float:
             cnt += 1
     return round(cnt / total, 4)
   
+
+def calculate_perplexity(probabilities: list[float]) -> float:
+    """
+    320. Calculate Perplexity for Language Models
+    https://www.deep-ml.com/problems/320
+    Args:
+        probabilities: List of probabilities P(token_i | context) for each token in the sequence, where each probability is in (0, 1]
+    Returns:
+        Perplexity value as a float
+    """
+    probs = np.array(probabilities)
+    pp = np.exp(-np.mean(np.log(probs)))
+    return pp
+    
