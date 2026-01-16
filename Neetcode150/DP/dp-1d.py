@@ -221,3 +221,24 @@ class Solution:
         # return the last item if the result was updated
         return dp[amount] if dp[amount] != amount + 1 else -1
       
+
+    def maxProduct(self, nums: List[int]) -> int:
+        """
+        https://neetcode.io/problems/maximum-product-subarray
+        Time: O(n), Space: O(1)
+        """
+        # initialize res, curMax, and curMin
+        res = nums[0]
+        curMax, curMin = 1, 1
+        
+        for num in nums:
+            # store current product as tmp since curMax will be updated
+            tmp = curMax * num
+            # find the min/max of num (reset), and num times curMax or curMin
+            # keep track of curMin because it could be a big negative number
+            curMax = max(num, num * curMax, num * curMin)
+            curMin = min(num, tmp, num * curMin)
+            res = max(res, curMax)
+          
+        return res
+      
