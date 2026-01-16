@@ -242,3 +242,28 @@ class Solution:
           
         return res
       
+
+    def wordBreak(self, s: str, wordDict: List[str]) -> bool:
+        """
+        https://neetcode.io/problems/word-break
+        Time: O(n * m * t), Space: O(n)
+        n - len(s), m - len(wordDict), t - max len in wordDict
+        """
+        # initialize the dp array, dp[i] -> if s[i:] can be segmented
+        # empty string is true
+        dp = [False] * (len(s) + 1)
+        dp[len(s)] = True
+
+        # bottom up
+        for i in range(len(s) - 1, -1, -1):
+            # go through each word, break early if found
+            for word in wordDict:
+                # check if the word matches the substring from i
+                if s[i : i + len(word)] == word:
+                    # if so, dp[i] depends on dp[i + len(word)]
+                    dp[i] = dp[i + len(word)]
+                    if dp[i]:
+                        break
+        
+        return dp[0]
+      
