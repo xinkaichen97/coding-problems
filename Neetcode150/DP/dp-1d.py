@@ -267,3 +267,24 @@ class Solution:
         
         return dp[0]
       
+
+    def lengthOfLIS(self, nums: List[int]) -> int:
+        """
+        https://neetcode.io/problems/longest-increasing-subsequence
+        Time: O(n^2), Space: O(n)
+        """
+        # dp[i] is the LIS from index i
+        n = len(nums)
+        dp = [1] * n
+
+        # bottom-up
+        for i in range(n - 1, -1 , -1):
+            # check with number starting from i+1
+            for j in range(i + 1, n):
+                # if the number is greater, then check 1 + d[j]
+                if nums[i] < nums[j]:
+                    dp[i] = max(dp[i], 1 + dp[j])
+
+        # return the maximum of the entire array
+        return max(dp)
+      
