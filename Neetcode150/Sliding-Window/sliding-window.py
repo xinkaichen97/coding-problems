@@ -92,3 +92,50 @@ class Solution:
             count2[ord(s2[i - n]) - ord('a')] -= 1
         return count1 == count2
           
+
+    def minWindow(self, s: str, t: str) -> str:
+        """
+        https://neetcode.io/problems/minimum-window-with-characters
+        Time: O(m + n), Space: O(m), m - unique letters, n - len(s)
+        """
+        if t == "":
+            return ""
+
+        # get letter count of t
+        countT, window = {}, {}
+        for c in t:
+            countT[c] = 1 + countT.get(c, 0)
+
+        # have is the number of characters matched (equal counts)
+        have, need = 0, len(countT)
+        res, resLen = [-1, -1], len(s) + 1
+        l = 0
+
+        # loop through each character
+        for r in range(len(s)):
+            c = s[r]
+            # update count in the current window
+            window[c] = 1 + window.get(c, 0)
+            # if counts match, increment have
+            if c in countT and window[c] == countT[c]:
+                have += 1
+
+            # shrink the window if the counts are still matched to find the shortest one
+            while have == need:
+                # update res
+                if (r - l + 1) < resLen:
+                    res = [l, r]
+                    resLen = r - l + 1
+
+                # as the window shrinks, decrease the count
+                window[s[l]] -= 1
+                # if the counts no longer match, decrement have
+                if s[l] in countT and window[s[l]] < countT[s[l]]:
+                    have -= 1
+                # move left
+                l += 1
+
+        l, r = res
+        # return the shortest substring unless res is not updated
+        return s[l : r + 1] if resLen != len(s) + 1 else ""
+        
