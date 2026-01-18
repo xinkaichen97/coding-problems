@@ -69,4 +69,38 @@ class Solution:
         
         backtrack(0, [], 0)
         return res
-      
+
+
+    def exist(self, board: List[List[str]], word: str) -> bool:
+        """
+        https://neetcode.io/problems/search-for-word
+        Time: O(m * 4^n), Space: O(n), m - total cells, n - len(word)
+        """
+        n_row, n_col = len(board), len(board[0])
+        seen = set()
+
+        
+        def backtrack(r, c, i):
+            # base case: return true if it reaches the end of the word
+            if i == len(word):
+                return True
+
+            # if the board constraint is violated or the cell is already checked, return false
+            if min(r, c) < 0 or r >= n_row or c >= n_col or word[i] != board[r][c] or (r, c) in seen:
+                return False
+
+            # add current cell to the set
+            seen.add((r, c))
+            # check all four directions
+            res = backtrack(r + 1, c, i + 1) or backtrack(r, c + 1, i + 1) or backtrack(r - 1, c, i + 1) or backtrack(r, c - 1, i + 1)
+            # and then remove the current cell
+            seen.remove((r, c))
+            return res
+
+        # backtrack from every cell in the board, return true immediately if found
+        for r in range(n_row):
+            for c in range(n_col):
+                if backtrack(r, c, 0):
+                    return True
+        
+        return False
