@@ -1,7 +1,7 @@
 """
 Problems for Linked List
 """
-
+from typing import Optional
 
 
 # Definition for singly-linked list.
@@ -140,3 +140,27 @@ class Solution:
             l1 = l1.next if l1 else None
             l2 = l2.next if l2 else None
         return head.next
+
+
+    def mergeKLists(self, lists: List[Optional[ListNode]]) -> Optional[ListNode]:
+        """
+        https://neetcode.io/problems/merge-k-sorted-linked-lists
+        Time: O(nlogk), Space: O(k)
+        """
+        # edge case: return None if lists is not valid
+        if not lists or len(lists) == 0:
+            return None
+
+        # instead of merging lists one by one, merge lists in twos -> logk instead of k
+        while len(lists) > 1:
+            merged = []
+            for i in range(0, len(lists), 2):
+                # make sure that index is not out of bound
+                l1 = lists[i]
+                l2 = lists[i + 1] if i + 1 < len(lists) else None
+                # use the existing function
+                merged.append(self.mergeTwoLists(l1, l2))
+            # update lists with merged
+            lists = merged
+    
+        return lists[0]
