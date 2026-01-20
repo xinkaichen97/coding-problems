@@ -64,3 +64,33 @@ class Solution:
             return 0
 
         return 1 + max(self.maxDepth(root.left), self.maxDepth(root.right))
+
+
+    def maxPathSum(self, root: Optional[TreeNode]) -> int:
+        """
+        https://neetcode.io/problems/binary-tree-maximum-path-sum
+        Time: O(n), Space: O(n)
+        """
+        # initialize res with root.val or -infinity
+        res = root.val
+
+        def dfs(root):
+            # use nonlocal to access res, or define res as a list (mutable)
+            nonlocal res
+            # base case: return 0 if None
+            if not root:
+                return 0
+                
+            # get max of left and right subtrees
+            # if negative, return 0 to not include the subtree
+            leftMax = max(0, dfs(root.left))
+            rightMax = max(0, dfs(root.right))
+
+            # update res with root.val plus both left and right
+            res = max(res, root.val + leftMax + rightMax)
+            # but only return the max of left OR right in the dfs function
+            return root.val + max(leftMax, rightMax)
+
+        dfs(root)
+        return res
+        
