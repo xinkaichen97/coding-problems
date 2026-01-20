@@ -1,6 +1,7 @@
 """
 Problems for Trees
 """
+from collections import deque
 from typing import Optional
 
 
@@ -53,4 +54,13 @@ class Solution:
               
         return root
 
-  
+
+    def maxDepth(self, root: Optional[TreeNode]) -> int:
+        """
+        https://neetcode.io/problems/depth-of-binary-tree
+        Time: O(n), Space: O(h)
+        """
+        if not root:
+            return 0
+
+        return 1 + max(self.maxDepth(root.left), self.maxDepth(root.right))
