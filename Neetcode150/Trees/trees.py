@@ -66,6 +66,21 @@ class Solution:
         return 1 + max(self.maxDepth(root.left), self.maxDepth(root.right))
 
 
+    def isSameTree(self, p: Optional[TreeNode], q: Optional[TreeNode]) -> bool:
+        """
+        https://neetcode.io/problems/same-binary-tree
+        Time: O(n), Space: O(n)
+        """
+        # edge case: equal if both are None
+        if not p and not q:
+            return True
+        # if both exist and have equal values, check left and right subtrees
+        if p and q and p.val == q.val:
+            return self.isSameTree(p.left, q.left) and self.isSameTree(p.right, q.right)
+        else:
+            return False
+            
+        
     def maxPathSum(self, root: Optional[TreeNode]) -> int:
         """
         https://neetcode.io/problems/binary-tree-maximum-path-sum
@@ -93,4 +108,89 @@ class Solution:
 
         dfs(root)
         return res
+
+
+class Codec:
+    """
+    https://neetcode.io/problems/serialize-and-deserialize-binary-tree
+    Time: O(n), Space: O(n)
+    """
+
+    # Encodes a tree to a single string.
+    def serialize(self, root: Optional[TreeNode]) -> str:
+        res = []
+        def dfs(node):
+            # if current node is None, add N and return
+            if not node:
+                res.append("N")
+                return
+            # otherwise add node.val
+            # preorder traversal
+            res.append(str(node.val))
+            # go to left and right subtrees
+            dfs(node.left)
+            dfs(node.right)
+
+        dfs(root)
+        return ",".join(res)
         
+    # Decodes your encoded data to tree.
+    def deserialize(self, data: str) -> Optional[TreeNode]:
+        vals = data.split(",")
+        idx = 0
+
+        def dfs():
+            nonlocal idx
+            # if current node is None, return None and increment index (go to the next node)
+            if vals[idx] == "N":
+                idx += 1
+                return None
+            # otherwise create a new node
+            # same order as serialize
+            node = TreeNode(int(vals[idx]))
+            idx += 1
+            # build left and right subtrees
+            node.left = dfs()
+            node.right = dfs()
+            return node
+
+        # run dfs and return
+        return dfs()
+
+    # BFS version
+    def serialize_bfs(self, root: Optional[TreeNode]) -> str:
+        if not root:
+            return None
+        res = []
+        queue = deque([root])
+        while queue:
+            node = queue.popleft()
+            if node:
+                res.append(str(node.val))
+                queue.append(node.left)
+                queue.append(node.right)
+            else:
+                res.append("N")
+
+        return ",".join(res)
+
+    def deserialize(self, data: str) -> Optional[TreeNode]:
+        vals = data.split(",")
+        if vals[0] == "N":
+            return None
+        
+        root = TreeNode(int(vals[0]))
+        queue = deque([root])
+        idx = 1
+        while queue:
+            node = queue.popleft()
+            if vals[idx] != "N":
+                node.left = TreeNode(int(vals[idx]))
+                queue.append(node.left)
+            idx += 1
+            if vals[idx] != "N":
+                node.right = TreeNode(int(vals[idx]))
+                queue.append(node.right)
+            idx += 1
+        return root
+                
