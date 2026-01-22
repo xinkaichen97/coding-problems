@@ -45,6 +45,6 @@ class PrefixTree:
         for c in prefix:
             if c not in cur.children:
                 return False
-            cur = cur.children
+            cur = cur.children[c]
         return True
       
