@@ -47,4 +47,45 @@ class PrefixTree:
                 return False
             cur = cur.children[c]
         return True
-      
+
+
+class WordDictionary:
+    """
+    https://neetcode.io/problems/design-word-search-data-structure
+    Time: O(n), Space: O(t + n), n - len(word), t - total TrieNodes
+    """
+    
+    def __init__(self):
+        self.root = TrieNode()        
+
+    def addWord(self, word: str) -> None:
+        cur = self.root
+        for c in word:
+            if c not in cur.children:
+                cur.children[c] = TrieNode()
+            cur = cur.children[c]
+        cur.endOfWord = True
+
+    def search(self, word: str) -> bool:
+        # use dfs to find all matches with "."
+        def dfs(i, root):
+            cur = root
+            # go through all indices
+            for j in range(i, len(word)):
+                c = word[j]
+                if c == ".":
+                    # find matches in all children
+                    for child in cur.children.values():
+                        if dfs(j + 1, child):
+                            return True
+                    return False
+                else:
+                    # check if c in children
+                    if c not in cur.children:
+                        return False
+                    cur = cur.children[c]
+                    
+            return cur.endOfWord
+
+        # run dfs from the start
+        return dfs(0, self.root)
