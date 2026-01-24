@@ -1,6 +1,8 @@
 """
 Implementation of probability problems
 """
+import torch
+import numpy as np
 from typing import List, Tuple, Any, Literal
 
 
