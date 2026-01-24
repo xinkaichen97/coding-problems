@@ -2,7 +2,7 @@
 Implementation of Machine Learning problems
 """
 import numpy as np
-from typing import Tuple
+from typing import Callable, List, Tuple
 
 
 def early_stopping(val_losses: list[float], patience: int, min_delta: float) -> Tuple[int, int]:
@@ -62,3 +62,21 @@ class ExponentialLRScheduler:
       # Calculate and return the learning rate for the given epoch
       lr = self.initial_lr * (self.gamma ** epoch)
       return round(lr, 4)
+
+
+def checkpoint_forward(funcs: List[Callable[[np.ndarray], np.ndarray], input_arr: np.ndarray) -> np.ndarray:
+    """
+    188. Gradient Checkpointing
+    https://www.deep-ml.com/problems/188
+    
+    Applies a list of functions in sequence to the input array, simulating gradient checkpointing by not storing intermediates.
+    Args:
+        funcs (list of callables): List of functions to apply in sequence.
+        input_arr (np.ndarray): Input numpy array.
+    Returns:
+        np.ndarray: The output after applying all functions, same shape as output of last function.
+    """
+    res = input_arr
+    for func in funcs:
+        res = func(res)
+    return res
