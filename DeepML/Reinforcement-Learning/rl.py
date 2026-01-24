@@ -18,6 +18,24 @@ def incremental_mean(Q_prev: float, k: int, R: float) -> float:
     return Q_prev + (R - Q_prev) / k
 
 
+def exp_weighted_average(Q1: float, rewards: Union[List, np.ndarray], alpha: float) -> float:
+    """
+    161. Exponential Weighted Average of Rewards
+    https://www.deep-ml.com/problems/161
+    
+    Q1: float, initial estimate
+    rewards: list or array of rewards, R_1 to R_k
+    alpha: float, step size (0 < alpha <= 1)
+    Returns: float, exponentially weighted average after k rewards
+    """
+    k = len(rewards)
+    res = (1 - alpha) ** k * Q1 
+    for i in range(k):
+        # i goes from 0 to k-1, same with the exponential
+        res += alpha * (1 - alpha) ** (k - 1 - i) * rewards[i]
+    return res
+
+
 def ucb_action(counts: np.ndarray, values: np.ndarray, t: int, c: float) -> int:
     """
     162. Upper Confidence Bound (UCB) Action Selection
