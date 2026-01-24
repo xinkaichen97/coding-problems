@@ -1,7 +1,7 @@
 """
 Implementation of probability problems
 """
-from typing import List, Tuple, Any
+from typing import List, Tuple, Any, Literal
 
 
 def conditional_probability(data: List[Tuple[Any, Any]], x: Any, y: Any) -> float:
@@ -39,3 +39,51 @@ def conditional_probability(data: List[Tuple[Any, Any]], x: Any, y: Any) -> floa
     
     return round(count_xy / count_x, 4)
   
+
+def dice_statistics(n: int) -> Tuple[float, float]:
+	"""
+    179. Expected Value and Variance of an n-Sided Die
+    https://www.deep-ml.com/problems/179
+    
+	Args:
+		n (int): Number of sides of the die
+	Returns:
+		tuple: (expected_value, variance)
+	"""
+    ex = (n + 1) / 2
+    var = (n ** 2 - 1) / 12
+	return (ex, var)
+
+
+def simulate_clt(num_samples: int, sample_size: int, distribution: str = 'uniform') -> float:
+    """
+    181. Sampling Distribution of the Mean
+    https://www.deep-ml.com/problems/181
+    
+    Args:
+        num_samples: Number of independent samples to draw
+        sample_size: Size of each sample
+        distribution: 'uniform' (0,1) or 'exponential' (scale=1)
+    Returns:
+        Mean of the sample means (float)
+    """
+    if distribution == 'uniform':
+        samples = np.random.uniform(0, 1, (num_samples, sample_size))
+    else:  # exponential
+        samples = np.random.exponential(1, (num_samples, sample_size))
+        
+    # calculate the mean of each independent sample, and then calculate the mean again
+    sample_means = np.mean(samples, axis=1)
+    return float(np.mean(sample_means))
+
+
+def simulate_clt_torch(num_samples: int, sample_size: int, distribution: Literal['uniform', 'exponential'] = 'uniform') -> float:
+    """PyTorch version"""
+    if distribution == 'uniform':
+        samples = torch.rand(num_samples, sample_size)
+    else:  # exponential
+        samples = torch.distributions.Exponential(1).sample((num_samples, sample_size))
+    
+    sample_means = torch.mean(samples, dim=1)
+    return float(torch.mean(sample_means))
+    
