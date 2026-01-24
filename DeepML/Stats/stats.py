@@ -82,4 +82,32 @@ def bhattacharyya_distance(p: list[float], q: list[float]) -> float:
     bd = -np.log(bc)
     
     return round(bd, 4)
+
+
+def calculate_portfolio_variance(cov_matrix: list[list[float]], weights: list[float]) -> float:
+    """
+    183. Calculate the variance of a portfolio
+    https://www.deep-ml.com/problems/183
+
+    Args:
+        cov_matrix (list[list[float]]): Covariance matrix of asset returns.
+        weights (list[float]): Portfolio weights.
+    Returns:
+        float: Portfolio variance.
+    """
+    # Convert to numpy arrays
+    cov = np.array(cov_matrix)
+    w = np.array(weights)
     
+    # Calculate portfolio variance: w^T @ cov @ w
+    portfolio_var = w.T @ cov @ w
+
+    # # torch version
+    # # Convert inputs to tensors
+    # cov = torch.tensor(cov_matrix, dtype=torch.float)
+    # w = torch.tensor(weights, dtype=torch.float)
+
+    # # Calculate portfolio variance: w^T @ cov @ w
+    # portfolio_var = w @ cov @ w
+    
+    return float(portfolio_var)
