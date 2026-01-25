@@ -4,6 +4,13 @@ Problems for Graphs
 from typing import List
 
 
+# Definition for a Node.
+class Node:
+    def __init__(self, val = 0, neighbors = None):
+        self.val = val
+        self.neighbors = neighbors if neighbors is not None else []
+      
+
 class Solution:
   
     def numIslands(self, grid: List[List[str]]) -> int:
@@ -36,3 +43,32 @@ class Solution:
                     res += 1
         
         return res
+
+
+    def cloneGraph(self, node: Optional['Node']) -> Optional['Node']:
+        """
+        https://neetcode.io/problems/clone-graph
+        Time: O(v + e), Space: O(e)
+        """
+        # create a mapping from ori to copy
+        mapping = {}
+        if not node:
+            return None
+
+        # dfs function
+        def dfs(node):
+            # return the copy if already in mapping, so that it doesn't get added more than once
+            if node in mapping:
+                return mapping[node]
+
+            # create a copy and add to mapping
+            copy = Node(node.val)
+            mapping[node] = copy
+          
+            # create copies for all neighbors and add to the copy's neighbors
+            for nb in node.neighbors:
+                copy.neighbors.append(dfs(nb))
+            return copy
+        
+        return dfs(node)
+      
