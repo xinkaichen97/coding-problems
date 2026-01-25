@@ -110,3 +110,36 @@ def apply_weight_decay(parameters: list[list[float]], gradients: list[list[float
     return param.tolist()
 
 
+def early_stopping_2(val_losses: list[float], patience: int = 5, min_delta: float = 0.0) -> list[bool]:
+    """
+    199. Determine at each epoch whether training should stop based on validation loss
+    https://www.deep-ml.com/problems/199
+    
+    Args:
+        val_losses: List of validation losses at each epoch
+        patience: Number of epochs to wait for improvement before stopping
+        min_delta: Minimum change in validation loss to qualify as improvement
+    Returns:
+        List of booleans indicating whether to stop at each epoch
+    """
+    # edge case
+    if len(val_losses) == 0:
+        return []
+        
+    # initialize 
+    res = []
+    count = 0
+    best_loss = float("inf")
+    
+    for loss in val_losses:
+        # Check if current loss is an improvement
+        if loss < best_loss - min_delta:
+            best_loss = loss
+            count = 0
+        else:
+            count += 1
+        
+        # Stop if we've had patience epochs without improvement
+        res.append(count >= patience)
+        
+    return res
