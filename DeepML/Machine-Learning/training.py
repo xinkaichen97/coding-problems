@@ -80,3 +80,33 @@ def checkpoint_forward(funcs: List[Callable[[np.ndarray], np.ndarray], input_arr
     for func in funcs:
         res = func(res)
     return res
+
+
+def apply_weight_decay(parameters: list[list[float]], gradients: list[list[float]], 
+                       lr: float, weight_decay: float, apply_to_all: list[bool]) -> list[list[float]]:
+    """
+    198. Apply weight decay (L2 regularization) to parameters
+    https://www.deep-ml.com/problems/198
+    
+    Args:
+        parameters: List of parameter arrays
+        gradients: List of gradient arrays
+        lr: Learning rate
+        weight_decay: Weight decay factor
+        apply_to_all: Boolean list indicating which parameter groups get weight decay
+    Returns:
+        Updated parameters
+    """
+    # convert to np arrays
+    param = np.array(parameters)
+    grad = np.array(gradients)
+    mask = np.array(apply_to_all).reshape(-1, 1)
+                           
+    # update parameters with gradients (including bias)
+    param -= lr * grad
+    # only apply weight decay on the mask (excluding bias)
+    param -= lr * weight_decay * param * mask
+                           
+    return param.tolist()
+
+
