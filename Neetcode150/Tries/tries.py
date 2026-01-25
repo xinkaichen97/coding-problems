@@ -1,12 +1,21 @@
 """
 Problems for Tries
 """
+from typing import List
 
 
 class TrieNode:
     def __init__(self):
         self.children = {}
         self.endOfWord = False
+
+    def addWord(self, word):
+        cur = self
+        for c in word:
+            if c not in cur.children:
+                cur.children[c] = TrieNode()
+            cur = cur.children[c]
+        cur.endOfWord = True
 
 
 class PrefixTree:
@@ -89,3 +98,55 @@ class WordDictionary:
 
         # run dfs from the start
         return dfs(0, self.root)
+
+
+class Solution:
+    
+    def findWords(self, board: List[List[str]], words: List[str]) -> List[str]:
+        """
+        https://neetcode.io/problems/search-for-word-ii
+        Time: O(m * n * 4 * 3^(t-1) + s), Space: O(s)
+        t - max len of words, s - sum of len of words
+        At the first step, there are 4 options, and then at each level, there are 3 options (can't go back)
+        """
+        # initialize Trie and add all words
+        root = TrieNode()
+        for word in words:
+            root.addWord(word)
+
+        # define res and visit as sets
+        n_rows, n_cols = len(board), len(board[0])
+        res, visit = set(), set()
+
+        # backtracking function
+        def dfs(r, c, node, word):
+            # return if out of bounds, or the current char is not in the current path
+            # or the current char is already visited
+            if r < 0 or c < 0 or r >= n_rows or c >= n_cols or board[r][c] not in node.children or (r, c) in visit:
+                return
+
+            # add the current index to visit
+            visit.add((r, c))
+            # go to the next node in the Trie
+            node = node.children[board[r][c]]
+            # add to the word and check if it's in the list (exists in the Tries)
+            word += board[r][c]
+            if node.endOfWord:
+                res.add(word)
+
+            # run backtracking function on four directions
+            dfs(r + 1, c, node, word)
+            dfs(r - 1, c, node, word)
+            dfs(r, c + 1, node, word)
+            dfs(r, c - 1, node, word)
+
+            # remove the current index to backtrack
+            visit.remove((r, c))
+
+        # run backtracking for every cell
+        for r in range(n_rows):
+            for c in range(n_cols):
+                dfs(r, c, root, "")
+        
+        return list(res)
+        
