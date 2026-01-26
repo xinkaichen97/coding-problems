@@ -368,7 +368,6 @@ def compute_efficiency(n_experts, k_active, d_in, d_out):
 		k_active: Number of active experts (sparsity)
 		d_in: Input dimension
 		d_out: Output dimension
-
 	Returns:
 		Percentage savings in FLOPs
 	"""
@@ -376,3 +375,20 @@ def compute_efficiency(n_experts, k_active, d_in, d_out):
 	flop_moe = k_active * d_in * d_out
 	savings = (flop_dense - flop_moe) / flop_dense * 100
 	return savings		
+
+
+def activation_derivatives(x: float) -> dict[str, float]:
+    """
+    217. Compute the derivatives of Sigmoid, Tanh, and ReLU at a given point x
+	https://www.deep-ml.com/problems/217
+    
+    Args:
+        x: Input value
+    Returns:
+        Dictionary with keys 'sigmoid', 'tanh', 'relu' and their derivative values
+    """
+    return {
+        'sigmoid': sigmoid(x) * (1 - sigmoid(x)),
+        'tanh': 1.0 - np.tanh(x) ** 2,
+        'relu': 1.0 if x > 0 else 0.0
+    }
