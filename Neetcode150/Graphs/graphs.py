@@ -71,4 +71,46 @@ class Solution:
             return copy
         
         return dfs(node)
-      
+
+
+    def pacificAtlantic(self, heights: List[List[int]]) -> List[List[int]]:
+        """
+        https://neetcode.io/problems/pacific-atlantic-water-flow
+        Time: O(m * n), Space: O(m * n)
+        """
+        # initialize two sets for valid points in Pacific or Atlantic
+        n_rows, n_cols = len(heights), len(heights[0])
+        pac, atl = set(), set()
+
+        # dfs function
+        def dfs(r, c, visit, prev):
+            # if already visited, or current height is lower than previous height (meaning the water can't flow from the current point)
+            # or if out of bounds, simply return
+            if (r, c) in visit or r < 0 or c < 0 or r >= n_rows or c >= n_cols or heights[r][c] < prev:
+                return
+            # current point is valid, add to visit
+            visit.add((r, c))
+            # perform dfs on all adjacent points
+            dfs(r + 1, c, visit, heights[r][c])
+            dfs(r - 1, c, visit, heights[r][c])
+            dfs(r, c + 1, visit, heights[r][c])
+            dfs(r, c - 1, visit, heights[r][c])
+
+        # start dfs from the top row (can flow to Pacific) and the bottom row (Atlantic)
+        for c in range(n_cols):
+            dfs(0, c, pac, heights[0][c])
+            dfs(n_rows - 1, c, atl, heights[n_rows - 1][c])
+
+        # also run dfs from the leftmost column (pacific) to the rightmost column (atlantic)
+        for r in range(n_rows):
+            dfs(r, 0, pac, heights[r][0])
+            dfs(r, n_cols - 1, atl, heights[r][n_cols - 1])
+
+        # check if the point is in both sets
+        res = []
+        for r in range(n_rows):
+            for c in range(n_cols):
+                if (r, c) in pac and (r, c) in atl:
+                    res.append([r, c])
+        
+        return res
