@@ -114,3 +114,43 @@ class Solution:
                     res.append([r, c])
         
         return res
+
+
+    def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
+        """
+        https://neetcode.io/problems/course-schedule
+        Time: O(v + e), Space: O(v + e)
+        """
+        # create a dependency mapping
+        mapping = defaultdict(list)
+        for crs, pre in prerequisites:
+            mapping[crs].append(pre)
+        # use to visit set to detect cycles
+        visit = set()
+
+        # dfs function on a node
+        def dfs(crs):
+            # if in visit, immediately return False
+            if crs in visit:
+                return False
+            # if the dependency is empty, immediately return True
+            if mapping[crs] == []:
+                return True
+            # add the current node to visit and check all its dependencies
+            visit.add(crs)
+            for pre in mapping[crs]:
+                if not dfs(pre):
+                    return False
+            # IMPORTANT: removing from visit is necessary because one node can be reached from different paths
+            visit.remove(crs)
+            # set dependencies to [] to avoid repeated work
+            mapping[crs] = []
+            return True
+
+        # need to check all courses
+        for crs in range(numCourses):
+            if not dfs(crs):
+                return False
+                
+        return True
+        
