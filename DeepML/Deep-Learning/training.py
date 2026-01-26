@@ -1,6 +1,7 @@
 """
 Problems for Deep Learning
 """
+from nn import softmax
 import numpy as np
 from np.typing import NDArray
 
@@ -247,3 +248,20 @@ def softmax_cross_entropy_gradient(logits: NDArray[np.floating], targets: NDArra
     """
     predictions = softmax(logits)
     return predictions - targets
+
+
+def thanksgiving_dish_predictor(preference_scores: list[float]) -> list[float]:
+    """
+    216. Predict the probability of choosing each Thanksgiving dish using softmax
+    https://www.deep-ml.com/problems/216
+    
+    Args:
+        preference_scores: List of preference scores for each dish
+        (e.g., [turkey_score, stuffing_score, cranberry_score, pie_score])
+    Returns:
+        List of probabilities for each dish
+    """
+    exp_scores = np.exp(np.array(preference_scores))
+    res = exp_scores / np.sum(exp_scores, axis=-1, keepdims=True)
+    return res.tolist()
+    
