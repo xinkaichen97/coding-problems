@@ -48,7 +48,7 @@ class Solution:
     def cloneGraph(self, node: Optional['Node']) -> Optional['Node']:
         """
         https://neetcode.io/problems/clone-graph
-        Time: O(v + e), Space: O(e)
+        Time: O(V + E), Space: O(V), V - vertices, E - edges
         """
         # create a mapping from ori to copy
         mapping = {}
@@ -66,6 +66,7 @@ class Solution:
             mapping[node] = copy
           
             # create copies for all neighbors and add to the copy's neighbors
+            # the edges are already constructed so space complexity is O(v)
             for nb in node.neighbors:
                 copy.neighbors.append(dfs(nb))
             return copy
@@ -119,7 +120,7 @@ class Solution:
     def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
         """
         https://neetcode.io/problems/course-schedule
-        Time: O(v + e), Space: O(v + e)
+        Time: O(V + E), Space: O(V + E)
         """
         # create a dependency mapping
         mapping = defaultdict(list)
@@ -153,4 +154,41 @@ class Solution:
                 return False
                 
         return True
+        
+
+    def validTree(self, n: int, edges: List[List[int]]) -> bool:
+        """
+        https://neetcode.io/problems/valid-tree
+        Time: O(V + E), Space: O(V + E)
+        """
+        # if the graph is not fully connected, immediately return false
+        if len(edges) != n - 1:
+            return False
+        # create and update mapping, add BOTH directions (undirected graph)
+        mapping = defaultdict(list)
+        for src, dst in edges:
+            mapping[src].append(dst)
+            mapping[dst].append(src)
+        
+        visit = set()
+        # need to keep track of the previous node to avoid false positives
+        def dfs(node, prev):
+            if node in visit:
+                return False
+                
+            visit.add(node)
+            for nb in mapping[node]:
+                # since it's both directions, prev is in the neighbors, so skip
+                if nb == prev:
+                    continue
+                if not dfs(nb, node):
+                    return False
+            return True
+
+        # only need to run dfs once since it's supposed to be fully connected
+        if not dfs(0, -1):
+            return False
+
+        # check if visit has all the nodes
+        return len(visit) == n
         
