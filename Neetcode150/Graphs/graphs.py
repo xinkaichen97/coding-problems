@@ -192,3 +192,47 @@ class Solution:
         # check if visit has all the nodes
         return len(visit) == n
         
+
+    def countComponents(self, n: int, edges: List[List[int]]) -> int:
+        """
+        https://neetcode.io/problems/count-connected-components
+        Time: O(V + E * α(V)) ~ O(V + E), Space: O(V)
+        """
+        parent = list(range(n))
+        rank = [1] * n
+
+        # find function
+        def find(node):
+            res = node
+            # path compression - keep going until finding the root (O(V) -> O(1))
+            while res != parent[res]:
+                # optimization: jump to grandparent
+                parent[res] = parent[parent[res]]
+                # update res to its parent (actually grandparent)
+                res = parent[res]
+            return res
+
+        # union function, time complexity α(V), α - Inverse Ackermann Function
+        def union(u, v):
+            # find parents of u and v
+            pu = find(u)
+            pv = find(v)
+            # if they share the same parent, do not decrease # of connected components
+            if pu == pv:
+                return 0
+            # if not, compare the ranks and add to the node with the higher ranks
+            if rank[pu] > rank[pv]:
+                parent[pv] = pu
+                rank[pu] += rank[pv]
+            else:
+                parent[pu] = pv
+                rank[pv] += rank[pu]
+            return 1
+
+        # start with n disconnected components
+        res = n
+        # for each newly connected pair, decrease from res
+        for u, v in edges:
+            res -= union(u, v)
+        return res
+        
