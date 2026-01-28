@@ -89,3 +89,19 @@ def compute_group_relative_advantage(rewards: list[float]) -> list[float]:
     res = (rewards - mean) / sd if sd != 0 else np.zeros_like(rewards) # handle zero
     return res.tolist()
 
+
+def kl_divergence_estimator(pi_theta: np.ndarray, pi_ref: np.ndarray) -> np.ndarray:
+    """
+    225. Compute the unbiased KL divergence estimator used in GRPO
+    https://www.deep-ml.com/problems/225
+    
+    Formula: D_KL = (pi_ref / pi_theta) - log(pi_ref / pi_theta) - 1
+    Args:
+        pi_theta: Current policy probabilities for each sample
+        pi_ref: Reference policy probabilities for each sample
+    Returns:
+        Array of KL divergence estimates (one per sample)
+    """
+    kl = (pi_ref / pi_theta) - np.log(pi_ref / pi_theta) - 1
+    return kl
+
