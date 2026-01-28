@@ -69,3 +69,23 @@ def discounted_return(rewards: Union[List[float], np.ndarray], gamma: float) -> 
     discount_factors = gamma ** np.arange(len(rewards))
     return float(np.sum(rewards * discount_factors))
 
+
+def compute_group_relative_advantage(rewards: list[float]) -> list[float]:
+    """
+    224. Compute the Group Relative Advantage for GRPO
+    https://www.deep-ml.com/problems/224
+    
+    For each reward r_i in a group, compute:
+    A_i = (r_i - mean(rewards)) / std(rewards)
+    If all rewards are identical (std=0), return zeros.
+    Args:
+        rewards: List of rewards for a group of outputs from the same prompt
+    Returns:
+        List of normalized advantages
+    """
+    rewards = np.array(rewards)
+    mean = np.mean(rewards)
+    sd = np.std(rewards)
+    res = (rewards - mean) / sd if sd != 0 else np.zeros_like(rewards) # handle zero
+    return res.tolist()
+
