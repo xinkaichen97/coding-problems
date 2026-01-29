@@ -2,6 +2,7 @@
 Implementation of RL problems
 """
 import numpy as np
+from collections import Counter
 from typing import Union, List
 
 
@@ -105,3 +106,55 @@ def kl_divergence_estimator(pi_theta: np.ndarray, pi_ref: np.ndarray) -> np.ndar
     kl = (pi_ref / pi_theta) - np.log(pi_ref / pi_theta) - 1
     return kl
 
+
+def pass_at_1(responses_correct: np.ndarray) -> float:
+    """
+    226. Compute pass@1 by averaging correctness.
+    https://www.deep-ml.com/problems/226
+    
+    Args:
+        responses_correct: Boolean array for each response
+    Returns:
+        pass@1 score
+    """
+    return np.mean(responses_correct)
+
+
+def majority_voting(responses: list[str]) -> str:
+    """
+    226. Return the most common response.
+    
+    Args:
+        responses: List of response strings
+    Returns:
+        Most frequent response
+    """
+    counter = Counter(responses)
+    max_count = max(counter.values())
+    return [item for item, count in counter.items() if count == max_count]
+
+
+def pass_at_k(n: int, c: int, k: int) -> float:
+    """
+    226. Compute unbiased pass@k from n samples with c correct.
+
+    Formula: pass@k = 1 - C(n-c, k) / C(n, k)
+    Args:
+        n: Total samples
+        c: Correct samples
+        k: k in pass@k
+    Returns:
+        Estimated pass@k
+    """
+    # Edge cases
+    if n - c < k:
+        # If we have more correct samples than needed failures
+        return 1.0
+    if c == 0:
+        # No correct samples
+        return 0.0
+    res = 1
+    for i in range(k):
+        res *= (n - c - i) / (n - i)
+    return 1.0 - res
+    
