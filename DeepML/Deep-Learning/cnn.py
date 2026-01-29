@@ -152,3 +152,25 @@ class DropoutLayer:
         
         return grad_output
   
+
+def rgb_to_grayscale(image):
+    """
+    237. Convert an RGB image to grayscale using the luminosity method.
+    https://www.deep-ml.com/problems/237
+    
+    Args:
+        image: RGB image as list or numpy array of shape (H, W, 3)
+               with values in range [0, 255]
+    Returns:
+        Grayscale image as 2D list with integer values,
+        or -1 if input is invalid
+    """
+    img_array = np.array(image)
+    # check edge cases
+    if img_array.ndim != 3 or img_array.shape[-1] != 3 or np.max(img_array)> 255:
+        return -1
+    # use matrix multiplication
+    weights = np.array([0.299, 0.587, 0.114])
+    grayscale = np.dot(img_array, weights)
+    return np.round(grayscale).astype(int).tolist()
+  
