@@ -174,3 +174,39 @@ def rgb_to_grayscale(image):
     grayscale = np.dot(img_array, weights)
     return np.round(grayscale).astype(int).tolist()
   
+
+def flip_image(image: Union[List, np.ndarray], direction: str) -> Union[List, int]:
+    """
+    238. Flip an image horizontally or vertically.
+    https://www.deep-ml.com/problems/238
+    
+    Args:
+        image: 2D or 3D list/array representing a grayscale or RGB image
+        direction: string, either 'horizontal' or 'vertical'
+    Returns:
+        Flipped image as a nested list, or -1 if input is invalid
+    """
+    # validate direction
+    if direction.lower() not in ['horizontal', 'vertical']:
+        return -1
+    
+    # convert to numpy array
+    try:
+        img_arr = np.array(image)
+    except:
+        return -1
+    
+    # validate dimensions (must be 2D or 3D)
+    if img_arr.ndim not in [2, 3]:
+        return -1
+    
+    # flip the image
+    if direction == 'horizontal':
+        # flipped = img_arr[:, ::-1]
+        flipped = np.fliplr(img_arr)  # flip left-right
+    else:  # direction == 'vertical'
+        # flipped = img_arr[::-1, :]
+        flipped = np.flipud(img_arr)  # flip up-down
+    
+    return flipped.tolist()
+  
