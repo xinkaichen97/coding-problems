@@ -29,6 +29,28 @@ class Solution:
         # need to add the new interval if we haven't returned
         res.append(newInterval)
         return res
+
+
+    def merge(self, intervals: List[List[int]]) -> List[List[int]]:
+        """
+        https://neetcode.io/problems/merge-intervals
+        Time: O(nlogn), Space: O(n) for Python sorting
+        """
+        # sort by starts
+        intervals.sort(key=lambda x:x[0])
+        # add the first interval in the output list
+        res = [intervals[0]]
+        
+        # start with the second interval
+        for i in range(1, len(intervals)):
+            # compare its start with the last appended interval's end to detect overlapping
+            if res[-1][1] >= intervals[i][0]:
+                # if overlapped, simply update the end in the output
+                res[-1][1] = max(res[-1][1], intervals[i][1])
+            else:
+                res.append(intervals[i])
+                
+        return res
         
         
     def canAttendMeetings(self, intervals: List[Interval]) -> bool:
