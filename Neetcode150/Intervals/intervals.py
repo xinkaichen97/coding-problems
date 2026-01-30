@@ -6,6 +6,31 @@ from typing import List
 
 class Solution:
 
+    def insert(self, intervals: List[List[int]], newInterval: List[int]) -> List[List[int]]:
+        """
+        https://neetcode.io/problems/insert-new-interval
+        Time: O(n), Space: O(1)
+        """
+        res = []
+        for i, interval in enumerate(intervals):
+            # current interval is smaller
+            if interval[1] < newInterval[0]:
+                res.append(interval)
+            # current interval is greater, directly add the remaining intervals and return
+            elif interval[0] > newInterval[1]:
+                res.append(newInterval)
+                return res + intervals[i:]
+            else:
+                # overlapping, take the min of starts and the max of ends to form a new interval
+                start = min(interval[0], newInterval[0])
+                end = max(interval[1], newInterval[1])
+                newInterval = [start, end]
+
+        # need to add the new interval if we haven't returned
+        res.append(newInterval)
+        return res
+        
+        
     def canAttendMeetings(self, intervals: List[Interval]) -> bool:
         """
         https://neetcode.io/problems/meeting-schedule
