@@ -210,3 +210,43 @@ def flip_image(image: Union[List, np.ndarray], direction: str) -> Union[List, in
     
     return flipped.tolist()
   
+
+def zero_pad_image(img: Union[List, np.ndarray], pad_width: int) -> Union[List[List[int]], int]:
+    """
+    239. Add zero padding around a grayscale image.
+    https://www.deep-ml.com/problems/238
+    
+    Args:
+        img: 2D list or numpy array of pixel values
+        pad_width: integer number of pixels to pad on each side
+    Returns:
+        Padded image as 2D list with integer values,
+        or -1 if input is invalid
+    """
+    # validate pad_width
+    if not isinstance(pad_width, int) or pad_width < 0:
+        return -1
+    
+    # convert to numpy array
+    try:
+        img_arr = np.array(img)
+    except:
+        return -1
+    
+    # validate dimensions (must be 2D) and non-empty image
+    if img_arr.ndim != 2 or img_arr.size == 0:
+        return -1
+    
+    # apply zero padding
+    padded = np.pad(img_arr, pad_width=pad_width, mode='constant', constant_values=0)
+
+    # # without np.pad
+    # height, width = img_arr.shape
+    # new_height = height + 2 * pad_width
+    # new_width = width + 2 * pad_width
+    # padded = np.zeros((new_height, new_width), dtype=int)
+    # padded[pad_width:pad_width + height, pad_width:pad_width + width] = img_arr
+    
+    # convert to list with integer values
+    return padded.astype(int).tolist()
+  
