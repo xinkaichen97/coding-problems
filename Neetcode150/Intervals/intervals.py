@@ -4,6 +4,15 @@ Problems for Intervals
 from typing import List
 
 
+class Interval(object):
+    """
+    Definition of Interval
+    """
+    def __init__(self, start, end):
+        self.start = start
+        self.end = end
+        
+        
 class Solution:
 
     def insert(self, intervals: List[List[int]], newInterval: List[int]) -> List[List[int]]:
