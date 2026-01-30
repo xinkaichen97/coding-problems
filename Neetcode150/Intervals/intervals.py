@@ -81,7 +81,34 @@ class Solution:
               
         return True
 
-  
+    
+    def minMeetingRooms(self, intervals: List[Interval]) -> int:
+        """
+        https://neetcode.io/problems/meeting-schedule-ii
+        Time: O(nlogn), Space: O(n)
+        """
+        # sort start times and end times respectively
+        start = sorted([i.start for i in intervals])
+        end = sorted([i.end for i in intervals])
+        
+        # use two pointers
+        s, e = 0, 0
+        res, count = 0, 0
+        
+        while s < len(intervals):
+            # if a meeting starts, increment s and count
+            if start[s] < end[e]:
+                count += 1
+                s += 1
+            # if a meeting ends, increment e and decrement count
+            else:
+                count -= 1
+                e += 1
+            # calculate the maximum
+            res = max(res, count)
+        return res
+
+    
     def eraseOverlapIntervals(self, intervals: List[List[int]]) -> int:
         """
         https://neetcode.io/problems/non-overlapping-intervals
