@@ -287,4 +287,30 @@ class Solution:
 
         # return the maximum of the entire array
         return max(dp)
-      
+
+
+    def maxSubArray(self, nums: List[int]) -> int:
+        """
+        https://neetcode.io/problems/maximum-subarray
+        Time: O(n), Space: O(n) for dp, O(1) for Kadane
+        """
+        # # Kadane's algorithm
+        # res = nums[0]
+        # curSum = 0
+        # for num in nums:
+        #     if curSum < 0:
+        #         curSum = 0
+        #     curSum += num
+        #     res = max(res, curSum)
+        # return res
+
+        # DP
+        # dp[i] = maximum sum of subarray ending at index i
+        dp = [0] * len(nums)
+        dp[0] = nums[0]
+        
+        for i in range(1, n):
+            # two choices: extend previous subarray or start new subarray
+            dp[i] = max(nums[i], dp[i-1] + nums[i])
+        
+        return max(dp)
