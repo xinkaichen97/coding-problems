@@ -27,3 +27,39 @@ def calculate_inference_stats(latencies_ms: list) -> dict:
 
     return {'throughput_per_sec': throughput_per_sec, 'avg_latency_ms': avg_latency_ms, 'p50_ms': p50_ms, 'p95_ms': p95_ms, 'p99_ms': p99_ms}
   
+
+def calculate_batch_health(predictions: list, confidence_threshold: float = 0.5) -> dict:
+    """
+    249. Calculate health metrics for a batch prediction job.
+    https://www.deep-ml.com/problems/249
+    
+    Args:
+        predictions: list of prediction results, each a dict with 'status' and optionally 'confidence'
+        confidence_threshold: threshold below which a prediction is considered low confidence
+    Returns:
+        dict with keys: 'success_rate', 'avg_confidence', 'low_confidence_rate'
+        All values as percentages (0-100), rounded to 2 decimal places.
+    """
+    # edge case: empty input
+    if not predictions:
+        return {}
+
+    # get all confidences and convert to an array
+    confidences = np.array([pred['confidence'] for pred in predictions if 'confidence' in pred])
+
+    # handle case where the denominator is zero
+    if len(confidences) > 0:
+        success_rate = len(confidences) / len(predictions) * 100
+        avg_confidence = np.mean(confidences) * 100
+        low_confidence_rate = np.sum(confidences < confidence_threshold) / len(confidences) * 100
+    else:
+        success_rate = 0.0
+        avg_confidence = 0.0
+        low_confidence_rate = 0.0
+
+    return {
+        'success_rate': np.round(success_rate, 2),
+        'avg_confidence': np.round(avg_confidence, 2),
+        'low_confidence_rate': np.round(low_confidence_rate, 2)
+    }
+    
