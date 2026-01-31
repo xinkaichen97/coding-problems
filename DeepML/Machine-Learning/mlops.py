@@ -101,3 +101,24 @@ def calculate_sla_metrics(requests: list, latency_sla_ms: float = 100.0) -> dict
         'error_rate': round(error_rate, 2),
         'overall_sla_compliance': round(overall_sla_compliance, 2)
     }
+
+
+def calculate_latency_percentiles(latencies: list[float]) -> dict[str, float]:
+    """
+    293. Calculate P50, P95, and P99 latency percentiles.
+    https://www.deep-ml.com/problems/293
+    
+    Args:
+        latencies: List of latency measurements
+    Returns:
+        Dictionary with keys 'P50', 'P95', 'P99' containing
+        the respective percentile values rounded to 4 decimal places
+    """
+    if not latencies:
+        p50, p95, p99 = 0.0, 0.0, 0.0
+    else:
+        latencies_arr = np.array(latencies)
+        p50, p95, p99 = np.round(np.percentile(latencies_arr, [50, 95, 99]), 4)
+
+    return {'P50': p50, 'P95': p95, 'P99': p99}
+    
