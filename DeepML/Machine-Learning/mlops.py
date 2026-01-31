@@ -62,4 +62,42 @@ def calculate_batch_health(predictions: list, confidence_threshold: float = 0.5)
         'avg_confidence': np.round(avg_confidence, 2),
         'low_confidence_rate': np.round(low_confidence_rate, 2)
     }
+
+
+def calculate_sla_metrics(requests: list, latency_sla_ms: float = 100.0) -> dict:
+    """
+    250. Calculate SLA compliance metrics for a model serving endpoint.
+    https://www.deep-ml.com/problems/250
     
+    Args:
+        requests: list of request results, each a dict with 'latency_ms' and 'status'
+        latency_sla_ms: maximum acceptable latency in ms for SLA compliance
+    Returns:
+        dict with keys: 'latency_sla_compliance', 'error_rate', 'overall_sla_compliance'
+        All values as percentages (0-100), rounded to 2 decimal places.
+    """
+    # edge case: empty input
+    if not requests:
+        return {}
+
+    # get all successes
+    successes = [req for req in requests if req.get('status') == 'success']
+    total, num_successful = len(requests), len(successes)
+
+    # check if there's success
+    if num_successful > 0:
+        within_sla = sum(1 for req in successes 
+                            if req.get('latency_ms', float('inf')) <= latency_sla_ms)
+        latency_sla_compliance = within_sla / num_successful * 100
+        overall_sla_compliance = within_sla / total * 100
+    else:
+        latency_sla_compliance = 0.0
+        overall_sla_compliance = 0.0
+
+    error_rate = (1 - num_successful / total) * 100
+
+    return {
+        'latency_sla_compliance': round(latency_sla_compliance, 2),
+        'error_rate': round(error_rate, 2),
+        'overall_sla_compliance': round(overall_sla_compliance, 2)
+    }
