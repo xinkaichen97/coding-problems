@@ -314,3 +314,33 @@ class Solution:
             dp[i] = max(nums[i], dp[i-1] + nums[i])
         
         return max(dp)
+
+
+    def canJump(self, nums: List[int]) -> bool:
+        """
+        https://neetcode.io/problems/jump-game
+        Time: O(n^2), Space: O(n)
+        """
+        # # greedy - O(n)
+        # goal = len(nums) - 1
+        # for i in range(len(nums) - 2, -1, -1):
+        #     # update goal whenever it can be reached from i
+        #     if i + nums[i] >= goal:
+        #         goal = i
+        # return goal == 0
+
+        # dp[i] = whether it can reach the end from index i
+        n = len(nums)
+        dp = [False] * n
+        dp[-1] = True
+      
+        for i in range(n - 2, -1, -1):
+            end = min(n, i + nums[i] + 1) # prevent overflow
+            # check if any of 
+            for j in range(i + 1, end):
+                if dp[j]:
+                    dp[i] = True
+                    break
+                  
+        return dp[0]
+      
