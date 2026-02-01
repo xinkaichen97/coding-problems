@@ -61,3 +61,43 @@ class Solution:
             left += 1
           
         return res
+
+
+    def setZeroes(self, matrix: List[List[int]]) -> None:
+        """
+        https://neetcode.io/problems/set-zeroes-in-matrix
+        Time: O(m * n), Space: O(1)
+        """
+        n_rows, n_cols = len(matrix), len(matrix[0])
+        # additional tracker for the first row
+        rowZero = False
+        # go through each cell
+        # update tracker in the first row (for columns) and in the first column (for rows)
+        for r in range(n_rows):
+            for c in range(n_cols):
+                if matrix[r][c] == 0:
+                    # update tracker for this column
+                    matrix[0][c] = 0
+                    # update tracker for this row
+                    if r > 0:
+                        matrix[r][0] = 0
+                    else:
+                        # if it's the first row, use the additional tracker
+                        rowZero = True
+
+        # update cells to zero based on the tracker
+        # so only need to start from the second row/col
+        for r in range(1, n_rows):
+            for c in range(1, n_cols):
+                if matrix[r][0] == 0 or matrix[0][c] == 0:
+                    matrix[r][c] = 0
+
+        # update first column
+        if matrix[0][0] == 0:
+            for r in range(n_rows):
+                matrix[r][0] = 0
+
+        # update first row
+        if rowZero:
+            for c in range(n_cols):
+                matrix[0][c] = 0   
