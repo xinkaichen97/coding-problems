@@ -27,4 +27,37 @@ class Solution:
         # alternatively, transpose first and then reverse rows
         # for row in matrix:
         #     row.reverse()
-      
+
+
+    def spiralOrder(self, matrix: List[List[int]]) -> List[int]:
+        """
+        https://neetcode.io/problems/spiral-matrix
+        Time: O(m * n), Space: O(1)
+        """
+        res = []
+        left, right = 0, len(matrix[0])
+        top, bottom = 0, len(matrix)
+        while left < right and top < bottom:
+            # left to right
+            for i in range(left, right):
+                res.append(matrix[top][i])
+            # update top pointer immediately to move down, same for other three
+            top += 1
+            # top to bottom
+            for i in range(top, bottom):
+                res.append(matrix[i][right - 1])
+            right -= 1
+            # important check: if the pointers are already out of bounds
+            # stop to avoid duplicate counts (when only a single row/column left)
+            if not (left < right and top < bottom):
+                break
+            # right to left
+            for i in range(right - 1, left - 1, -1):
+                res.append(matrix[bottom - 1][i])
+            bottom -= 1
+            # bottom to top
+            for i in range(bottom - 1, top - 1, -1):
+                res.append(matrix[i][left])
+            left += 1
+          
+        return res
