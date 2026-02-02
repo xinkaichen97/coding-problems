@@ -83,3 +83,37 @@ class Solution:
         #     free = max(free, tmp + prices[i] - fee)
         # return free
       
+
+    def minDistance(self, word1: str, word2: str) -> int:
+        """
+        https://leetcode.com/problems/edit-distance
+        Time: O(m * n), Space: O(m * n)
+        """
+        len1, len2 = len(word1), len(word2)
+        # edge case: if one string is empty, the edit distance is just the length of the other
+        if len1 == 0:
+            return len2
+        if len2 == 0:
+            return len1
+          
+        # dp[i][j] - the edit distance of word1[:i] and word2[:j] (starting from "")
+        dp = [[0 for _ in range(len2 + 1)] for _ in range(len1 + 1)]
+        # fill the first row and column: edit distance with the empty string is just its length
+        for i in range(1, len1 + 1):
+            dp[i][0] = i
+        for j in range(1, len2 + 1):
+            dp[0][j] = j
+          
+        # check every combination from index 1
+        for i in range(1, len1 + 1):
+            for j in range(1, len2 + 1):
+                # if the character is the same, do nothing
+                if word1[i - 1] == word2[j - 1]:
+                    dp[i][j] = dp[i - 1][j - 1]
+                else:
+                    # if not, get the min of insert (j - 1), delete (i - 1), and replace (i - 1 & j - 1)
+                    # plus 1 for the current operation
+                    dp[i][j] = min(dp[i - 1][j], dp[i][j - 1], dp[i - 1][j - 1]) + 1
+                  
+        return dp[len1][len2]
+      
