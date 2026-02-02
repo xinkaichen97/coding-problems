@@ -8,6 +8,7 @@ class TrieNode:
     def __init__(self):
         self.children = {}
         self.endOfWord = False
+        self.words = [] # used in Search Suggestions System
 
 class Trie:
     """
@@ -49,3 +50,38 @@ class Trie:
             cur = cur.children[c]
         # no need to check endOfWord
         return True
+
+    def searchPrefix(self, prefix: str) -> bool:
+        cur = self.root
+        for c in prefix:
+            if c not in cur.children:
+                return []
+            cur = cur.children[c]
+        return cur.words
+
+
+class Solution:
+    
+    def suggestedProducts(self, products: List[str], searchWord: str) -> List[List[str]]:
+        """
+        https://leetcode.com/problems/search-suggestions-system
+        Time: O(m), Space: O(n), m - total chars in products, n - # of nodes in the Trie
+        """
+        # sort the array to make sure they are in lexical order
+        products.sort()
+        trie = Trie()
+        res = []
+        # insert word in the Trie
+        for product in products:
+            trie.insert(product)
+            
+        prefix = ""
+        # add every char to the prefix and search for the top-3 words
+        for ch in searchWord:
+            prefix += ch
+            words = trie.searchPrefix(prefix)
+            # we can also update the insert function to keep max = 3
+            res.append(words[:3])
+            
+        return res
+        
