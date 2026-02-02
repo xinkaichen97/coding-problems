@@ -32,6 +32,7 @@ class Solution:
     def longestCommonSubsequence(self, text1: str, text2: str) -> int:
         """
         https://leetcode.com/problems/longest-common-subsequence
+        Time: O(m * n), Space: O(m * n)
         """
         # initialize a 2d array for each letter in each text
         # the cell values are the LCS from the current point of two texts
@@ -49,4 +50,36 @@ class Solution:
 
         # return the first value in the table
         return dp[0][0]
+      
+
+    def maxProfit(self, prices: List[int], fee: int) -> int:
+        """
+        https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-transaction-fee
+        Time: O(n), Space: O(n)
+        """
+        # use two dp arrays
+        # hold[i] - max profit if holding at day i
+        # free[i] - max profit if not holding at day i
+        n = len(prices)
+        hold, free = [0] * n, [0] * n
+
+        # initialize hold with the buy-in price at day 0
+        hold[0] = -prices[0]
+        
+        for i in range(1, n):
+            # if hold/buy, it's the max of holding on the previous day, or buying at the current price
+            hold[i] = max(hold[i - 1], free[i - 1] - prices[i])
+            # if wait/sell, it's the max of freeing on the previous day, or the gain/loss from selling
+            free[i] = max(free[i - 1], hold[i - 1] + prices[i] - fee)
+
+        # the result is the last item in free as there's no point holding
+        return free[-1]
+
+        # # O(1) space version
+        # hold, free = -prices[0], 0
+        # for i in range(1, n):
+        #     tmp = hold
+        #     hold = max(hold, free - prices[i])
+        #     free = max(free, tmp + prices[i] - fee)
+        # return free
       
