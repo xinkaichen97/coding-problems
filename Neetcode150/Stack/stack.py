@@ -67,6 +67,39 @@ class Solution:
         return stack[0]
         
 
+    def carFleet(self, target: int, position: List[int], speed: List[int]) -> int:
+        """
+        https://neetcode.io/problems/car-fleet
+        Time: O(nlogn), Space: O(n)
+        """
+        # we can also just use prevTime
+        stack = []
+        # sort cars by positions in descending order
+        cars = [(pos, sp) for pos, sp in zip(position, speed)]
+        cars.sort(reverse=True)
+
+        # if the time is lower than or equal to the previous time
+        # that means they will form a car fleet
+        for pos, sp in cars:
+            time = (target - pos) / sp
+            # need to add the first car too
+            if not stack or time > stack[-1]:
+                stack.append(time)
+                
+        # the length of the stack is the answer
+        return len(stack)
+
+        # # alternative solution using prevTime
+        # res = 1
+        # prevTime = (target - cars[0][0]) / cars[0][1]
+        # for pos, sp in cars[1:]:
+        #     time = (target - pos) / sp
+        #     if time > prevTime:
+        #         res += 1
+        #         prevTime = time
+        # return res
+
+
 class MinStack:
     """
     https://neetcode.io/problems/minimum-stack
