@@ -100,6 +100,32 @@ class Solution:
         # return res
 
 
+    def largestRectangleArea(self, heights: List[int]) -> int:
+        """
+        https://neetcode.io/problems/largest-rectangle-in-histogram
+        Time: O(n), Space: O(n)
+        """
+        res = 0
+        stack = []
+        for idx, height in enumerate(heights):
+            # keep track of the start
+            start = idx
+            
+            # if the previous height is higher, keep popping and calculate the max area
+            while stack and stack[-1][1] > height:
+                i, h = stack.pop()
+                res = max(res, h * (idx - i))
+                start = i
+            # add start instead of idx because that's how far we can extend
+            stack.append((start, height))
+
+        # the remaining rectangles can reach the end, calculate the area for each
+        for idx, height in stack:
+            res = max(res, height * (len(heights) - idx))
+
+        return res
+
+
 class MinStack:
     """
     https://neetcode.io/problems/minimum-stack
