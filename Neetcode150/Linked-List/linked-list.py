@@ -4,7 +4,7 @@ Problems for Linked List
 from typing import Optional
 
 
-# Definition for singly-linked list.
+# Definition for singly-linked lists
 class ListNode:
     def __init__(self, val=0, next=None):
         self.val = val
@@ -164,3 +164,60 @@ class Solution:
             lists = merged
     
         return lists[0]
+
+
+# Definition for double-linked lists used in LRU Cache
+class Node:
+    def __init__(self, key, val):
+        self.key, self.val = key, val
+        self.prev = self.next = None
+
+class LRUCache:
+    """
+    https://neetcode.io/problems/lru-cache
+    Time: O(1) for get() & put(), Space: O(n)
+    """
+    def __init__(self, capacity: int):
+        self.cap = capacity
+        self.cache = {}
+        self.left, self.right = Node(-1, -1), Node(-1, -1)
+        # double link left and right nodes
+        self.left.next = self.right
+        self.right.prev = self.left
+
+    def get(self, key: int) -> int:
+        if key in self.cache:
+            # remove and insert again to add to the rightmost position (most recently used)
+            self.remove(self.cache[key])
+            self.insert(self.cache[key])
+            return self.cache[key].val # only returns value
+        else:
+            return -1
+
+    def put(self, key: int, value: int) -> None:
+        # if the key exists, replace it with the new value
+        if key in self.cache:
+            self.remove(self.cache[key])
+        self.cache[key] = Node(key, value)
+        self.insert(self.cache[key])
+        # if capacity is reached, remove the leftmost node (the one after self.left)
+        if len(self.cache) > self.cap:
+            lru = self.left.next
+            self.remove(lru)
+            del self.cache[lru.key]
+    
+    def remove(self, node: Node) -> None:
+        # skip current node
+        # prev's next is next, and next's prev is prev
+        oldPrev, oldNext = node.prev, node.next
+        oldPrev.next = oldNext
+        oldNext.prev = oldPrev
+
+    def insert(self, node: Node) -> None:
+        # add current node to the right
+        # prev's next and next's prev are both the new node
+        oldPrev, oldNext = self.right.prev, self.right
+        oldPrev.next = oldNext.prev = node
+        # update node's prev and next
+        node.next, node.prev = oldNext, oldPrev
+        
