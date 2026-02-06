@@ -392,3 +392,17 @@ def activation_derivatives(x: float) -> dict[str, float]:
         'tanh': 1.0 - np.tanh(x) ** 2,
         'relu': 1.0 if x > 0 else 0.0
     }
+
+
+def mish(x: float) -> float:
+	"""
+	262. Compute the Mish activation function.
+	https://www.deep-ml.com/problems/262
+
+	Args:
+		x (float): Input value
+	Returns:
+		float: Mish activation value rounded to 4 decimal places
+	"""
+	return round(x * np.tanh(np.log(1 + np.exp(x))), 4)
+	
