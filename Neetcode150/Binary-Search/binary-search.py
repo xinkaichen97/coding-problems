@@ -131,4 +131,36 @@ class Solution:
               r = m - 1
       return False
             
-    
+
+class TimeMap:
+    """
+    https://neetcode.io/problems/time-based-key-value-store
+    Time: O(1) for set(), O(logn) for get(), Space: O(m * n), m - len(self.mapping), n - len(self.mapping[key])
+    """
+
+    def __init__(self):
+        self.mapping = defaultdict(list)
+
+    def set(self, key: str, value: str, timestamp: int) -> None:
+        # add [timestamp, value] pairs
+        self.mapping[key].append([timestamp, value])
+
+    def get(self, key: str, timestamp: int) -> str:
+        res = ""
+        values = self.mapping.get(key, [])
+        # use binary search for log(n) time
+        l = 0
+        r = len(values) - 1
+        # either use [l, r] (while l <= r) or [l, r) (while l < r)
+        # r will be m - 1 or m
+        while l <= r:
+            m = (l + r) // 2
+            # keep updating the rightmost index and res (bisect_left)
+            # if use < instead of <=, it becomes bisect_left
+            if values[m][0] <= timestamp:
+                res = values[m][1]
+                l = m + 1
+            else:
+                r = m - 1
+        return res
+      
