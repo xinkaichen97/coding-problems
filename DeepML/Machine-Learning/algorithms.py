@@ -85,3 +85,49 @@ def k_fold_cross_validation(n_samples: int, k: int = 5, shuffle: bool = True) ->
 
     return res
 	
+
+def pca(data: np.ndarray, k: int) -> np.ndarray:
+    """
+    19. Perform PCA and return the top k principal components.
+	https://www.deep-ml.com/problems/19
+    
+    Args:
+        data: Input array of shape (n_samples, n_features)
+        k: Number of principal components to return
+    Returns:
+        Principal components of shape (n_features, k), rounded to 4 decimals.
+        Each eigenvector's sign is fixed so its first non-zero element is positive.
+    """
+	# standardize data
+	mean = data.mean(axis=0)
+    std = data.std(axis=0)
+    std[std == 0] = 1  # prevent division by zero
+    centered_data = (data - mean) / std
+
+	# compute covariance matrix and eigenvalues/eigenvectors
+    n_samples = centered_data.shape[0]
+    cov_matrix = (centered_data.T @ centered_data) / (n_samples - 1)
+    eigenvalues, eigenvectors = np.linalg.eigh(cov_matrix)
+
+	# find the top-k eigenvectors (each col is an eigenvector)
+	# no need to do argsort when using np.linalg.eigh (eigenvalues are in ascending order)
+    # sorted_indices = np.argsort(eigenvalues)[::-1]
+    # eigenvalues = eigenvalues[sorted_indices]
+    # eigenvectors = eigenvectors[:, sorted_indices]
+	eigenvalues = eigenvalues[::-1]
+    eigenvectors = eigenvectors[:, ::-1]
+    top_k_eigenvectors = eigenvectors[:, :k]
+
+	# fix sign convention: first non-zero element should be positive
+    for i in range(k):
+        eigenvector = top_k_eigenvectors[:, i]
+        non_zero_indices = np.where(np.abs(eigenvector) > 1e-10)[0]
+        if len(non_zero_indices) > 0:
+            first_non_zero_idx = non_zero_indices[0]
+            if eigenvector[first_non_zero_idx] < 0:
+                top_k_eigenvectors[:, i] = -eigenvector
+
+    principal_components = np.round(top_k_eigenvectors, 4)
+    
+    return principal_components
+	
