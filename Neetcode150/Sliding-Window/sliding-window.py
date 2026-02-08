@@ -139,3 +139,33 @@ class Solution:
         # return the shortest substring unless res is not updated
         return s[l : r + 1] if resLen != len(s) + 1 else ""
         
+
+    def maxSlidingWindow(self, nums: List[int], k: int) -> List[int]:
+        """
+        https://neetcode.io/problems/sliding-window-maximum
+        Time: O(n), Space: O(n)
+        """
+        res = []
+        # monotonically decreasing queue
+        q = deque()
+        l = r = 0
+        
+        while r < len(nums):
+            # remove all smaller elements from the back (maintain decreasing order)
+            while q and nums[q[-1]] < nums[r]:
+                q.pop()
+            q.append(r)
+
+            # remove elements outside the current window [l, r]
+            if q[0] < l:
+                q.popleft()
+
+            # once we have a full window, record the max (front of deque)
+            if r + 1 >= k:
+                res.append(nums[q[0]])
+                # slide window forward
+                l += 1
+            r += 1
+
+        return res
+        
