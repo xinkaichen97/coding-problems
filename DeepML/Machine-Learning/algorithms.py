@@ -131,3 +131,34 @@ def pca(data: np.ndarray, k: int) -> np.ndarray:
     
     return principal_components
 	
+
+def k_nearest_neighbors(points, query_point, k):
+    """
+    173. Find k nearest neighbors to a query point
+	https://www.deep-ml.com/problems/173
+    
+    Args:
+        points: List of tuples representing points [(x1, y1), (x2, y2), ...]
+        query_point: Tuple representing query point (x, y)
+        k: Number of nearest neighbors to return
+    Returns:
+        List of k nearest neighbor points as tuples
+        When distances are tied, points appearing earlier in the input list come first.
+    """
+    # convert to numpy arrays
+    points_array = np.array(points)
+    query_array = np.array(query_point)
+    
+    # compute Euclidean distances
+    distances = np.sqrt(((points_array - query_array) ** 2).sum(axis=1))
+    
+    # get indices sorted by distance (stable sort preserves order for ties)
+    sorted_indices = np.argsort(distances, kind='stable')
+    
+    # select top k indices
+    top_k_indices = sorted_indices[:k]
+    
+    # return corresponding points as a list of tuples
+    k_nearest = [points[i] for i in top_k_indices]
+    
+    return k_nearest
