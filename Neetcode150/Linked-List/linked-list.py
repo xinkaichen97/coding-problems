@@ -235,6 +235,51 @@ class Solution:
         return lists[0]
 
 
+    def reverseKGroup(self, head: Optional[ListNode], k: int) -> Optional[ListNode]:
+        """
+        https://neetcode.io/problems/reverse-nodes-in-k-group
+        Time: O(n), Space: O(1)
+        """
+        # create dummy for returning, and groupPrev is the previous node of a k-sized group
+        dummy = ListNode(0, head)
+        groupPrev = dummy
+
+        while True:
+            # if the kth node is None, leave it unchanged
+            kth = self.getKth(groupPrev, k)
+            if not kth:
+                break
+
+            # save the start of the next group as kth's next will change
+            groupNext = kth.next
+            
+            # reverse the current group, prev is the next start
+            prev, curr = groupNext, groupPrev.next
+            while curr != groupNext:
+                tmp = curr.next
+                curr.next = prev
+                prev = curr
+                curr = tmp
+
+            # the kth node is now at the beginning, need to link it with groupPrev
+            # then update groupPrev for the next group
+            tmp = groupPrev.next
+            groupPrev.next = kth
+            groupPrev = tmp
+
+        return dummy.next
+
+    
+    def getKth(self, curr, k):
+        """
+        Get the k-th node from curr
+        """
+        while curr and k:
+            curr = curr.next
+            k -= 1
+        return curr
+
+
 # Definition for double-linked lists used in LRU Cache
 class Node:
     def __init__(self, key, val):
