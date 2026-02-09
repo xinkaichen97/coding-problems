@@ -5,6 +5,30 @@ from typing import List
 
 
 class Solution:
+
+    def subsets(self, nums: List[int]) -> List[List[int]]:
+        """
+        https://neetcode.io/problems/subsets
+        Time: O(n * 2^n), Space: O(n)
+        """
+        res = []
+        def backtrack(subset, i):
+            # return condition: if i reaches the end
+            if i >= len(nums):
+                res.append(subset.copy())
+                return
+              
+            # include the current num
+            subset.append(nums[i])
+            backtrack(subset, i + 1)
+
+            # not include the current num
+            subset.pop()
+            backtrack(subset, i + 1)
+
+        backtrack([], 0)
+        return res
+
   
     def combinationSum(self, nums: List[int], target: int) -> List[List[int]]:
         """
