@@ -4,12 +4,20 @@ Problems for Linked List
 from typing import Optional
 
 
-# Definition for singly-linked lists
+# Definition for singly-linked list nodes
 class ListNode:
     def __init__(self, val=0, next=None):
         self.val = val
         self.next = next
-      
+
+
+# Definition for a list node with a random pointer.
+class Node:
+    def __init__(self, x: int, next: 'Node' = None, random: 'Node' = None):
+        self.val = int(x)
+        self.next = next
+        self.random = random
+
 
 class Solution:
 
@@ -116,6 +124,43 @@ class Solution:
         left.next = left.next.next
         # head could be the node to delete, so cannot return head
         return dummy.next
+
+    
+    def copyRandomList(self, head: 'Optional[Node]') -> 'Optional[Node]':
+        """
+        https://neetcode.io/problems/copy-linked-list-with-random-pointer
+        Time: O(n), Space: O(n)
+        """
+        # two-pass solution with a hashmap
+        # old to copy mapping, need to map None
+        mapping = {None: None}
+
+        # first pass, get old to copy mapping
+        curr = head
+        while curr:
+            copy = Node(curr.val)
+            mapping[curr] = copy
+            curr = curr.next
+
+        # second pass, for each copy node, get its next and random
+        curr = head
+        while curr:
+            copy = mapping[curr]
+            copy.next = mapping[curr.next]
+            copy.random = mapping[curr.random]
+            curr = curr.next
+
+        # # one-pass solution with a hashmap
+        # mapping = collections.defaultdict(lambda: Node(0))
+        # mapping[None] = None
+        # curr = head
+        # while curr:
+        #     mapping[curr].val = curr.val
+        #     mapping[curr].next = mapping[curr.next]
+        #     mapping[curr].random = mapping[curr.random]
+        #     curr = curr.next
+            
+        return mapping[head]
       
     
     def addTwoNumbers(self, l1: Optional[ListNode], l2: Optional[ListNode]) -> Optional[ListNode]:
