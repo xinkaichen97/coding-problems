@@ -109,6 +109,45 @@ class Solution:
         
         return res
 
+
+    def goodNodes(self, root: TreeNode) -> int:
+        """
+        https://neetcode.io/problems/count-good-nodes-in-binary-tree
+        Time: O(n), Space: O(n)
+        """
+        # DFS
+        def dfs(node, currmax):
+            # check when node is None
+            if not node:
+                return 0
+                
+            # add one if the current node is good, and update current max
+            res = 1 if node.val >= currmax else 0
+            currmax = max(node.val, currmax)
+
+            # update left and right subtrees
+            res += dfs(node.left, currmax)
+            res += dfs(node.right, currmax)
+            return res
+
+        return dfs(root, root.val)
+
+        """
+        # BFS
+        res = 0
+        q = deque([(root, root.val)])
+        while q:
+            node, maxval = q.popleft()
+            if node.val >= maxval:
+                res += 1
+            maxval = max(node.val, maxval)
+            if node.left:
+                q.append((node.left, maxval))
+            if node.right:
+                q.append((node.right, maxval))
+        return res
+        """
+
     
     def maxPathSum(self, root: Optional[TreeNode]) -> int:
         """
