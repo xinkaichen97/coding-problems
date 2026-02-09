@@ -187,6 +187,30 @@ class Solution:
         return head.next
 
 
+    def findDuplicate(self, nums: List[int]) -> int:
+        """
+        https://neetcode.io/problems/find-duplicate-integer
+        Time: O(n), Space: O(1)
+        """
+        # Floyd's algorithm: find the start of the loop in a linked list
+        # first, find the intersection of slow and fast
+        slow, fast = 0, 0
+        while True:
+            slow = nums[slow]
+            fast = nums[nums[fast]]
+            if slow == fast:
+                break
+
+        # next, start a second slow pointer
+        # the intersection of both slow pointers is the answer
+        slow2 = 0
+        while True:
+            slow = nums[slow]
+            slow2 = nums[slow2]
+            if slow == slow2:
+                return slow
+
+    
     def mergeKLists(self, lists: List[Optional[ListNode]]) -> Optional[ListNode]:
         """
         https://neetcode.io/problems/merge-k-sorted-linked-lists
