@@ -118,6 +118,21 @@ class Solution:
                 nums[i], nums[idx] = nums[idx], nums[i]
         
         backtrack(nums, 0)
+
+        # # approach 2: use a pick array to mark which elements are already used
+        # def backtrack(perms, nums, pick):
+        #     if len(perms) == len(nums):
+        #         res.append(perms.copy())
+        #         return
+        #     for i in range(len(nums)):
+        #         if not pick[i]:
+        #             perms.append(nums[i])
+        #             pick[i] = True
+        #             backtrack(perms, nums, pick)
+        #             perms.pop()
+        #             pick[i] = False
+        # backtrack([], nums, [False] * len(nums))
+        
         return res
 
     
