@@ -80,7 +80,36 @@ class Solution:
         else:
             return False
             
+
+    def rightSideView(self, root: Optional[TreeNode]) -> List[int]:
+        """
+        https://neetcode.io/problems/binary-tree-right-side-view
+        Time: O(n), Space: O(n)
+        """
+        # since we won't add None in the queue, check it here
+        if not root:
+            return []
+
+        res = []
+        q = deque([root])
+
+        # BFS
+        while q:
+            # loop through all items in the queue for the entire level
+            for i in range(len(q)):
+                node = q.popleft()
+                # add node only when it's not None
+                if node.left:
+                    q.append(node.left)
+                if node.right:
+                    q.append(node.right)
+
+            # add the last node which is the right side view
+            res.append(node.val)
         
+        return res
+
+    
     def maxPathSum(self, root: Optional[TreeNode]) -> int:
         """
         https://neetcode.io/problems/binary-tree-maximum-path-sum
