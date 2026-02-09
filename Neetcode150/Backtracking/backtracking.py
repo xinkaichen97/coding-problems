@@ -95,6 +95,32 @@ class Solution:
         return res
 
 
+    def permute(self, nums: List[int]) -> List[List[int]]:
+        """
+        https://neetcode.io/problems/permutations
+        Time: O(n! * n), Space: O(n! * n)
+        """
+        res = []
+
+        def backtrack(nums, idx):
+            # return condition: idx reaches the end
+            if idx == len(nums):
+                res.append(nums.copy())
+                return
+                
+            # keep 0 to idx-1 the same, and update from idx to end
+            for i in range(idx, len(nums)):
+                # swap numbers at each index with idx
+                nums[i], nums[idx] = nums[idx], nums[i]
+                # recursively build the answer with idx + 1
+                backtrack(nums, idx + 1)
+                # backtrack: swap the numbers back
+                nums[i], nums[idx] = nums[idx], nums[i]
+        
+        backtrack(nums, 0)
+        return res
+
+    
     def exist(self, board: List[List[str]], word: str) -> bool:
         """
         https://neetcode.io/problems/search-for-word
