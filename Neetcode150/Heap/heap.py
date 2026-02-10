@@ -77,6 +77,22 @@ class Solution:
         return res
 
 
+    def findKthLargest(self, nums: List[int], k: int) -> int:
+        """
+        https://neetcode.io/problems/kth-largest-element-in-an-array
+        Time: O(nlogk), Space: O(k)
+        """
+        heap = []
+        for num in nums:
+            # keep a MinHeap of size k
+            heapq.heappush(heap, num)
+            if len(heap) > k:
+                heapq.heappop(heap)
+        
+        # return heapq.nlargest(k, nums)[-1]
+        return heap[0]
+
+
 class MedianFinder:
     """
     https://neetcode.io/problems/find-median-in-a-data-stream
