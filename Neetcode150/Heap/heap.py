@@ -4,16 +4,90 @@ Problems for Heaps / Priority Queues
 import heapq
 
 
+class KthLargest:
+    """
+    https://neetcode.io/problems/kth-largest-integer-in-a-stream
+    Time: O(logk) for each add() call, Space: O(k)
+    """
+    
+    def __init__(self, k: int, nums: List[int]):
+        
+        self.nums = nums
+        self.k = k
+        heapq.heapify(self.nums)
+        # remove the smallest (n - k) items
+        while len(self.nums) > k:
+            heapq.heappop(self.nums)
+
+    def add(self, val: int) -> int:
+        heapq.heappush(self.nums, val)
+        # maintain size of k
+        if len(self.nums) > self.k:
+            heapq.heappop(self.nums)
+        # the smallest in the heap is the k-th largest
+        return self.nums[0]
+
+
+class Solution:
+
+    def lastStoneWeight(self, stones: List[int]) -> int:
+        """
+        https://neetcode.io/problems/last-stone-weight
+        Time: O(nlogn), Space: O(n)
+        """
+        # reverse stones to create a MaxHeap
+        stones = [-s for s in stones]
+        heapq.heapify(stones)
+
+        # keep popping and pushing until the heap has more than one item
+        while len(stones) > 1:
+            # push the biggest stones (now negative)
+            first = heapq.heappop(stones)
+            second = heapq.heappop(stones)
+            # second is either equal to or bigger than first
+            # if not equal, push the difference (also negative)
+            if second > first:
+                heapq.heappush(stones, first - second)
+
+        # if not empty, return the last one in the heap
+        return abs(stones[0]) if stones else 0
+        
+    
+    def kClosest(self, points: List[List[int]], k: int) -> List[List[int]]:
+        """
+        https://neetcode.io/problems/k-closest-points-to-origin
+        Time: O(n * logk), Space: O(k)
+        """
+        heap = []
+        for x, y in points:
+            # no need to do math.sqrt()
+            dist = x ** 2 + y ** 2
+            # negate distance to create a MaxHeap - better time/space complexity than a MinHeap
+            # also add the coordinates
+            heapq.heappush(heap, [-dist, x, y])
+            # keep only k items
+            if len(heap) > k:
+                heapq.heappop(heap)
+
+        res = []
+        # pop every item from the MaxHeap
+        while heap:
+            dist, x, y = heapq.heappop(heap)
+            res.append([x, y])
+        return res
+
+
 class MedianFinder:
     """
     https://neetcode.io/problems/find-median-in-a-data-stream
     Time: addNum - O(m * logn), findMedian - O(m), Space: O(n)
     m - # of function calls, n - len(array)
     """
-    # maintain two lists to be converted into heaps,
-    # small - Max Heap (negate each item), large - Min Heap
-    # push and pop - both O(logn)
+    
     def __init__(self):
+        # maintain two lists to be converted into heaps,
+        # small - Max Heap (negate each item), large - Min Heap
+        # push and pop - both O(logn)
         self.small = []
         self.large = []
 
@@ -44,5 +118,4 @@ class MedianFinder:
             return -1 * self.small[0]
         # even length, calculate the mean
         return (-1 * self.small[0] + self.large[0]) / 2.0
-        
         
