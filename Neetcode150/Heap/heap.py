@@ -93,6 +93,37 @@ class Solution:
         return heap[0]
 
 
+    def leastInterval(self, tasks: List[str], n: int) -> int:
+        """
+        https://neetcode.io/problems/task-scheduling
+        Time: O(m), Space: O(1), m - len(tasks)
+        """
+        # create a MaxHeap for frequencies
+        counts = Counter(tasks)
+        heap = [-count for count in counts.values()]
+        heapq.heapify(heap)
+
+        # create a queue for cooldown (-count, freeTime)
+        q = deque()
+        time = 0
+        # iterate until both heap and queue are empty
+        while heap or q:
+            time += 1
+            # decrease count and add to queue if not zero
+            if heap:
+                count = 1 + heapq.heappop(heap)
+                if count != 0:
+                    q.append((count, time + n))
+            else:
+                # optional - fast forward to the next freeTime
+                time = q[0][1]
+            # if one is free, pop from the queue and add to the heap
+            if q and time == q[0][1]:
+                heapq.heappush(heap, q.popleft()[0])
+            
+        return time
+
+
 class MedianFinder:
     """
     https://neetcode.io/problems/find-median-in-a-data-stream
