@@ -124,6 +124,62 @@ class Solution:
         return time
 
 
+class Twitter:
+    """
+    https://neetcode.io/problems/design-twitter-feed
+    Time: O(nlogn) for each getNewsFeed(), Space: O(N * m + N * M + n)
+    n - # of followeeId for current userId, m - max # of tweets by a user
+    N - # of userIds, M - max # of followees
+    """
+    def __init__(self):
+        self.count = 0
+        self.tweetMap = defaultdict(list)
+        self.followMap = defaultdict(set)
+
+    def postTweet(self, userId: int, tweetId: int) -> None:
+        # add count, tweetId to tweetMap[userId]
+        # use negative count for keeping the latest one (higher absolute value) on top of the heap
+        self.tweetMap[userId].append([self.count, tweetId])
+        # keep only 10 tweets for each userId
+        if len(self.tweetMap[userId]) > 10:
+            self.tweetMap[userId].pop(0)
+        self.count -= 1
+
+    def getNewsFeed(self, userId: int) -> List[int]:
+        res = []
+        heap = []
+        # add user to their own followMap to display their own tweets
+        self.followMap[userId].add(userId)
+
+        # go through each followee
+        for followeeId in self.followMap[userId]:
+            # push to heap
+            if followeeId in self.tweetMap:
+                index = len(self.tweetMap[followeeId]) - 1
+                count, tweetId = self.tweetMap[followeeId][index]
+                heapq.heappush(heap, [count, tweetId, followeeId, index - 1])
+
+        # add the 10 most recent tweets to the results
+        while heap and len(res) < 10:
+            count, tweetId, followeeId, index = heapq.heappop(heap)
+            res.append(tweetId)
+            if index >= 0:
+                count, tweetId = self.tweetMap[followeeId][index]
+                heapq.heappush(heap, [count, tweetId, followeeId, index - 1])
+                
+        return res
+
+    def follow(self, followerId: int, followeeId: int) -> None:
+        # add to followMap[followerId]
+        if followerId != followeeId:
+            self.followMap[followerId].add(followeeId)
+
+    def unfollow(self, followerId: int, followeeId: int) -> None:
+        # remove from followMap[followerId]
+        if followeeId in self.followMap[followerId]:
+            self.followMap[followerId].remove(followeeId)
+
+
 class MedianFinder:
     """
     https://neetcode.io/problems/find-median-in-a-data-stream
