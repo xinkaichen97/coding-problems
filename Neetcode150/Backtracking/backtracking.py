@@ -139,7 +139,7 @@ class Solution:
     def subsetsWithDup(self, nums: List[int]) -> List[List[int]]:
         """
         https://neetcode.io/problems/subsets-ii
-        Time: O(n * 2^n), Space: O(2^n)
+        Time: O(n * 2^n), Space: O(n)
         """
         nums.sort()
         res = []
@@ -159,6 +159,34 @@ class Solution:
             backtrack(subset, i + 1)
         
         backtrack([], 0)
+        return res
+
+
+    def generateParenthesis(self, n: int) -> List[str]:
+        """
+        https://neetcode.io/problems/generate-parentheses
+        Time: O(4^n / √n), Space: O(n)
+        """
+        res = []
+        subset = []
+
+        def backtrack(op, cls):
+            # return condition: opening and closing parentheses are both at n
+            if op == cls == n:
+                res.append("".join(subset))
+                return 
+            # only add an opening parenthesis when op is lower than n
+            if op < n:
+                subset.append("(")
+                backtrack(op + 1, cls)
+                subset.pop() # backtrack because we could possibly add a closing parenthesis
+            # only add a closing parenthesis when cls is lower than op
+            if cls < op:
+                subset.append(")")
+                backtrack(op, cls + 1)
+                subset.pop() # backtrack because we could possibly add an opening parenthesis 
+        
+        backtrack(0, 0)
         return res
 
     
