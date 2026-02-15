@@ -151,6 +151,9 @@ class Solution:
             subset.append(nums[i])
             backtrack(subset, i + 1)
             subset.pop()
+            
+            # only difference from Subset 
+            # if not including the current num, skip all duplicates
             while i + 1 < len(nums) and nums[i] == nums[i + 1]:
                 i += 1
             backtrack(subset, i + 1)
