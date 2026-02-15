@@ -135,6 +135,29 @@ class Solution:
         
         return res
 
+
+    def subsetsWithDup(self, nums: List[int]) -> List[List[int]]:
+        """
+        https://neetcode.io/problems/subsets-ii
+        Time: O(n * 2^n), Space: O(2^n)
+        """
+        nums.sort()
+        res = []
+        def backtrack(subset, i):
+            if i >= len(nums):
+                res.append(subset.copy())
+                return
+            
+            subset.append(nums[i])
+            backtrack(subset, i + 1)
+            subset.pop()
+            while i + 1 < len(nums) and nums[i] == nums[i + 1]:
+                i += 1
+            backtrack(subset, i + 1)
+        
+        backtrack([], 0)
+        return res
+
     
     def exist(self, board: List[List[str]], word: str) -> bool:
         """
