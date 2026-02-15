@@ -223,3 +223,39 @@ class Solution:
                     return True
         
         return False
+
+
+    def partition(self, s: str) -> List[List[str]]:
+        """
+        https://neetcode.io/problems/palindrome-partitioning
+        Time: O(n * 2^n), Space: O(n)
+        """
+        res = []
+        subset = []
+
+        # helper function to check palindrome - O(n)
+        def isPalindrome(s):
+            l, r = 0, len(s) - 1
+            while l < r:
+                if s[l] != s[r]:
+                    return False
+                l += 1
+                r -= 1
+            return True
+
+        def backtrack(i):
+            # return if i (the current starting index) reaches the end
+            if i >= len(s):
+                res.append(subset.copy())
+            # check every index from i to the end
+            for j in range(i, len(s)):
+                if isPalindrome(s[i : j + 1]):
+                    # partition at j, then start at j + 1
+                    subset.append(s[i : j + 1])
+                    backtrack(j + 1)
+                    # do not partition, keep going
+                    subset.pop()
+        
+        backtrack(0)
+        return res
+        
