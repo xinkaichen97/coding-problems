@@ -289,6 +289,42 @@ class Solution:
         return max(dp)
 
 
+    def canPartition(self, nums: List[int]) -> bool:
+        """
+        https://neetcode.io/problems/partition-equal-subset-sum
+        Time: O(n * target), Space: O(target)
+        """
+        # return false immediately for odd sums
+        if sum(nums) % 2:
+            return False
+          
+        # dp set: all of the possible sums
+        target = sum(nums) // 2
+        dp = set()
+        dp.add(0)
+
+        # check every num and every value in dp
+        for num in nums:
+            # use temp to update dp when looping
+            temp = set()
+            for t in dp:
+                if t + num == target:
+                    return True
+                temp.add(t + num)
+                temp.add(t)
+            dp = temp
+          
+        return False
+
+        # # 1d array solution
+        # dp = [False] * (target + 1)
+        # dp[0] = True
+        # for num in nums:
+        #     for j in range(target, num - 1, -1):
+        #         dp[j] = dp[j] or dp[j - num]
+        # return dp[target]
+
+  
     def maxSubArray(self, nums: List[int]) -> int:
         """
         https://neetcode.io/problems/maximum-subarray
