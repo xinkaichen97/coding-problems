@@ -11,6 +11,41 @@ class Node:
         self.neighbors = neighbors if neighbors is not None else []
       
 
+class UnionFind:
+    """
+    UnionFind class for efficient graph operations
+    Time: O(α(n)) -> O(1) for union() & find(), Space: O(n)
+    """
+    def __init__(self, n):
+        self.parent = list(range(n))
+        self.rank = [0] * n
+        self.count = n
+    
+    def find(self, x):
+        # path compression: point parent to the root
+        if self.parent[x] != x:
+            self.parent[x] = self.find(self.parent[x])
+        return self.parent[x]
+    
+    def union(self, x, y):
+        rootX = self.find(x)
+        rootY = self.find(y)
+        
+        if rootX == rootY:
+            return
+        
+        if self.rank[rootX] > self.rank[rootY]:
+            self.parent[rootY] = rootX
+        elif self.rank[rootX] < self.rank[rootY]:
+            self.parent[rootX] = rootY
+        else:
+            # add rank only when heights are equal
+            self.parent[rootY] = rootX
+            self.rank[rootX] += 1
+        
+        self.count -= 1
+
+
 class Solution:
   
     def numIslands(self, grid: List[List[str]]) -> int:
