@@ -50,6 +50,57 @@ class Solution:
         https://neetcode.io/problems/max-area-of-island
         Time: O(m * n), Space: O(m * n)
         """
+        directions = [[1, 0], [-1, 0], [0, 1], [0, -1]]
+        m, n = len(grid), len(grid[0])
+
+        # BFS
+        def bfs(r, c):
+            q = deque()
+            # mark current cell as 0 and add to queue
+            grid[r][c] = 0
+            q.append((r, c))
+            # assumes land so res starts with 1
+            res = 1
+
+            while q:
+                r, c = q.popleft()
+                for dr, dc in directions:
+                    nr, nc = r + dr, c + dc
+                    # skip if out of bounds or water
+                    if nr < 0 or nc < 0 or nr >= m or nc >= n or grid[nr][nc] == 0:
+                        continue
+                    # add neighbor to queue and mark as 0
+                    q.append((nr, nc))
+                    grid[nr][nc] = 0
+                    # update area when adding to queue, not when dequeuing
+                    res += 1
+            return res
+
+        # # DFS alternative
+        # def dfs(r, c):
+        #     if r < 0 or c < 0 or r >= m or c >= n or grid[r][c] == 0:
+        #         return 0
+        #     grid[r][c] = 0
+        #     res = 1
+        #     for dr, dc in directions:
+        #         res += dfs(r + dr, c + dc)
+        #     return res
+        
+        res = 0
+        for r in range(m):
+            for c in range(n):
+                # only check when it's land (so no need to check in BFS)
+                if grid[r][c] == 1:
+                    res = max(res, bfs(r, c))
+        
+        return res
+        
+    
+    def maxAreaOfIsland(self, grid: List[List[int]]) -> int:
+        """
+        https://neetcode.io/problems/max-area-of-island
+        Time: O(m * n), Space: O(m * n)
+        """
         m, n = len(grid), len(grid[0])
 
         def dfs(r, c):
