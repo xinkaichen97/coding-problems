@@ -1,6 +1,7 @@
 """
 Problems for Graphs
 """
+from collections import deque
 from typing import List
 
 
@@ -185,6 +186,71 @@ class Solution:
         return dfs(node)
 
 
+    def islandsAndTreasure(self, grid: List[List[int]]) -> None:
+        """
+        https://neetcode.io/problems/islands-and-treasure
+        Time: O(m * n), Space: O(m * n)
+        """
+        m, n = len(grid), len(grid[0])
+        directions = [[0, 1], [0, -1], [1, 0], [-1, 0]]
+
+        # multi-source BFS: add all treasures/gates to the queue
+        q = deque()
+        for r in range(m):
+            for c in range(n):
+                if grid[r][c] == 0:
+                    q.append((r, c))
+
+        # go through each level
+        level = 1
+        while q:
+            for _ in range(len(q)):
+                r, c = q.popleft()
+                for dr, dc in directions:
+                    nr, nc = r + dr, c + dc
+                    # here we process only when in bounds and the cell is land
+                    # so we don't need a visit set; we do if we can't modify the grid
+                    if 0 <= nr < m and 0 <= nc < n and grid[nr][nc] == 2147483647:
+                        q.append((nr, nc))
+                        grid[nr][nc] = level
+            level += 1
+
+
+    def orangesRotting(self, grid: List[List[int]]) -> int:
+        """
+        https://neetcode.io/problems/rotting-fruit
+        Time: O(m * n), Space: O(m * n)
+        """
+        q = deque()
+        fresh = 0
+        time = 0
+        directions = [[0, 1], [0, -1], [1, 0], [-1, 0]]
+
+        # count fresh oranges and add rotten oranges to queue
+        for r in range(len(grid)):
+            for c in range(len(grid[0])):
+                if grid[r][c] == 1:
+                    fresh += 1
+                if grid[r][c] == 2:
+                    q.append((r, c))
+
+        # loop until all rotten oranges are processed or there are no more fresh ones
+        while q and fresh > 0:
+            length = len(q)
+            for i in range(len(q)):
+                r, c = q.popleft()
+                for dr, dc in directions:
+                    row, col = r + dr, c + dc
+                    # directly modify grid, add adjacent fresh oranges to queue
+                    if row in range(len(grid)) and col in range(len(grid[0])) and grid[row][col] == 1:
+                        grid[row][col] = 2
+                        q.append((row, col))
+                        fresh -= 1
+            time += 1
+            
+        return time if fresh == 0 else -1
+
+    
     def pacificAtlantic(self, heights: List[List[int]]) -> List[List[int]]:
         """
         https://neetcode.io/problems/pacific-atlantic-water-flow
