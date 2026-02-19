@@ -39,6 +39,24 @@ class Solution:
         res.append(newInterval)
         return res
 
+        # # binary search approach
+        # target = newInterval[0]
+        # l, r = 0, len(intervals) - 1
+        # while l < r:
+        #     m = (l + r) // 2
+        #     if intervals[m][0] < target:
+        #         l = m + 1
+        #     else:
+        #         r = m - 1
+        # intervals.insert(l, newInterval) # l = bisect.bisect_left(intervals, [start, float("-inf")])
+        # res = []
+        # for interval in intervals:
+        #     if not res or res[-1][1] < interval[0]:
+        #         res.append(interval)
+        #     else:
+        #         res[-1][1] = max(res[-1][1], interval[1])
+        # return res
+
 
     def merge(self, intervals: List[List[int]]) -> List[List[int]]:
         """
@@ -60,6 +78,24 @@ class Solution:
                 res.append(intervals[i])
                 
         return res
+
+        # # sweep line algorithm
+        # mp = defaultdict(int)
+        # for start, end in intervals:
+        #     mp[start] += 1
+        #     mp[end] -= 1
+        # res = []
+        # merged = []
+        # have = 0
+        # for i in sorted(mp):
+        #     if not merged:
+        #         merged.append(i)
+        #     have += mp[i]
+        #     if have == 0:
+        #         merged.append(i)
+        #         res.append(merged)
+        #         merged = []
+        # return res
         
         
     def canAttendMeetings(self, intervals: List[Interval]) -> bool:
