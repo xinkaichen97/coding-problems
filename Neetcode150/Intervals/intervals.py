@@ -192,3 +192,36 @@ class Solution:
         #     res = max(res, curr)
         # return res
       
+
+    def minInterval(self, intervals: List[List[int]], queries: List[int]) -> List[int]:
+        """
+        https://neetcode.io/problems/minimum-interval-including-query
+        Time: O(mlogm + nlogn), Space: O(m + n)
+        """
+        heap = []
+        res = {}
+        # i is the global index for intervals
+        i = 0
+        intervals.sort()
+        
+        # use a copy of sorted queries
+        for q in sorted(queries):
+            # add intervals to the min heap if the start time is before q
+            # we can't check end >= q here because we may miss valid intervals after an invalid one
+            while i < len(intervals) and intervals[i][0] <= q:
+                l, r = intervals[i]
+                # add (length, end) so that the top of the heap is the shortest
+                heapq.heappush(heap, (r - l + 1, r))
+                i += 1
+
+            # remove expired intervals (end time is before q)
+            while heap and heap[0][1] < q:
+                heapq.heappop(heap)
+
+            # get the shortest length or -1 if not found
+            res[q] = heap[0][0] if heap else -1
+
+        # get the original order
+        res = [res[q] for q in queries]
+        return res
+        
