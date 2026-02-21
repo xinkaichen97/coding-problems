@@ -92,3 +92,37 @@ class Solution:
             
         return res
         
+
+    def canCompleteCircuit(self, gas: List[int], cost: List[int]) -> int:
+        """
+        https://neetcode.io/problems/gas-station
+        Time: O(n), Space: O(1)
+        """
+        # # two-pointer approach
+        # start, end = len(gas) - 1, 0
+        # tank = gas[start] - cost[start]
+        # while start > end:
+        #     if tank < 0:
+        #         start -= 1
+        #         tank += gas[start] - cost[start]
+        #     else:
+        #         tank += gas[end] - cost[end]
+        #         end += 1
+        # return start if tank >= 0 else -1
+        
+        # immediately return if total gas is lower than total cost
+        if sum(gas) < sum(cost):
+            return -1
+            
+        total = 0
+        res = 0
+        for i in range(len(gas)):
+            total += (gas[i] - cost[i])
+            # if accumulated total is negative
+            # that means there's no valid starting point from res to i, go to i + 1
+            if total < 0:
+                total = 0
+                res = i + 1
+                
+        return res
+        
