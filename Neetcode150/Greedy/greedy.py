@@ -211,3 +211,52 @@ class Solution:
                 
         return res
         
+
+    def checkValidString(self, s: str) -> bool:
+        """
+        https://neetcode.io/problems/valid-parenthesis-string
+        Time: O(n), Space: O(n)
+        """
+        # two stacks for left parentheses and stars
+        left, star = [], []
+        for i in range(len(s)):
+            # add to each stack
+            if s[i] == '(':
+                left.append(i)
+            elif s[i] == '*':
+                star.append(i)
+            else:
+                # if left and star are empty, we can't match the right parenthesis
+                if not left and not star:
+                    return False
+                # pop from left first, otherwise pop from star
+                if left:
+                    left.pop()
+                else:
+                    star.pop()
+                    
+        # for the remaining items, treat star as right parenthesis
+        while left and star:
+            # if left's index is greater, we can't close it
+            if left.pop() > star.pop():
+                return False
+
+        # check if left is empty
+        return not left
+
+        # # Greedy approach, Space O(1)
+        # # min/max number of unmatched '('
+        # leftMin, leftMax = 0, 0 
+        # for c in s:
+        #     if c == "(":
+        #         leftMin, leftMax = leftMin + 1, leftMax + 1
+        #     elif c == ")":
+        #         leftMin, leftMax = leftMin - 1, leftMax - 1
+        #     else:
+        #         leftMin, leftMax = leftMin - 1, leftMax + 1
+        #     if leftMax < 0:
+        #         return False
+        #     if leftMin < 0:
+        #         leftMin = 0
+        # return leftMin == 0
+        
