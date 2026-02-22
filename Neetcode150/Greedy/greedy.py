@@ -125,4 +125,43 @@ class Solution:
                 res = i + 1
                 
         return res
-        
+
+
+    def isNStraightHand(self, hand: List[int], groupSize: int) -> bool:
+        """
+        https://neetcode.io/problems/hand-of-straights
+        Time: O(nlogn), Space: O(n)
+        """
+        # if hand not divisible by groupSize, directly return false
+        if len(hand) % groupSize:
+            return False
+
+        # sort the array and go through each number
+        hand.sort()
+        counts = Counter(hand) # Counter handles missing keys
+        for num in hand:
+            # if current count > 0, try to start a group
+            if counts[num]:
+                for i in range(num, num + groupSize):
+                    if not counts[i]:
+                        return False
+                    # decrement when included in a group
+                    counts[i] -= 1
+
+        # # O(n) solution - sorting not needed
+        # for num in hand:
+        #     start = num
+        #     # for the current number, try to go back as much as possible
+        #     while counts[start - 1]:
+        #         start -= 1
+        #     # try to start a group
+        #     while start <= num:
+        #         # for multiple groups at the same start, keep searching until count is 0
+        #         while counts[start] > 0:
+        #             for i in range(start, start + groupSize):
+        #                 if not counts[i]:
+        #                     return False
+        #                 counts[i] -= 1
+        #         start += 1
+                
+        return True
