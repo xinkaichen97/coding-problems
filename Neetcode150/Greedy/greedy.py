@@ -165,3 +165,49 @@ class Solution:
         #         start += 1
                 
         return True
+
+
+    def mergeTriplets(self, triplets: List[List[int]], target: List[int]) -> bool:
+        """
+        https://neetcode.io/problems/merge-triplets-to-form-target
+        Time: O(n), Space: O(1)
+        """
+        # three boolean values to track each position
+        x = y = z = False
+        for t in triplets:
+            # skip if any value is greater than target
+            if t[0] > target[0] or t[1] > target[1] or t[2] > target[2]:
+                continue
+            # update x, y, z using OR
+            x |= t[0] == target[0]
+            y |= t[1] == target[1]
+            z |= t[2] == target[2]
+            if x and y and z:
+                return True
+                
+        return False
+
+
+    def partitionLabels(self, s: str) -> List[int]:
+        """
+        https://neetcode.io/problems/partition-labels
+        Time: O(n), Space: O(1)
+        """
+        # use a HashMap to save the last index of a character
+        mp = {}
+        for i, c in enumerate(s):
+            mp[c] = i
+        
+        res = []
+        size = end = 0
+        for i, c in enumerate(s):
+            # keep updating size and end until it converges
+            size += 1
+            end = max(end, mp[c])
+            # when i catches up to end, add to res
+            if i == end:
+                res.append(size)
+                size = 0
+                
+        return res
+        
