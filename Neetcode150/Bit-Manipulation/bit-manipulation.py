@@ -102,3 +102,29 @@ class Solution:
         
         return res
         
+
+    def reverse(self, x: int) -> int:
+        """
+        https://neetcode.io/problems/reverse-integer
+        Time: O(1), Space: O(1)
+        """
+        # keep track of min and max
+        MIN = -2147483648  # -2^31
+        MAX = 2147483647  #  2^31-1
+        res = 0
+        while x:
+            # use math.fmod instead of % to handle negative values, e.g. -1 % 10 = 9, WRONG!
+            digit = int(math.fmod(x, 10))
+            # use float division and convert to int to handle negative values, e.g. -1 // 10 = -1
+            x = int(x / 10)
+            # before updating res, if it's already greater than MAX or smaller than MIN, overflow -> return 0
+            # sme if the current digit is greater than MAX's final digit or smaller than MIN's final digit
+            if res > MAX // 10 or (res == MAX // 10 and digit > MAX % 10):
+                return 0
+            if res < MIN // 10 or (res == MIN // 10 and digit < MIN % 10):
+                return 0
+            # update res
+            res = res * 10 + digit
+            
+        return res
+        
