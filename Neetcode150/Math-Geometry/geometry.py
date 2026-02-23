@@ -101,3 +101,31 @@ class Solution:
         if rowZero:
             for c in range(n_cols):
                 matrix[0][c] = 0   
+
+
+class CountSquares:
+    """
+    https://neetcode.io/problems/count-squares
+    Time: O(1) for add(), O(n) for count(), Space - O(n)
+    """
+
+    def __init__(self):
+        # use a HashMap to keep track of counts
+        # and a list to store potentially duplicate points
+        self.counts = defaultdict(int)
+        self.points = []
+
+    def add(self, point: List[int]) -> None:
+        self.counts[tuple(point)] += 1
+        self.points.append(point)
+
+    def count(self, point: List[int]) -> int:
+        res = 0
+        qx, qy = point
+        for x, y in self.points:
+            # if absolute values are the same and not the same points, we found a diagonal point
+            if abs(x - qx) == abs(y - qy) and x != qx and y != qy:
+                # check the counts of the other two points, multiply and add to res
+                res += self.counts[(x, qy)] * self.counts[(qx, y)]
+        return res
+      
