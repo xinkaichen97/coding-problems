@@ -298,3 +298,48 @@ class Solution:
 
         return res
         
+
+    def solveNQueens(self, n: int) -> List[List[str]]:
+        """
+        https://neetcode.io/problems/n-queens
+        Time: O(n!), Space: O(n)
+        """
+        # three sets for columns, positive and negative diagonals
+        cols = set()
+        posDiag, negDiag = set(), set()
+        # initialize grid and res
+        grid = [["."] * n for _ in range(n)]
+        res = []
+
+        def backtrack(r):
+            # return case: completed all rows
+            if r == n:
+                copy = ["".join(row) for row in grid]
+                res.append(copy)
+            # in the current row, check every column
+            for c in range(n):
+                # for positive diagonals, r + c is constant (0, n - 1), (1, n - 2), ...
+                # for negative diagonals, r - c is constant (0, 1), (1, 2), ...
+                # we keep these values in the sets
+                if c in cols or (r + c) in posDiag or (r - c) in negDiag:
+                    continue
+
+                # add current position to sets and place a queen
+                cols.add(c)
+                posDiag.add(r + c)
+                negDiag.add(r - c)
+                grid[r][c] = "Q"
+
+                # go to the next row
+                backtrack(r + 1)
+
+                # backtrack, remove everything from the sets
+                cols.remove(c)
+                posDiag.remove(r + c)
+                negDiag.remove(r - c)
+                grid[r][c] = "."
+
+        # start from row 0
+        backtrack(0)
+        return res
+        
