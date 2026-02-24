@@ -294,6 +294,43 @@ class Solution:
         return res
 
 
+    def solve(self, board: List[List[str]]) -> None:
+        """
+        https://neetcode.io/problems/surrounded-regions
+        Time: O(m * n), Space: O(m * n)
+        """
+        m, n = len(board), len(board[0])
+        directions = [(0, 1), (0, -1), (1, 0), (-1, 0)]
+
+        def bfs():
+            # add all border O's to the queue instead of adding them one by one
+            q = deque()
+            for r in range(m):
+                for c in range(n):
+                    if (r == 0 or r == m - 1 or c == 0 or c == n - 1) and board[r][c] == "O":
+                        # mark before adding
+                        board[r][c] = "#"
+                        q.append((r, c))
+            while q:
+                r, c = q.popleft()
+                # no need to check here because all items are marked
+                for dr, dc in directions:
+                    nr, nc = r + dr, c + dc
+                    if 0 <= nr < m and 0 <= nc < n and board[nr][nc] == "O":
+                        # mark before adding
+                        board[nr][nc] = "#"
+                        q.append((nr, nc))
+
+        bfs()
+        # convert surrounded O to X, and then # (border O) back to O
+        for r in range(m):
+            for c in range(n):
+                if board[r][c] == "O":
+                    board[r][c] = "X"
+                if board[r][c] == "#":
+                    board[r][c] = "O"
+
+    
     def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
         """
         https://neetcode.io/problems/course-schedule
