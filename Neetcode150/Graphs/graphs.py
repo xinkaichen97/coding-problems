@@ -450,3 +450,38 @@ class Solution:
             res -= union(u, v)
         return res
         
+
+    def findRedundantConnection(self, edges: List[List[int]]) -> List[int]:
+        """
+        https://neetcode.io/problems/redundant-connection
+        Time: O(V+E*α(V)) ~ O(V+E), Space: O(V)
+        """
+        n = len(edges)
+        par = list(range(n + 1))
+        rank = [1] * (n + 1)
+
+        def find(n): # O(α(V) after path compression
+            while n != par[n]:
+                # must update par[n] in order to perform path compression
+                par[n] = par[par[n]]
+                n = par[n]
+            return n
+        
+        def union(n1, n2):
+            p1, p2 = find(n1), find(n2)
+            if p1 == p2:
+                return False
+            # union by rank: O(V) -> O(logV)
+            if rank[p1] > rank[p2]:
+                rank[p1] += rank[p2]
+                par[p2] = p1
+            else:
+                rank[p2] += rank[p1]
+                par[p1] = p2
+            return True
+        
+        for u, v in edges:
+            # if union() returns False, that means the edge will form a circle
+            if not union(u, v):
+                return [u, v]
+                
