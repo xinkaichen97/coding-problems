@@ -485,3 +485,45 @@ class Solution:
             if not union(u, v):
                 return [u, v]
                 
+
+    def ladderLength(self, beginWord: str, endWord: str, wordList: List[str]) -> int:
+        """
+        https://neetcode.io/problems/word-ladder
+        Time: O(m^2 * n), Space: O(m^2 * n), n - len(wordList), m - len(word)
+        """
+        # invalid case
+        if endWord not in wordList:
+            return 0
+
+        # create a pattern -> words mapping
+        mp = defaultdict(list)
+        wordList.append(beginWord)
+
+        # replace each letter with * as a pattern
+        for word in wordList:
+            for j in range(len(word)):
+                pattern = word[:j] + "*" + word[j+1:]
+                mp[pattern].append(word)
+        
+        visit = set([beginWord])
+        q = deque([beginWord])
+        res = 1
+        while q:
+            # process each level
+            for _ in range(len(q)):
+                word = q.popleft()
+                # found the word
+                if word == endWord:
+                    return res
+                # replace each letter with *, and find all neighbors
+                for j in range(len(word)):
+                    pattern = word[:j] + "*" + word[j+1:]
+                    for nb in mp[pattern]:
+                        # if not visited, add to queue
+                        if nb not in visit:
+                            visit.add(nb)
+                            q.append(nb)
+            res += 1
+
+        # not possible, return 0
+        return 0
