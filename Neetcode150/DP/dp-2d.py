@@ -52,3 +52,38 @@ class Solution:
                     
         return dp[0][0]
       
+
+    def minDistance(self, word1: str, word2: str) -> int:
+        """
+        https://neetcode.io/problems/edit-distance
+        Time: O(m * n), Space: O(m * n)
+        """
+        len1, len2 = len(word1), len(word2)
+        # base case
+        if len1 == 0:
+            return len2
+        if len2 == 0:
+            return len1
+
+        # create dp matrix of (m+1) * (n+1)
+        # dp[i][j] - the edit distance between word1[i:] and word2[j:]
+        dp = [[0] * (len2 + 1) for _ in range(len1 + 1)]
+
+        # update the base cases (empty strings at the bottom)
+        for i in range(len1 + 1):
+            dp[i][len2] = len1 - i
+        for j in range(len2 + 1):
+            dp[len1][j] = len2 - j
+
+        # bottom-up
+        for i in range(len1 - 1, -1, -1):
+            for j in range(len2 - 1, -1, -1):
+                # if the current characters are the same, no need to edit at this position
+                if word1[i] == word2[j]:
+                    dp[i][j] = dp[i + 1][j + 1]
+                # otherwise, take the minimum of insert (j + 1), delete (i + 1), or replace, and plus 1
+                else:
+                    dp[i][j] = 1 + min(dp[i][j + 1], dp[i + 1][j], dp[i + 1][j + 1])
+        
+        return dp[0][0]
+      
