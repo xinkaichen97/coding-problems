@@ -53,6 +53,55 @@ class Solution:
         return dp[0][0]
       
 
+    def maxProfit(self, prices: List[int]) -> int:
+        """
+        https://neetcode.io/problems/buy-and-sell-crypto-with-cooldown
+        Time: O(n), Space: O(n)
+        """
+        # top-down DP with memoization
+        dp = {}
+
+        def dfs(i, canBuy):
+            # base case
+            if i >= len(prices):
+                return 0
+            if (i, canBuy) in dp:
+                return dp[(i, canBuy)]
+
+            # always calculate the cooldown value - skip the current day
+            cooldown = dfs(i + 1, canBuy)
+            # if able to buy
+            if canBuy:
+                # calculate the profit of buying and compare with cooldown
+                res = dfs(i + 1, False) - prices[i]
+                dp[(i, canBuy)] = max(res, cooldown)
+            else:
+                # calculate the profit of selling and compare with cooldown
+                res = dfs(i + 2, True) + prices[i] # need to skip the next day
+                dp[(i, canBuy)] = max(res, cooldown)
+            return dp[(i, canBuy)]
+        
+        return dfs(0, True)
+
+        # # bottom-up DP
+        # n = len(prices)
+        # # dp[i][0] - max profit from day i if can sell, dp[i][1] - if can buy
+        # dp = [[0, 0] for _ in range(n + 1)]
+        # for i in range(n - 1, -1, -1):
+        #     for buying in [True, False]:
+        #         if buying:
+        #             # buy - profit if buying today; cooldown - profit if not buying
+        #             buy = dp[i + 1][0] - prices[i] if i + 1 < n else -prices[i] # if out of bounds, dp value = 0
+        #             cooldown = dp[i + 1][1] if i + 1 < n else 0
+        #             dp[i][1] = max(buy, cooldown)
+        #         else:
+        #             # sell - profit if selling today; can buy on day i + 2
+        #             sell = dp[i + 2][1] + prices[i] if i + 2 < n else prices[i]
+        #             cooldown = dp[i + 1][0] if i + 1 < n else 0
+        #             dp[i][0] = max(sell, cooldown)
+        # return dp[0][1]
+
+  
     def minDistance(self, word1: str, word2: str) -> int:
         """
         https://neetcode.io/problems/edit-distance
