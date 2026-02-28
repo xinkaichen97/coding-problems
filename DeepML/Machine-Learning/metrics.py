@@ -116,3 +116,26 @@ def mae(y_true, y_pred):
 	"""
 	val = np.mean(np.abs(y_true - y_pred))
 	return round(val, 3)
+
+
+def huber_loss(y_true, y_pred, delta=1.0):
+	"""
+    192. Compute the Huber Loss between true and predicted values.
+	https://www.deep-ml.com/problems/192
+    Args:
+        y_true (float | list[float]): Ground truth values
+        y_pred (float | list[float]): Predicted values
+        delta (float): Transition threshold between MSE and MAE behavior
+    Returns:
+        float: Average Huber loss
+    """
+    y_true = np.array(y_true)
+    y_pred = np.array(y_pred)
+    diff = y_true - y_pred
+    huber = np.where(
+        np.abs(diff) <= delta,
+        0.5 * diff ** 2,
+        delta * (np.abs(diff) - 0.5 * delta)
+    )
+    return np.mean(huber)
+	
