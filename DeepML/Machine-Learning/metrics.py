@@ -132,10 +132,42 @@ def huber_loss(y_true, y_pred, delta=1.0):
     y_true = np.array(y_true)
     y_pred = np.array(y_pred)
     diff = y_true - y_pred
+	# when diff <= delta, it's the MSE; otherwise, it's δ * (|r| - δ/2)
     huber = np.where(
         np.abs(diff) <= delta,
         0.5 * diff ** 2,
         delta * (np.abs(diff) - 0.5 * delta)
     )
     return np.mean(huber)
+	
+
+def focal_loss(y_true, y_pred, gamma=2.0, alpha=None):
+    """
+    255. Compute Focal Loss for multi-class classification.
+    https://www.deep-ml.com/problems/255
+    Args:
+        y_true: Ground truth labels as class indices (list or 1D array)
+        y_pred: Predicted probabilities (2D array, shape: [n_samples, n_classes])
+        gamma: Focusing parameter (default: 2.0)
+        alpha: Class weights (optional, list or 1D array of length n_classes)
+    Returns:
+        float: Average focal loss
+    """
+    n_samples = len(y_true)
+    y_true, y_pred = np.array(y_true), np.array(y_pred)
+	# clip y_pred to avoid log issues
+    y_pred = np.clip(y_pred, 1e-8, 1 - 1e-8)
+	# get true class probabilities from y_true
+    p_t = y_pred[np.arange(n_samples), y_true]
+	
+	# apply alpha weights (n_classes,)
+    if alpha:
+        alpha = np.array(alpha)
+		 # get weights for each sample
+        alpha_t = alpha[y_true]
+    else:
+        alpha_t = np.ones(n_samples)
+		
+    fl = - alpha_t * (1 - p_t) ** gamma * np.log(p_t)
+    return np.mean(fl)
 	
