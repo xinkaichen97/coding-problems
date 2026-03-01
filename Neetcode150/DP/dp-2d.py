@@ -101,6 +101,42 @@ class Solution:
         #             dp[i][0] = max(sell, cooldown)
         # return dp[0][1]
 
+
+    def change(self, amount: int, coins: List[int]) -> int:
+        """
+        https://neetcode.io/problems/coin-change-ii
+        Time: O(n * a), Space: O(n * a)
+        """
+        # top-down DP with memoization
+        dp = {}
+        def dfs(i, cursum):
+            # base cases
+            if cursum == amount:
+                return 1
+            if i == len(coins) or cursum > amount:
+                return 0
+            if (i, cursum) in dp:
+                return dp[(i, cursum)]
+
+            # either pick the current coin (keep the current index for re-picking) or skip
+            dp[(i, cursum)] = dfs(i, cursum + coins[i]) + dfs(i + 1, cursum)
+            return dp[(i, cursum)]
+        
+        return dfs(0, 0)
+
+        # # bottom-up DP
+        # n = len(coins)
+        # # dp[i][a]: the number of ways to form amount a using coins from index i onward
+        # dp = [[0] * (amount + 1) for _ in range(n + 1)]  # (n+1) * (amount+1)
+        # for i in range(n + 1):
+        #     dp[i][0] = 1  # initialize the first column as 1 - one way to get amount 0 (no coin)
+        # for i in range(n - 1, -1, -1):  
+        #     for a in range(amount + 1):
+        #         dp[i][a] = dp[i + 1][a]  # always copy from i+1
+        #         if a >= coins[i]: 
+        #             dp[i][a] += dp[i][a - coins[i]]
+        # return dp[0][amount]
+
   
     def minDistance(self, word1: str, word2: str) -> int:
         """
