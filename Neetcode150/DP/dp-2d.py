@@ -145,6 +145,48 @@ class Solution:
         #         dp[a] += dp[a - coins[i]] if coins[i] <= a else 0
         # return dp[amount]
 
+
+    def findTargetSumWays(self, nums: List[int], target: int) -> int:
+        """
+        https://neetcode.io/problems/target-sum
+        Time: O(n * m), Space: O(n * m), n - len(nums), m - sum(nums)
+        """
+        # top-down DP with memoization
+        memo = {}
+        def dfs(i, cursum):
+            # when reaching the end, check if cursum is the same as target
+            if i == len(nums):
+                return cursum == target
+            if (i, cursum) in memo:
+                return memo[(i, cursum)]
+            # add or subtract nums[i] and go to i + 1
+            memo[(i, cursum)] = dfs(i + 1, cursum + nums[i]) + dfs(i + 1, cursum - nums[i])
+            return memo[(i, cursum)]
+          
+        return dfs(0, 0)
+      
+        # # bottom-up DP
+        # n = len(nums)
+        # # dp[i] - the counts for each sum using the first i numbers
+        # dp = [defaultdict(int) for _ in range(n + 1)]  # cannot do [defaultdict(int)] * (n + 1)
+        # dp[0][0] = 1
+        # for i in range(n):
+        #     for total, count in dp[i].items():  # add counts to dp[i + 1]
+        #         dp[i + 1][total + nums[i]] += count
+        #         dp[i + 1][total - nums[i]] += count
+        # return dp[n][target]
+
+        # # O(m) Space solution
+        # dp = defaultdict(int)
+        # dp[0] = 1
+        # for i in range(n):
+        #     nextdp = defaultdict(int)
+        #     for total, count in dp.items():
+        #         nextdp[total + nums[i]] += count
+        #         nextdp[total - nums[i]] += count
+        #     dp = nextdp
+        # return dp[target]
+
   
     def minDistance(self, word1: str, word2: str) -> int:
         """
