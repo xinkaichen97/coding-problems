@@ -171,3 +171,18 @@ def focal_loss(y_true, y_pred, gamma=2.0, alpha=None):
     fl = - alpha_t * (1 - p_t) ** gamma * np.log(p_t)
     return np.mean(fl)
 	
+
+def hinge_loss(y_true: np.ndarray, y_pred: np.ndarray) -> float:
+    """
+    283. Compute the average hinge loss for SVM classification.
+    https://www.deep-ml.com/problems/283
+    Args:
+        y_true: Array of true labels (-1 or +1)
+        y_pred: Array of predicted scores (raw SVM scores)
+    Returns:
+        Average hinge loss rounded to 4 decimal places
+    """
+    y_true, y_pred = np.array(y_true), np.array(y_pred)
+    hl = np.maximum(0, 1 - y_true * y_pred) # use np.maximum, not np.max
+    return np.round(np.mean(hl), 4)
+	
