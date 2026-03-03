@@ -217,6 +217,33 @@ class Solution:
         
         return dfs(0, 0)
 
+
+    def longestIncreasingPath(self, matrix: List[List[int]]) -> int:
+        """
+        https://neetcode.io/problems/longest-increasing-path-in-matrix
+        Time: O(m * n), Space: O(m * n)
+        """
+        m, n = len(matrix), len(matrix[0])
+        memo = {}
+        def dfs(i, j, prev):
+            if 0 <= i < m and 0 <= j < n and matrix[i][j] > prev:
+                # ONLY use cached values if in a valid path given the value of prev
+                if (i, j) in memo:
+                    return memo[(i, j)]
+                curr = matrix[i][j]
+                # check every neighbor
+                res = 1 + max(dfs(i, j + 1, curr), dfs(i, j - 1, curr), dfs(i + 1, j, curr), dfs(i - 1, j, curr))
+                memo[(i, j)] = res
+                return res
+            else:
+                return 0
+
+        # check every cell
+        for i in range(m):
+            for j in range(n):
+                dfs(i, j, -1)
+        return max(memo.values())
+
   
     def minDistance(self, word1: str, word2: str) -> int:
         """
