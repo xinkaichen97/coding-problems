@@ -187,6 +187,36 @@ class Solution:
         #     dp = nextdp
         # return dp[target]
 
+
+    def isInterleave(self, s1: str, s2: str, s3: str) -> bool:
+        """
+        https://neetcode.io/problems/interleaving-string
+        Time: O(m * n), Space: O(m * n)
+        """
+        # base case
+        if len(s1) + len(s2) != len(s3):
+            return False
+        memo = {}
+      
+        def dfs(i, j):
+            # when both strings are completed, check if s3 is complete
+            if i == len(s1) and j == len(s2):
+                return i + j == len(s3)
+            if (i, j) in memo:
+                return memo[(i, j)]
+    
+            res = False
+            # use character in s1
+            if i < len(s1) and s1[i] == s3[i + j] and dfs(i + 1, j):
+                res = True
+            # use character in s2
+            if j < len(s2) and s2[j] == s3[i + j] and dfs(i, j + 1):
+                res = True
+            memo[(i, j)] = res
+            return res
+        
+        return dfs(0, 0)
+
   
     def minDistance(self, word1: str, word2: str) -> int:
         """
