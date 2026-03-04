@@ -196,6 +196,7 @@ class Solution:
         # base case
         if len(s1) + len(s2) != len(s3):
             return False
+        # top-down DP with memoization
         memo = {}
       
         def dfs(i, j):
@@ -224,6 +225,7 @@ class Solution:
         Time: O(m * n), Space: O(m * n)
         """
         m, n = len(matrix), len(matrix[0])
+        # top-down DP with memoization
         memo = {}
         def dfs(i, j, prev):
             if 0 <= i < m and 0 <= j < n and matrix[i][j] > prev:
@@ -244,6 +246,37 @@ class Solution:
                 dfs(i, j, -1)
         return max(memo.values())
 
+
+    def numDistinct(self, s: str, t: str) -> int:
+        """
+        https://neetcode.io/problems/count-subsequences
+        Time: O(m * n), Space: O(m * n)
+        """
+        # base case
+        if len(t) > len(s):
+            return 0
+        # top-down DP with memoization
+        memo = {}
+        def dfs(i, j):
+            # if reaching the end of t, we found a valid subsequence
+            if j == len(t):
+                return 1
+            # if reaching the end of s, we didn't find a valid subsequence
+            if i == len(s):
+                return 0
+            if (i, j) in memo:
+                return memo[(i, j)]
+
+            # always move i forward (skip current character)
+            res = dfs(i + 1, j)
+            # if characters match, move both indices
+            if s[i] == t[j]:
+                res += dfs(i + 1, j + 1)
+            memo[(i, j)] = res
+            return res
+        
+        return dfs(0, 0)
+      
   
     def minDistance(self, word1: str, word2: str) -> int:
         """
