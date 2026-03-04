@@ -276,6 +276,19 @@ class Solution:
             return res
         
         return dfs(0, 0)
+
+        # # bottom-up DP
+        # m, n = len(s), len(t)
+        # dp = [[0] * (n + 1) for _ in range(m + 1)]
+        # # dp[i][j] - the number of unique ways to form t[j:] from s[i:]
+        # for i in range(m + 1):
+        #     dp[i][n] = 1  # when t is empty, there is one way by choosing nothing
+        # for i in range(m - 1, -1, -1):
+        #     for j in range(n - 1, -1, -1):
+        #         dp[i][j] = dp[i + 1][j]
+        #         if s[i] == t[j]:
+        #             dp[i][j] += dp[i + 1][j + 1]
+        # return dp[0][0]
       
   
     def minDistance(self, word1: str, word2: str) -> int:
