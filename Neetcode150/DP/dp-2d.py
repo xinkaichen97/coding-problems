@@ -325,3 +325,42 @@ class Solution:
         
         return dp[0][0]
       
+
+    def maxCoins(self, nums: List[int]) -> int:
+        """
+        https://neetcode.io/problems/burst-balloons
+        Time: O(n^3), Space: O(n^2)
+        """
+        # pad 1 on both ends
+        nums = [1] + nums + [1]
+        memo = {}
+        def dfs(l, r):
+            if l > r:
+                return 0
+            if (l, r) in memo:
+                return memo[(l, r)]
+                
+            res = 0
+            # the i-th item is to be popped LAST
+            for i in range(l, r + 1):
+                # l - 1 instead of i - 1, r + 1 instead of i + 1
+                curr = nums[l - 1] * nums[i] * nums[r + 1]
+                curr += dfs(l, i - 1) + dfs(i + 1, r)
+                res = max(res, curr)
+            memo[(l, r)] = res
+            return res
+
+        return dfs(1, len(nums) - 2)
+
+        # # bottom-up DP
+        # n = len(nums)
+        # nums = [1] + nums + [1]
+        # dp = [[0] * (n + 2) for _ in range(n + 2)]  # dp[l][r] - max coins from l to r
+        # for l in range(n, 0, -1):
+        #     for r in range(l, n + 1):
+        #         for i in range(l, r + 1):
+        #             coins = nums[l - 1] * nums[i] * nums[r + 1]
+        #             coins += dp[l][i - 1] + dp[i + 1][r]
+        #             dp[l][r] = max(dp[l][r], coins)
+        # return dp[1][n]
+      
