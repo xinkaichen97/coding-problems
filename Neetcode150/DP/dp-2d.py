@@ -333,6 +333,7 @@ class Solution:
         """
         # pad 1 on both ends
         nums = [1] + nums + [1]
+        # top-down DP with memoization
         memo = {}
         def dfs(l, r):
             if l > r:
@@ -364,3 +365,58 @@ class Solution:
         #             dp[l][r] = max(dp[l][r], coins)
         # return dp[1][n]
       
+
+    def isMatch(self, s: str, p: str) -> bool:
+        """
+        https://neetcode.io/problems/regular-expression-matching
+        Time: O(m * n), Space: O(m * n)
+        """
+        # top-down DP with memoization
+        memo = {}
+        def dfs(i, j):
+            # when j is out of bounds, i must be out of bounds too, meaning we found a match
+            # when i is out of bounds, j could still be in bounds, like a vs a*
+            if j == len(p):
+                return i == len(s)
+            
+            if (i, j) in memo:
+                return memo[(i, j)]
+
+            # need to check if i is in bounds
+            match = i < len(s) and (s[i] == p[j] or p[j] == ".")
+
+            # if the next character is *
+            if j + 1 < len(p) and p[j + 1] == "*":
+                # same as memo[(i, j)] = (dfs(i, j + 2) or (match and dfs(i + 1, j)))
+                # option 1: do not use *
+                memo[(i, j)] = dfs(i, j + 2)
+                # option 2: use * if there's a match
+                if match:
+                    memo[(i, j)] = memo[(i, j)] or dfs(i + 1, j)
+                return memo[(i, j)]
+
+            # when there's no *, simply compare the characters
+            if match:
+                memo[(i, j)] = dfs(i + 1, j + 1)
+            else:
+                memo[(i, j)] = False
+            return memo[(i, j)]
+        
+        return dfs(0, 0)
+
+        # # bottom-up DP
+        # m, n = len(s), len(p)
+        # # dp[i][j] - if s[i:] can match with p[j:]
+        # dp = [[False] * (n + 1) for i in range(m + 1)]
+        # dp[m][n] = True
+        # for i in range(m, -1, -1):
+        #     for j in range(n - 1, -1, -1):
+        #         match = i < m and (s[i] == p[j] or p[j] == ".")
+        #         if (j + 1) < n and p[j + 1] == "*":
+        #             dp[i][j] = dp[i][j + 2]
+        #             if match:
+        #                 dp[i][j] = dp[i + 1][j] or dp[i][j]
+        #         elif match:
+        #             dp[i][j] = dp[i + 1][j + 1]
+        # return dp[0][0]
+        
