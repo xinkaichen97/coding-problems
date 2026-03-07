@@ -55,8 +55,7 @@ class Solution:
     def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
         """
         https://neetcode.io/problems/anagram-groups
-        Time: O(n * m), Space: O(n) 
-        -- m: max([len(s) for s in strs]), n: len(strs)
+        Time: O(n * m), Space: O(n), m - max([len(s) for s in strs]), n - len(strs)
         """
         res = defaultdict(list)
         for s in strs:
@@ -96,10 +95,9 @@ class Solution:
     def encode(self, strs: List[str]) -> str:
         """
         https://neetcode.io/problems/string-encode-and-decode
-        Time: O(m), Space: O(m + n) 
-        -- m: sum([len(s) for s in strs]), n: len(strs)
+        Time: O(m), Space: O(m + n), m - sum([len(s) for s in strs]), n - len(strs)
         """
-        res = ''
+        res = ""
         # [app1e, Bee] -> 5#app1e3#Bee
         for s in strs:
             res += str(len(s)) + '#' + s
@@ -111,11 +109,11 @@ class Solution:
         while i < len(s):
             j = i
             # j stops at #
-            while s[j] != '#':
+            while s[j] != "#":
                 j += 1
             # find length and slice 
-            length = int(s[i:j])
-            res.append(s[j+1:j+1+length])
+            length = int(s[i : j])
+            res.append(s[j + 1 : j + 1 + length])
             i = j + 1 + length
         return res
 
