@@ -51,3 +51,56 @@ class Solution:
         # res = max(dist.values())
         # return res if res < float("inf") else -1
       
+
+    def minCostConnectPoints(self, points: List[List[int]]) -> int:
+        """
+        https://neetcode.io/problems/min-cost-to-connect-points
+        Time: O(n^2 * logn), Space: O(n^2)
+        """
+        # create the adjacency list using Manhattan distances to each point
+        adj = defaultdict(list)
+        for i in range(len(points)):
+            xi, yi = points[i]
+            for j in range(i + 1, len(points)):
+                xj, yj = points[j]
+                dist = abs(xi - xj) + abs(yi - yj)
+                adj[i].append((dist, j))
+                adj[j].append((dist, i))
+
+        # Prim's Algorithm
+        res = 0
+        visit = set()
+        # min-heap: (dist, node)
+        heap = [(0, 0)]
+        while len(visit) < len(points):
+            # pop the node with the smallest distance
+            dist, node = heapq.heappop(heap)
+            if node in visit:
+                continue
+            # add distance and add node to visit
+            res += dist
+            visit.add(node)
+            # add all neighbors if not in visit
+            for nbDist, nb in adj[node]:
+                if nb not in visit:
+                    heapq.heappush(heap, (nbDist, nb))
+        
+        return res
+
+        # # Kruskal's Algorithm: use Union-Find
+        # edges = []
+        # dsu = DSU(len(points))
+        # for i in range(len(points)):
+        #     xi, yi = points[i]
+        #     for j in range(i + 1, len(points)):
+        #         xj, yj = points[j]
+        #         dist = abs(xi - xj) + abs(yi - yj)
+        #         edges.append((dist, i, j))
+        # edges.sort()
+        # res = 0
+        # for dist, u, v in edges:
+        #     if dsu.union(u, v):
+        #         res += dist
+        # return res
+      
+      
