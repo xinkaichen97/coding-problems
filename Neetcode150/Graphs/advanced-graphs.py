@@ -104,3 +104,26 @@ class Solution:
         # return res
       
       
+    def findCheapestPrice(self, n: int, flights: List[List[int]], src: int, dst: int, k: int) -> int:
+        """
+        https://neetcode.io/problems/cheapest-flight-path
+        Time: O(n + m * k), Space: O(n), m = len(flights)
+        """
+        # prices: distances from src
+        prices = [float("inf")] * n
+        prices[src] = 0
+
+        # Bell-Ford algorithm
+        for i in range(k + 1):
+            # use a copy to avoid accessing the wrong level
+            temp = prices.copy()
+            for s, d, p in flights:
+                # if the source is unreachable, skip
+                # if the price is lower, update temp (only update prices after processing the entire level)
+                if prices[s] != float("inf") and prices[s] + p < temp[d]:
+                    temp[d] = prices[s] + p
+            prices = temp
+
+        # get the min distance to dst
+        return prices[dst] if prices[dst] < float("inf") else -1
+      
