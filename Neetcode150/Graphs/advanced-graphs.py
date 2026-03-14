@@ -126,4 +126,25 @@ class Solution:
 
         # get the min distance to dst
         return prices[dst] if prices[dst] < float("inf") else -1
+
+        # # deque solution, Time: O(n * k), Space; O(n + m)
+        # prices = [float("inf")] * n
+        # prices[src] = 0
+        # adj = [[] for _ in range(n)]
+        # for u, v, cst in flights:
+        #     adj[u].append([v, cst])
+
+        # q = deque([(0, src, 0)])
+        # while q:
+        #     cst, node, stops = q.popleft()
+        #     if stops > k:
+        #         continue
+
+        #     for nei, w in adj[node]:
+        #         nextCost = cst + w
+        #         if nextCost < prices[nei]:
+        #             prices[nei] = nextCost
+        #             q.append((nextCost, nei, stops + 1))
+
+        # return prices[dst] if prices[dst] != float("inf") else -1
       
