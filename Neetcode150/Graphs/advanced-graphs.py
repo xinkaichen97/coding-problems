@@ -52,6 +52,57 @@ class Solution:
         # return res if res < float("inf") else -1
       
 
+    def findItinerary(self, tickets: List[List[str]]) -> List[str]:
+        """
+        https://neetcode.io/problems/reconstruct-flight-path
+        Time: O(E^2), Space: O(E)
+        """
+        # sort for the lexical order
+        tickets.sort()
+        adj = defaultdict(list)
+        for src, dst in tickets:
+            adj[src].append(dst)
+        
+        res = ["JFK"]
+        def dfs(node):
+            # return if all nodes are traversed
+            if len(res) == len(tickets) + 1:
+                return True
+            # go back if the node doesn't have outgoing edges
+            if node not in adj:
+                return False
+
+            # copy the current list as we need to modify the original
+            temp = adj[node].copy()
+            for i, nb in enumerate(temp):
+                # remove the current node and add to res
+                adj[node].pop(i)
+                res.append(nb)
+                # if we find a valid path from nb, return
+                if dfs(nb):
+                    return True
+                # otherwise backtrack
+                adj[node].insert(i, nb)
+                res.pop()
+        
+        dfs("JFK")
+        return res
+
+        # # Hierholzer's Algorithm - Time: O(ElogE)
+        # adj = defaultdict(list)
+        # for src, dst in sorted(tickets)[::-1]:
+        #     adj[src].append(dst)
+        # res = []
+        # # post-order in the reversed list
+        # def dfs(node):
+        #     while adj[node]:
+        #         nb = adj[node].pop()
+        #         dfs(nb)
+        #     res.append(node)
+        # dfs("JFK")
+        # return res[::-1]
+
+  
     def minCostConnectPoints(self, points: List[List[int]]) -> int:
         """
         https://neetcode.io/problems/min-cost-to-connect-points
