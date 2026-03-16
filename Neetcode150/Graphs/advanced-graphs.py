@@ -190,6 +190,67 @@ class Solution:
         #     if dsu.find(0) == dsu.find(n * n - 1):
         #         return t
                   
+
+    def foreignDictionary(self, words: List[str]) -> str:
+        """
+        https://neetcode.io/problems/foreign-dictionary
+        Time: O(N + V + E), Space: O(V + E), N - sum of lengths of all words
+        """
+        adj = {c: set() for w in words for c in w}
+
+        for i in range(len(words) - 1):
+            w1, w2 = words[i], words[i + 1]
+            minLen = min(len(w1), len(w2))
+            # invalid case: if w2 is a substring of w1 but comes after w1
+            if w1[:minLen] == w2[:minLen] and len(w1) > len(w2):
+                return ""
+            # add the character dependency at the first differing position
+            for j in range(minLen):
+                if w1[j] != w2[j]:
+                    adj[w1[j]].add(w2[j])
+                    break
+
+        # 3-state tracking using a dict
+        visit = {}
+        res = []
+        def dfs(c):
+            if c in visit:
+                return visit[c]
+            # visiting
+            visit[c] = False
+            # if cycle detected, return false
+            for nb in adj[c]:
+                if not dfs(nb):
+                    return False
+            # visited
+            visit[c] = True
+            # add the character post-order
+            res.append(c)
+            return True
+
+        # run dfs and return "" if it's invalid (contains cycle)
+        for c in adj:
+            if not dfs(c):
+                return ""
+
+        # reverse the post-order combination to get the result
+        res.reverse()
+        return "".join(res)
+
+        # # Kahn's Algorithm
+        # q = deque([c for c in indegree if indegree[c] == 0])
+        # res = []
+        # while q:
+        #     char = q.popleft()
+        #     res.append(char)
+        #     for nb in adj[char]:
+        #         indegree[nb] -= 1
+        #         if indegree[nb] == 0:
+        #             q.append(nb)
+        # if len(res) != len(indegree):
+        #     return ""
+        # return "".join(res)
+
   
     def findCheapestPrice(self, n: int, flights: List[List[int]], src: int, dst: int, k: int) -> int:
         """
