@@ -6,6 +6,8 @@ A curated list of 150 LeetCode problems for coding interview preparation.
 
 02/01/2026: Updated all questions of [Blind 75](https://neetcode.io/practice/practice/blind75), a subset of NeetCode 150.
 
+03/15/2026: Updated all questions of [NeetCode 150](https://neetcode.io/practice/practice/neetcode150)!
+
 ---
 
 ## 📚 Categories
