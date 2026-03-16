@@ -154,7 +154,43 @@ class Solution:
         #         res += dist
         # return res
       
-      
+
+    def swimInWater(self, grid: List[List[int]]) -> int:
+        """
+        https://neetcode.io/problems/swim-in-rising-water
+        Time: O(n^2 * logn), Space: O(n^2)
+        """
+        n = len(grid)
+        directions = [[0, 1], [1, 0], [0, -1], [-1, 0]]
+
+        # use a min-heap (max height, row, col)
+        heap = [(grid[0][0], 0, 0)]
+        visit = set()
+        while heap:
+            t, r, c = heapq.heappop(heap)
+            # if reaches the bottom right, return t
+            if r == n - 1 and c == n - 1:
+                return t
+            visit.add((r, c))
+            for dr, dc in directions:
+                nr, nc = r + dr, c + dc
+                if 0 <= nr < n and 0 <= nc < n and (nr, nc) not in visit:
+                    # add the max of the max height so far and the current cell
+                    maxT = max(t, grid[nr][nc])
+                    heapq.heappush(heap, (maxT, nr, nc))
+
+        # # Kruskal's Algorithm
+        # dsu = DSU(n * n)
+        # positions = sorted((grid[r][c], r, c) for r in range(n) for c in range(n))
+        # for t, r, c in positions:
+        #     for dr, dc in directions:
+        #         nr, nc = r + dr, c + dc
+        #         if 0 <= nr < n and 0 <= nc < n and grid[nr][nc] <= t:
+        #             dsu.union(r * n + c, nr * n + nc)
+        #     if dsu.find(0) == dsu.find(n * n - 1):
+        #         return t
+                  
+  
     def findCheapestPrice(self, n: int, flights: List[List[int]], src: int, dst: int, k: int) -> int:
         """
         https://neetcode.io/problems/cheapest-flight-path
