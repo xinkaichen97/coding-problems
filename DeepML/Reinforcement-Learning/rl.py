@@ -123,6 +123,7 @@ def pass_at_1(responses_correct: np.ndarray) -> float:
 def majority_voting(responses: list[str]) -> str:
     """
     226. Return the most common response.
+    https://www.deep-ml.com/problems/226
     
     Args:
         responses: List of response strings
@@ -137,6 +138,7 @@ def majority_voting(responses: list[str]) -> str:
 def pass_at_k(n: int, c: int, k: int) -> float:
     """
     226. Compute unbiased pass@k from n samples with c correct.
+    https://www.deep-ml.com/problems/226
 
     Formula: pass@k = 1 - C(n-c, k) / C(n, k)
     Args:
@@ -157,4 +159,21 @@ def pass_at_k(n: int, c: int, k: int) -> float:
     for i in range(k):
         res *= (n - c - i) / (n - i)
     return 1.0 - res
+    
+
+def compute_td_error(v_s: float, reward: float, v_s_prime: float, gamma: float, done: bool) -> float:
+    """
+    257. Compute the Temporal Difference (TD) error for a single transition.
+    https://www.deep-ml.com/problems/257
+    
+    Args:
+        v_s: Current state value estimate V(s)
+        reward: Immediate reward received
+        v_s_prime: Next state value estimate V(s')
+        gamma: Discount factor (0 <= gamma <= 1)
+        done: True if s' is a terminal state
+    Returns:
+        The TD error delta
+    """
+    return reward + (0.0 if done else gamma * v_s_prime) - v_s
     
