@@ -250,3 +250,28 @@ def zero_pad_image(img: Union[List, np.ndarray], pad_width: int) -> Union[List[L
     # convert to list with integer values
     return padded.astype(int).tolist()
   
+
+def avg_pool_2d(input_matrix: list[list[float]], pool_size: int) -> list[list[float]]:
+  	"""
+  	265. Perform 2D average pooling on the input matrix.
+    https://www.deep-ml.com/problems/265
+  	
+  	Args:
+    		input_matrix: 2D input array of shape (H, W)
+    		pool_size: Size of the square pooling window
+  	Returns:
+  		  2D array after average pooling of shape (H//pool_size, W//pool_size)
+  	"""
+  	arr = np.array(input_matrix)
+  	H, W = arr.shape
+  	out_H = H // pool_size
+  	out_W = W // pool_size
+  	# truncate and then reshape
+  	reshaped = arr[:out_H * pool_size, :out_W * pool_size].reshape(
+          out_H, pool_size, out_W, pool_size
+    )
+    # average over the axis with pool_size
+  	pooled = reshaped.mean(axis=(1, 3))
+      
+  	return pooled.tolist()
+  
