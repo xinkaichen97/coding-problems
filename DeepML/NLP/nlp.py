@@ -1,6 +1,7 @@
 """
 Problems for Natural Language Processing
 """
+import string
 
 
 def unigram_probability(corpus: str, word: str) -> float:
@@ -29,4 +30,28 @@ def calculate_perplexity(probabilities: list[float]) -> float:
     probs = np.array(probabilities)
     pp = np.exp(-np.mean(np.log(probs)))
     return pp
+    
+
+def exact_match_score(predictions: list[str], references: list[str]) -> float:
+    """
+    325. Calculate the exact match score between predictions and references.
+    https://www.deep-ml.com/problems/325
+    
+    Args:
+        predictions: List of predicted strings
+        references: List of reference (ground truth) strings
+    Returns:
+        Exact match score as a float between 0 and 1
+    """
+    if (not predictions and not references) or (len(predictions) != len(references)):
+        return 0.0
+
+    def normalize(s: str) -> str:
+        s = s.lower()
+        s = "".join(c for c in s if c not in string.punctuation) # remove punctuation first
+        s = " ".join(s.split())
+        return s.strip()
+
+    matched = sum(normalize(pred) == normalize(ref) for pred, ref in zip(predictions, references))
+    return matched / len(predictions)
     
