@@ -114,14 +114,16 @@ def layer_norm(x, gamma, beta, eps=1e-5):
 
 def clip_gradients_by_value(gradients: np.ndarray, clip_value: float) -> np.ndarray:
     """
-    Clip gradient values to be within [-clip_value, clip_value].
+    292. Clip gradient values to be within [-clip_value, clip_value].
+    https://www.deep-ml.com/problems/292
     
     Args:
         gradients: A numpy array representing gradients (any shape)
         clip_value: The maximum absolute value for any gradient element (non-negative)
-    
     Returns:
         Clipped gradients with same shape as input
     """
-    pass
+    clipped = np.where(gradients > clip_value, clip_value, gradients)
+    clipped = np.where(clipped < -clip_value, -clip_value, clipped)
+    return clipped
 
