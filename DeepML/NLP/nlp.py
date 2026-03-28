@@ -34,6 +34,29 @@ def compute_tf_idf(corpus, query):
 	return scores
 
 
+def calculate_bm25_scores(corpus, query, k1=1.5, b=0.75):
+	"""
+	90. BM25 Ranking
+    https://www.deep-ml.com/problems/90
+	"""
+    N = len(corpus)
+    avgdl = np.mean([len(doc) for doc in corpus])
+
+    # calculate IDF
+    df = np.array([sum(1 for doc in corpus if word in doc) for word in query])
+    idf = np.log((N + 1) / (df + 1)) # IDF: log((N - df + 0.5) / (df + 0.5) + 1)  — standard BM25 IDF
+
+	# calculate TF and apply saturation (k1) and document length normalization (b)
+    scores = np.zeros(N)
+    for i, doc in enumerate(corpus):
+        dl = len(doc)
+        tf = np.array([doc.count(word) for word in query])
+        normalizer = tf * (k1 + 1) / (tf + k1 * (1 - b + b * dl / avgdl))
+        scores[i] = np.round(np.sum(idf * normalizer), 3)
+
+    return scores
+
+
 def meteor_score(reference, candidate, alpha=0.9, beta=3, gamma=0.5):
     """
     110. Calculate METEOR score for machine translation evaluation.
