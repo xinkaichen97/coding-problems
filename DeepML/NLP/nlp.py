@@ -5,6 +5,35 @@ import numpy as np
 import string
 
 
+def compute_tf_idf(corpus, query):
+	"""
+	60. Compute TF-IDF scores for a query against a corpus of documents.
+    https://www.deep-ml.com/problems/60
+    
+	:param corpus: List of documents, where each document is a list of words
+	:param query: List of words in the query
+	:return: List of lists containing TF-IDF scores for the query words in each document
+	"""
+    # edge case
+	if not corpus or not query:
+		return []
+        
+    # deduplicate query while keeping the order
+	query = list(dict.fromkeys(query))
+    
+	# calculate IDF
+	df = np.array([sum(1 for doc in corpus if word in doc) for word in query])
+	idf = np.log((len(corpus) + 1) / (df + 1)) + 1
+
+    # calculate TF and multiply by IDF
+	scores = []
+	for doc in corpus:
+		tf = np.array([doc.count(word) / len(doc) for word in query])
+		scores.append(np.round(tf * idf, 5).tolist())
+	
+	return scores
+
+
 def meteor_score(reference, candidate, alpha=0.9, beta=3, gamma=0.5):
     """
     110. Calculate METEOR score for machine translation evaluation.
