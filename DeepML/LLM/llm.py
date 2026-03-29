@@ -37,4 +37,27 @@ def top_p_sampling(logits: list[float], p: float) -> list[float]:
     filtered_probs /= filtered_probs.sum()
     
     return np.round(filtered_probs, 4).tolist()
-  
+
+
+def estimate_min_gpus(num_params_billion: float, bytes_per_param: int, gpu_memory_gb: float, overhead_fraction: float) -> dict:
+    """
+    412. Estimate the minimum number of GPUs needed to deploy a model.
+    https://www.deep-ml.com/problems/412
+    
+    Args:
+        num_params_billion: Number of model parameters in billions
+        bytes_per_param: Bytes per parameter (4=FP32, 2=FP16, 1=INT8)
+        gpu_memory_gb: Available memory per GPU in GB
+        overhead_fraction: Fraction of model memory for runtime overhead
+    Returns:
+        dict with 'model_memory_gb', 'total_memory_gb', 'min_gpus'
+    """
+    model_memory_gb = round(1.0 * num_params_billion * bytes_per_param, 2)
+    total_memory_gb = round(model_memory_gb * (1 + overhead_fraction), 2)
+    min_gpus = math.ceil(total_memory_gb / gpu_memory_gb)
+    return {
+        "model_memory_gb": model_memory_gb,
+        "total_memory_gb": total_memory_gb,
+        "min_gpus": min_gpus
+    }
+    
