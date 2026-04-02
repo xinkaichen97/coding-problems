@@ -83,3 +83,17 @@ def polynomial_kernel(x: np.ndarray, y: np.ndarray, degree: int = 3, gamma: floa
 	dot_product = np.dot(x, y)
 	return (gamma * dot_product + coef0) ** degree
     
+
+def svm_margin_width(w: np.ndarray) -> float:
+    """
+    282. Calculate the margin width of a linear SVM classifier.
+	https://www.deep-ml.com/problems/282
+    
+    Parameters:
+    	w : np.ndarray - weight vector defining the hyperplane
+    Returns:
+    	float - the total margin width
+    """
+    return 2 / np.linalg.norm(w)
+
+	
