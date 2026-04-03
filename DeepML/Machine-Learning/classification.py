@@ -96,4 +96,25 @@ def svm_margin_width(w: np.ndarray) -> float:
     """
     return 2 / np.linalg.norm(w)
 
+
+def hard_voting_classifier(predictions: list[list[int]]) -> list[int]:
+    """
+    305. Implement a hard voting classifier using majority vote.
+	https://www.deep-ml.com/problems/305
+    
+    Args:
+        predictions: 2D list where predictions[i][j] is classifier i's prediction for sample j
+    Returns:
+        List of final predictions using majority vote
+    """
+    res = []
+    for j in range(len(predictions[0])):
+        votes = [predictions[i][j] for i in range(len(predictions))]
+        count = Counter(votes)
+        majority = min(count.keys(), key=lambda c: (-count[c], c)) # break ties towards the lower class
+        res.append(majority)
+
+	# # np version
+	# return np.apply_along_axis(lambda votes: np.bincount(votes).argmax(), axis=0, arr=arr).tolist()
+    return res
 	
