@@ -167,3 +167,28 @@ def he_initialization(n_in: int, n_out: int, mode: str = 'fan_in', distribution:
         weights = np.random.uniform(-np.sqrt(6 / fan), np.sqrt(6 / fan), (n_in, n_out))
     return weights
     
+
+def gradient_direction_magnitude(gradient: list) -> dict:
+	"""
+	308. Calculate the magnitude and direction of a gradient vector.
+    https://www.deep-ml.com/problems/308
+	
+	Args:
+		gradient: A list representing the gradient vector
+	Returns:
+		Dictionary containing:
+		- magnitude: The L2 norm of the gradient
+		- direction: Unit vector in direction of steepest ascent
+		- descent_direction: Unit vector in direction of steepest descent
+	"""
+	gradient = np.array(gradient)
+	magnitude = np.linalg.norm(gradient)
+	if magnitude == 0:
+		direction = descent_direction = np.zeros(gradient.shape)
+	else:
+		direction = gradient / magnitude
+		descent_direction = - direction
+	return {
+		'magnitude': magnitude, 'direction': direction.tolist(), 'descent_direction': descent_direction.tolist()
+	}
+    
