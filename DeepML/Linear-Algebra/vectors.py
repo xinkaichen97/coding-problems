@@ -109,3 +109,20 @@ def compute_norm(arr: np.ndarray, norm_type: str) -> float:
     
     else:
         raise ValueError(f"Unknown norm type: {norm_type}. Use 'l1', 'l2', or 'frobenius'")
+
+
+def is_linearly_independent(vectors: list[list[float]]) -> bool:
+    """
+    331. Check if a set of vectors is linearly independent.
+    https://www.deep-ml.com/problems/331
+    
+    Args:
+        vectors: List of vectors, where each vector is a list of floats.
+                All vectors must have the same dimension.
+    Returns:
+        True if vectors are linearly independent, False otherwise.
+    """
+    matrix = np.array(vectors)
+    rank = np.linalg.matrix_rank(matrix)
+    return rank == len(vectors) # check if rank = number of vectors
+
