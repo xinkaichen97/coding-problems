@@ -192,3 +192,32 @@ def gradient_direction_magnitude(gradient: list) -> dict:
 		'magnitude': magnitude, 'direction': direction.tolist(), 'descent_direction': descent_direction.tolist()
 	}
     
+
+def xavier_init(fan_in: int, fan_out: int, mode: str = 'uniform', seed: int = 42) -> dict:
+    """
+    369. Perform Xavier/Glorot weight initialization.
+	https://www.deep-ml.com/problems/369
+
+    Args:
+        fan_in (int): Number of input units.
+        fan_out (int): Number of output units.
+        mode (str): 'uniform' or 'normal'.
+        seed (int): Random seed for reproducibility.
+    Returns:
+        dict: Contains 'weights' (nested list), 'shape' (list), and 'param' (float).
+    """
+    np.random.seed(seed)
+    shape = [fan_in, fan_out]
+    if mode == 'uniform':
+        param = np.sqrt(6 / (fan_in + fan_out))
+        weights = np.random.uniform(-param, param, shape)
+    elif mode == 'normal':
+        param = np.sqrt(2 / (fan_in + fan_out))
+        weights = np.random.normal(0, param, shape)
+    else:
+        raise ValueError("mode must be 'uniform' or 'normal'")
+		
+    return {
+        'weights': np.round(weights, 4).tolist(), 'shape': shape, 'param': np.round(param, 4)
+    }
+	
