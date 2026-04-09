@@ -111,21 +111,4 @@ def calculate_portfolio_variance(cov_matrix: list[list[float]], weights: list[fl
     # portfolio_var = w @ cov @ w
     
     return float(portfolio_var)
-
-
-def bayes_theorem(priors: list[float], likelihoods: list[float]) -> list[float]:
-	"""
-	336. Calculate posterior probabilities using Bayes' Theorem.
-    https://www.deep-ml.com/problems/336
-	
-	Args:
-		priors: Prior probabilities P(H_i) for each hypothesis
-		likelihoods: Likelihoods P(E|H_i) for each hypothesis
-	Returns:
-		Posterior probabilities P(H_i|E) for each hypothesis
-	"""
-	joint = [p * l for p, l in zip(priors, likelihoods)]
-	evidence = sum(joint)
-	posteriors = [p / evidence for p in joint]
-	return posteriors
     
