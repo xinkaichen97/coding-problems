@@ -1,10 +1,26 @@
 """
 Implementation of probability problems
 """
-import torch
+import math
 import numpy as np
+import torch
 from typing import List, Tuple, Any, Literal
 
+
+def binomial_probability(n: int, k: int, p: float) -> float:
+    """
+    79. Calculate the probability of exactly k successes in n Bernoulli trials.
+    https://www.deep-ml.com/problems/79
+	
+    Args:
+        n: Total number of trials
+        k: Number of successes
+        p: Probability of success on each trial
+    Returns:
+        Probability of k successes
+    """
+    return math.comb(n, k) * (p ** k) * ((1 - p) ** (n - k))
+	
 
 def conditional_probability(data: List[Tuple[Any, Any]], x: Any, y: Any) -> float:
     """
