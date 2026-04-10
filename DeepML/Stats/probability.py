@@ -36,6 +36,18 @@ def normal_pdf(x, mean, std_dev):
 	return round(val, 5)
 
 
+def poisson_probability(k, lam):
+	"""
+	81. Calculate the probability of observing exactly k events in a fixed interval, given the mean rate of events lam, using the Poisson distribution formula.
+	https://www.deep-ml.com/problems/81
+	
+	:param k: Number of events (non-negative integer)
+	:param lam: The average rate (mean) of occurrences in a fixed interval
+	"""
+	val = (lam ** k) * math.exp(-lam) / math.factorial(k)
+	return round(val, 5)
+
+
 def conditional_probability(data: List[Tuple[Any, Any]], x: Any, y: Any) -> float:
     """
     168. Calculate Conditional Probability from Data
