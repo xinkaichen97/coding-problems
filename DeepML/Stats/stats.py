@@ -112,3 +112,27 @@ def calculate_portfolio_variance(cov_matrix: list[list[float]], weights: list[fl
     
     return float(portfolio_var)
     
+
+def exponential_distribution(x: list, lam: float) -> dict:
+    """
+    340. Compute exponential distribution properties.
+    https://www.deep-ml.com/problems/340
+    
+    Args:
+        x: Points at which to evaluate PDF and CDF
+        lam: Rate parameter (lambda) of the distribution  
+    Returns:
+        Dictionary with 'pdf', 'cdf', 'mean', and 'variance' keys
+    """
+    if lam <= 0:
+        return {
+            'pdf': None, 'cdf': None, 'mean': None, 'variance': None
+        }
+    x = np.array(x)
+    pdf = np.where(x < 0, 0, lam * np.exp(-lam * x))
+    cdf = np.where(x < 0, 0, 1 - np.exp(-lam * x))
+    
+    return {
+        'pdf': np.round(pdf, 4).tolist(), 'cdf': np.round(cdf, 4).tolist(), 'mean': round(1 / lam, 4), 'variance': round(1 / lam ** 2, 4)
+    }
+    
