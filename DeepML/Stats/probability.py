@@ -4,6 +4,7 @@ Implementation of probability problems
 import math
 import numpy as np
 import torch
+from collections import Counter
 from typing import List, Tuple, Any, Literal
 
 
@@ -105,6 +106,16 @@ def simulate_clt_torch(num_samples: int, sample_size: int, distribution: Literal
     sample_means = torch.mean(samples, dim=1)
     return float(torch.mean(sample_means))
     
+
+def empirical_pmf(samples):
+	"""
+    184. Given an iterable of integer samples, return a list of (value, probability) pairs sorted by value ascending.
+	https://www.deep-ml.com/problems/184
+    """
+    counts = Counter(samples)
+    total = sum(counts.values())
+    return [(val, counts[val] / total) for val in sorted(counts)]
+
 
 def bayes_theorem(priors: list[float], likelihoods: list[float]) -> list[float]:
 	"""
