@@ -23,6 +23,19 @@ def binomial_probability(n: int, k: int, p: float) -> float:
     return math.comb(n, k) * (p ** k) * ((1 - p) ** (n - k))
 	
 
+def normal_pdf(x, mean, std_dev):
+	"""
+	80. Calculate the probability density function (PDF) of the normal distribution.
+	https://www.deep-ml.com/problems/80
+	
+	:param x: The value at which the PDF is evaluated.
+	:param mean: The mean (μ) of the distribution.
+	:param std_dev: The standard deviation (σ) of the distribution.
+	"""
+	val = math.e ** (-(x - mean) ** 2 / (2 * std_dev ** 2)) / math.sqrt(2 * math.pi * std_dev ** 2)
+	return round(val, 5)
+
+
 def conditional_probability(data: List[Tuple[Any, Any]], x: Any, y: Any) -> float:
     """
     168. Calculate Conditional Probability from Data
