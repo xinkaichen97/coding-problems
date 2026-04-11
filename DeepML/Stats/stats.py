@@ -113,6 +113,22 @@ def calculate_portfolio_variance(cov_matrix: list[list[float]], weights: list[fl
     return float(portfolio_var)
     
 
+def gaussian_mle(data: np.ndarray) -> tuple:
+    """
+    337. Compute Maximum Likelihood Estimates for Gaussian distribution parameters.
+    https://www.deep-ml.com/problems/337
+    
+    Args:
+        data: 1D numpy array of observations
+    Returns:
+        Tuple of (mean_mle, variance_mle)
+    """
+    data = np.array(data)
+    mean_mle = np.mean(data)
+    variance_mle = np.mean(np.square(data - mean_mle))
+    return (mean_mle, variance_mle)
+
+
 def exponential_distribution(x: list, lam: float) -> dict:
     """
     340. Compute exponential distribution properties.
