@@ -152,3 +152,19 @@ def exponential_distribution(x: list, lam: float) -> dict:
         'pdf': np.round(pdf, 4).tolist(), 'cdf': np.round(cdf, 4).tolist(), 'mean': round(1 / lam, 4), 'variance': round(1 / lam ** 2, 4)
     }
     
+
+def law_of_large_numbers(n_samples: int, population_mean: float, population_std: float) -> float:
+    """
+    342. Demonstrate the Law of Large Numbers by computing the sample mean.
+    https://www.deep-ml.com/problems/342
+    
+    Args:
+        n_samples: Total number of samples to draw from the distribution
+        population_mean: The true mean of the population distribution
+        population_std: The true standard deviation of the population distribution
+    Returns:
+        The sample mean
+    """
+    samples = np.random.normal(loc=population_mean, scale=population_std, size=n_samples)
+    return np.mean(samples)
+    
