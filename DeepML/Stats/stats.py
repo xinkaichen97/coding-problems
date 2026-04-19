@@ -113,6 +113,60 @@ def calculate_portfolio_variance(cov_matrix: list[list[float]], weights: list[fl
     return float(portfolio_var)
     
 
+def calculate_power(effect_size: float, sample_size_per_group: int, alpha: float = 0.05, two_tailed: bool = True) -> float:
+    """
+    296. Calculate statistical power for a two-sample z-test.
+    https://www.deep-ml.com/problems/296
+    
+    Parameters:
+        effect_size: Cohen's d (standardized effect size)
+        sample_size_per_group: Number of observations per group
+        alpha: Significance level (default 0.05)
+        two_tailed: Whether the test is two-tailed (default True)
+    Returns:
+        Statistical power as a float rounded to 4 decimal places
+    """
+    # use built-in functions
+    try:
+        from math import erfinv
+    except ImportError:
+        from scipy.special import erfinv
+
+    # or use the approximate function
+    def erfinv(x: float) -> float:
+        """ Approximate erfinv via Newton's method. """
+        # initial guess using rational approximation
+        a = 0.147
+        ln = math.log(1 - x * x)
+        t = 2 / (math.pi * a) + ln / 2
+        result = math.copysign(math.sqrt(math.sqrt(t * t - ln / a) - t), x)
+        
+        # Newton refinement: erfinv(x) = root of erf(y) - x = 0
+        for _ in range(3):
+            result -= (math.erf(result) - x) / (2 / math.sqrt(math.pi) * math.exp(-result**2))
+        
+        return result
+
+    # non-centrality parameter
+    ncp = effect_size * math.sqrt(sample_size_per_group / 2)
+
+    # inverse CDF of normal using erfinv
+    def norm_ppf(p):
+        return math.sqrt(2) * math.erfinv(2 * p - 1)
+
+    def norm_cdf(x):
+        return 0.5 * (1 + math.erf(x / math.sqrt(2)))
+
+    if two_tailed:
+        z_critical = norm_ppf(1 - alpha / 2)
+        power = 1 - norm_cdf(z_critical - ncp) - norm_cdf(-z_critical - ncp)
+    else:
+        z_critical = norm_ppf(1 - alpha)
+        power = 1 - norm_cdf(z_critical - ncp)
+    
+    return round(power, 4)
+
+
 def gaussian_mle(data: np.ndarray) -> tuple:
     """
     337. Compute Maximum Likelihood Estimates for Gaussian distribution parameters.
