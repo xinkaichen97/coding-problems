@@ -426,3 +426,28 @@ def hardtanh(x: float, min_val: float = -1.0, max_val: float = 1.0) -> float:
 	else:
 		return x
 		
+
+def calculate_parameters(layers: list[dict]) -> int:
+	"""
+	371. Calculate the total number of trainable parameters in a neural network.
+	https://www.deep-ml.com/problems/371
+
+	Args:
+		layers: List of dictionaries, each describing a layer.
+	Returns:
+		Total number of trainable parameters (int).
+	"""
+	total = 0
+	for layer in layers:
+		if layer['type'] == 'dense':
+			total += layer['input_size'] * layer['output_size']
+			if layer.get('bias', True):
+				total += layer['output_size']
+		elif layer['type'] == 'conv2d':
+			total += layer['in_channels'] * layer['out_channels'] * layer['kernel_size'] * layer['kernel_size']
+			if layer.get('bias', True):
+				total += layer['out_channels']
+		else:
+			raise ValueError(f"Type {layer['type']} is not supported")
+
+	return total
