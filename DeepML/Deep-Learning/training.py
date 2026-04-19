@@ -282,3 +282,20 @@ def binary_cross_entropy(y_true: list[float], y_pred: list[float], epsilon: floa
 	y_true = np.array(y_true)
 	return -1.0 * np.mean(y_true * np.log(y_pred) + (1 - y_true) * np.log(1 - y_pred))
     
+
+def rmsnorm(x: np.ndarray, g: np.ndarray, eps: float = 1e-5) -> np.ndarray:
+    """
+    372. Apply RMSNorm to the input array.
+	https://www.deep-ml.com/problems/372
+    
+    Parameters:
+        x   : np.ndarray of shape (batch_size, features)
+        g   : np.ndarray of shape (features,) - gain parameter
+        eps : float - small constant for numerical stability
+    Returns:
+        np.ndarray of same shape as x
+    """
+    rms = np.sqrt(np.mean(x ** 2, axis=-1, keepdims=True) + eps)
+    out = x / rms * g
+    return out
+	
