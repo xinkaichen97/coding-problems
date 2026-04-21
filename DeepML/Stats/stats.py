@@ -113,6 +113,55 @@ def calculate_portfolio_variance(cov_matrix: list[list[float]], weights: list[fl
     return float(portfolio_var)
     
 
+def two_sample_t_test(sample1: list[float], sample2: list[float], alpha: float = 0.05) -> dict:
+	"""
+	211. Perform a two-sample independent t-test (Welch's t-test).
+    https://www.deep-ml.com/problems/211
+	
+	Args:
+		sample1: First sample data
+		sample2: Second sample data
+		alpha: Significance level (default 0.05)
+	Returns:
+		Dictionary containing:
+		- t_statistic: The calculated t-statistic
+		- p_value: Two-tailed p-value
+		- degrees_of_freedom: Degrees of freedom (Welch-Satterthwaite)
+		- reject_null: Boolean, whether to reject null hypothesis
+		- cohens_d: Effect size (Cohen's d)
+	"""
+    # calculate mean and variance
+	n1, n2 = len(sample1), len(sample2)
+	sample1, sample2 = np.array(sample1), np.array(sample2)
+	mean1, mean2 = np.mean(sample1), np.mean(sample2)
+	var1, var2 = np.var(sample1, ddof=1), np.var(sample2, ddof=1)
+
+    # calculate standard error and t-value
+	SE = np.sqrt(var1 / n1 + var2 / n2)
+	t_statistic = (mean1 - mean2) / SE
+
+    # calculate df (Welch-Satterthwaite)
+	degrees_of_freedom = (var1 / n1 + var2 / n2) ** 2 / ((var1 / n1) ** 2 / (n1 - 1) + (var2 / n2) ** 2 / (n2 - 1))
+
+    # calculate p-value using 1 - CDF or SF, two-tailed -> *2
+	p_value = 2 * stats.t.sf(abs(t_statistic), degrees_of_freedom)
+	reject_null = (p_value < alpha)
+
+    # calculate Cohen's d
+    # pooled SD: Student's -> df-weighted, Welch's -> average
+	# s_pooled = np.sqrt(((n1 - 1) * var1 + (n2 - 1) * var2) / (n1 + n2 - 2))
+	s_pooled = np.sqrt((var1 + var2) / 2)
+	cohens_d = (mean1 - mean2) / s_pooled
+
+	return {
+		't_statistic': t_statistic,
+		'p_value': p_value,
+		'degrees_of_freedom': degrees_of_freedom,
+		'reject_null': reject_null,
+		'cohens_d': cohens_d
+	}
+
+
 def calculate_power(effect_size: float, sample_size_per_group: int, alpha: float = 0.05, two_tailed: bool = True) -> float:
     """
     296. Calculate statistical power for a two-sample z-test.
