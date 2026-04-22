@@ -162,6 +162,36 @@ def two_sample_t_test(sample1: list[float], sample2: list[float], alpha: float =
 	}
 
 
+def confidence_interval(data: list[float], confidence_level: float = 0.95) -> dict:
+	"""
+	212. Calculate confidence interval for population mean.
+	https://www.deep-ml.com/problems/212
+	
+	Args:
+		data: Sample data
+		confidence_level: Confidence level (default 0.95)
+	Returns:
+		Dictionary containing:
+		- mean: Sample mean (point estimate)
+		- standard_error: Standard error of the mean
+		- margin_of_error: Margin of error
+		- lower_bound: Lower bound of CI
+		- upper_bound: Upper bound of CI
+		- confidence_level: Confidence level used
+	"""
+	data = np.array(data)
+	n = len(data)
+	mean, sd = np.mean(data), np.std(data, ddof=1)
+	se = sd / np.sqrt(n)
+	df = n - 1
+	t_critical = stats.t.ppf((1 + confidence_level) / 2, df)
+	
+	me = t_critical * se
+	lower_bound, upper_bound = mean - me, mean + me
+	
+	return {'mean': mean, 'standard_error': se, 'margin_of_error': me, 'lower_bound': lower_bound, 'upper_bound': upper_bound, 'confidence_level': confidence_level}
+	
+
 def calculate_power(effect_size: float, sample_size_per_group: int, alpha: float = 0.05, two_tailed: bool = True) -> float:
     """
     296. Calculate statistical power for a two-sample z-test.
