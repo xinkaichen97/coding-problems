@@ -285,6 +285,28 @@ def gaussian_mle(data: np.ndarray) -> tuple:
     return (mean_mle, variance_mle)
 
 
+def beta_distribution_stats(x: float, alpha: float, beta_param: float) -> dict:
+    """
+    339. Compute Beta distribution statistics.
+	https://www.deep-ml.com/problems/339
+    
+    Args:
+        x: Value at which to evaluate the PDF
+        alpha: First shape parameter (alpha > 0)
+        beta_param: Second shape parameter (beta > 0)
+    Returns:
+        Dictionary with 'pdf', 'mean', and 'variance'
+    """
+    if x < 0 or x > 1:
+        pdf = 0.0
+    else:
+        Beta = math.gamma(alpha) * math.gamma(beta_param) / math.gamma(alpha + beta_param)
+        pdf = x ** (alpha - 1) * (1 - x) ** (beta_param - 1) / Beta
+    mean = alpha / (alpha + beta_param)
+    variance = alpha * beta_param / (alpha + beta_param) ** 2 / (alpha + beta_param + 1)
+    return {'pdf': pdf, 'mean': mean, 'variance': variance}
+
+
 def exponential_distribution(x: list, lam: float) -> dict:
     """
     340. Compute exponential distribution properties.
