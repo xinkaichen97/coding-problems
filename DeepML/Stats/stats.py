@@ -192,6 +192,29 @@ def confidence_interval(data: list[float], confidence_level: float = 0.95) -> di
 	return {'mean': mean, 'standard_error': se, 'margin_of_error': me, 'lower_bound': lower_bound, 'upper_bound': upper_bound, 'confidence_level': confidence_level}
 	
 
+def bayesian_inference_beta_binomial(prior_alpha: float, prior_beta: float, successes: int, trials: int) -> tuple[float, float, float]:
+	"""
+	213. Perform Bayesian inference for Beta-Binomial model.
+	https://www.deep-ml.com/problems/213
+	
+	Args:
+		prior_alpha: Alpha parameter of Beta prior
+		prior_beta: Beta parameter of Beta prior
+		successes: Number of successes observed
+		trials: Total number of trials
+	Returns:
+		Tuple of (posterior_alpha, posterior_beta, posterior_mean) where:
+		- posterior_alpha: Updated alpha parameter
+		- posterior_beta: Updated beta parameter
+		- posterior_mean: Mean of posterior distribution
+	"""
+	# Posterior mean = (prior successes + data successes) / (prior total + data total)
+​	posterior_alpha = prior_alpha + successes
+	posterior_beta = prior_beta + trials - successes
+	posterior_mean = posterior_alpha / (posterior_alpha + posterior_beta)
+	return posterior_alpha, posterior_beta, posterior_mean
+
+
 def calculate_power(effect_size: float, sample_size_per_group: int, alpha: float = 0.05, two_tailed: bool = True) -> float:
     """
     296. Calculate statistical power for a two-sample z-test.
