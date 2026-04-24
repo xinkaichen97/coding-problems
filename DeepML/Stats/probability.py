@@ -48,6 +48,28 @@ def poisson_probability(k, lam):
 	return round(val, 5)
 
 
+def multivariate_kl_divergence(mu_p: np.ndarray, Cov_p: np.ndarray, mu_q: np.ndarray, Cov_q: np.ndarray) -> float:
+    """
+    136. Computes the KL divergence between two multivariate Gaussian distributions.
+	https://www.deep-ml.com/problems/136
+    
+    Parameters:
+	    mu_p: mean vector of the first distribution
+	    Cov_p: covariance matrix of the first distribution
+	    mu_q: mean vector of the second distribution
+	    Cov_q: covariance matrix of the second distribution
+    Returns:
+    	KL divergence as a float
+    """
+    k = len(mu_p)
+    covq_inv = np.linalg.inv(Cov_q)
+    diff = mu_p - mu_q
+    log_det = np.log(np.linalg.det(Cov_q) / np.linalg.det(Cov_p))
+    trace_term = np.trace(covq_inv @ Cov_p)
+    mahal = diff.T @ covq_inv @ diff
+    return 0.5 * (log_det - k + trace_term + mahal)
+
+
 def conditional_probability(data: List[Tuple[Any, Any]], x: Any, y: Any) -> float:
     """
     168. Calculate Conditional Probability from Data
