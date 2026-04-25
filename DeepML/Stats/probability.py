@@ -143,6 +143,47 @@ def simulate_clt(num_samples: int, sample_size: int, distribution: str = 'unifor
     return float(np.mean(sample_means))
 
 
+def simulate_clt(distribution: str, n: int, runs: int = 10000, seed: int = 42) -> dict:
+    """
+    182. Simulate the Central Limit Theorem.
+	https://www.deep-ml.com/problems/182
+
+    Args:
+        distribution (str): The distribution to sample from ('uniform', 'exponential', 'bernoulli').
+        n (int): Sample size.
+        runs (int): Number of repeated experiments.
+        seed (int): Random seed for reproducibility.
+    Returns:
+        dict: {'mean': float, 'std': float} of the standardized sample means.
+    """
+    np.random.seed(seed)
+    sample_means = np.zeros(runs)
+
+	# different sample mean and variance for each distribution
+    if distribution == 'uniform':
+        mu, sigma = 0.5, np.sqrt(1/12)
+    elif distribution == 'exponential':
+        mu, sigma = 1.0, 1.0
+    elif distribution == 'bernoulli':
+        mu, sigma = 0.3, np.sqrt(0.3 * 0.7)
+
+    for i in range(runs):
+        if distribution == 'uniform':
+            out = np.random.uniform(low=0, high=1, size=n)
+        elif distribution == 'exponential':
+            out = np.random.exponential(scale=1.0, size=n)
+        elif distribution == 'bernoulli':
+            # using this would cause the seed to be different: out = np.random.binomial(n=1, p=0.3, size=n)
+            out = (np.random.uniform(size=n) < 0.3).astype(int)
+        sample_means[i] = np.mean(out)
+
+    standardized = (sample_means - mu) / (sigma / np.sqrt(n))
+    return {
+        'mean': np.mean(standardized),
+        'std': np.std(standardized)
+    }
+	
+
 def simulate_clt_torch(num_samples: int, sample_size: int, distribution: Literal['uniform', 'exponential'] = 'uniform') -> float:
     """PyTorch version"""
     if distribution == 'uniform':
