@@ -231,6 +231,23 @@ def covariance_from_joint_pmf(x_values: list, y_values: list, joint_pmf: np.ndar
     return E_XY - E_X * E_Y
 
 
+def law_of_total_probability(priors: dict, conditionals: dict) -> float:
+    """
+    244. Compute P(A) using the Law of Total Probability.
+    https://www.deep-ml.com/problems/244
+	
+    Args:
+        priors: Dictionary mapping partition event names to P(Bi)
+        conditionals: Dictionary mapping partition event names to P(A|Bi)
+    Returns:
+        float: The total probability P(A), rounded to 4 decimal places
+    """
+    P_A = 0
+    for key in conditionals:
+        P_A += conditionals[key] * priors[key]
+    return P_A
+
+
 def bayes_theorem(priors: list[float], likelihoods: list[float]) -> list[float]:
 	"""
 	336. Calculate posterior probabilities using Bayes' Theorem.
