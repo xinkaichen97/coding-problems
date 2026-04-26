@@ -264,6 +264,23 @@ def hypergeometric_pmf(N: int, K: int, n: int, k: int) -> float:
     return round(math.comb(K, k) * math.comb(N - K, n - k) / math.comb(N, n), 4)
 
 
+def birthday_problem(n: int, days: int = 365) -> float:
+    """
+    246. Calculate the probability that at least two people share the same birthday.
+	https://www.deep-ml.com/problems/246
+    
+    Args:
+        n: Number of people in the group
+        days: Number of days in a year (default 365)
+    Returns:
+        float: Probability of at least one shared birthday, rounded to 4 decimal places
+    """
+    p_nm = 1
+    for i in range(n):
+        p_nm *= (days - i) / days
+    return round(1 - p_nm, 4)
+
+
 def bayes_theorem(priors: list[float], likelihoods: list[float]) -> list[float]:
 	"""
 	336. Calculate posterior probabilities using Bayes' Theorem.
