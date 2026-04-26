@@ -205,6 +205,32 @@ def empirical_pmf(samples):
     return [(val, counts[val] / total) for val in sorted(counts)]
 
 
+def covariance_from_joint_pmf(x_values: list, y_values: list, joint_pmf: np.ndarray) -> float:
+    """
+    243. Compute the covariance of X and Y from their joint PMF.
+	https://www.deep-ml.com/problems/243
+    
+    Args:
+        x_values: List of possible values for X
+        y_values: List of possible values for Y
+        joint_pmf: 2D numpy array where joint_pmf[i][j] = P(X=x_values[i], Y=y_values[j])
+    Returns:
+        Covariance of X and Y as a float
+    """
+    X, Y = np.array(x_values), np.array(y_values)
+    P = np.array(joint_pmf)
+
+	# sum rows/columns in PMF to get probability of each value
+    p_x = P.sum(axis=1)  # shape (len(X),)
+    p_y = P.sum(axis=0)  # shape (len(Y),)
+	# compute E(X), E(Y), and E(XY) - ΣᵢΣⱼ xᵢyⱼ P(xᵢ, yⱼ)
+    E_X  = X @ p_x
+    E_Y  = Y @ p_y
+    E_XY = np.sum(np.outer(X, Y) * P)
+    
+    return E_XY - E_X * E_Y
+
+
 def bayes_theorem(priors: list[float], likelihoods: list[float]) -> list[float]:
 	"""
 	336. Calculate posterior probabilities using Bayes' Theorem.
