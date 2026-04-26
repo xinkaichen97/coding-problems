@@ -248,6 +248,22 @@ def law_of_total_probability(priors: dict, conditionals: dict) -> float:
     return P_A
 
 
+def hypergeometric_pmf(N: int, K: int, n: int, k: int) -> float:
+    """
+    245. Calculate the PMF of the hypergeometric distribution.
+    https://www.deep-ml.com/problems/244
+    
+    Args:
+        N: Total population size
+        K: Number of success states in population
+        n: Number of draws (without replacement)
+        k: Number of observed successes
+    Returns:
+        float: P(X = k), rounded to 4 decimal places
+    """
+    return round(math.comb(K, k) * math.comb(N - K, n - k) / math.comb(N, n), 4)
+
+
 def bayes_theorem(priors: list[float], likelihoods: list[float]) -> list[float]:
 	"""
 	336. Calculate posterior probabilities using Bayes' Theorem.
