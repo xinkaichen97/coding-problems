@@ -281,6 +281,22 @@ def birthday_problem(n: int, days: int = 365) -> float:
     return round(1 - p_nm, 4)
 
 
+def negative_binomial_pmf(k: int, r: int, p: float) -> float:
+    """
+    247. Calculate the probability of observing exactly k failures before achieving r successes in independent Bernoulli trials.
+	https://www.deep-ml.com/problems/247
+    
+    Args:
+        k: Number of failures (non-negative integer)
+        r: Number of successes required (positive integer)
+        p: Probability of success on each trial (0 < p <= 1)
+    Returns:
+        Probability P(X = k) rounded to 5 decimal places
+    """
+    p = math.comb(k + r - 1, k) * (1 - p) ** k * p ** r
+    return round(p, 5)
+
+
 def bayes_theorem(priors: list[float], likelihoods: list[float]) -> list[float]:
 	"""
 	336. Calculate posterior probabilities using Bayes' Theorem.
